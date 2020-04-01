@@ -3,12 +3,44 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.4.5'
 
+# Webpacker gem
+gem 'webpacker', '~> 4.x'
+
+# Font awesome icons gem
+gem "font-awesome-rails"
+
+# Devise authentication
+gem 'devise', '~> 4.7', '>= 4.7.1'
+
+# Devise authentication with JWT
+gem 'devise-jwt', '~> 0.6.0'
+
+# Cancan authorization
+gem 'cancancan'
+
+gem 'bootstrap', '~> 4.3.1'
+gem 'react-rails'
+gem 'jquery-rails'
+
+# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'jbuilder', '~> 2.7'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.4', '>= 5.2.4.1'
+
+# Use postgresql as the database for Active Record
+gem 'pg', '>= 0.18', '< 2.0'
+
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+#gem 'sqlite3'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
+
+# Use SCSS for stylesheets
+gem 'sass-rails', '~> 5.0'
+
+gem 'rack-cors'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
