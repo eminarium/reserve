@@ -1,5 +1,15 @@
 class Season < ApplicationRecord
 
+    # DB Fields
+
+    # title             :string
+    # order_no          :integer
+    # start_date        :date
+    # end_date          :date
+    # return_deadline   :date
+    # notes             :text
+    
+
     # Validations
     validates   :title,           
                 length: { minimum: 3 }, 

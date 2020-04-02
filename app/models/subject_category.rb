@@ -1,5 +1,11 @@
 class SubjectCategory < ApplicationRecord
 
+    # DB Fields
+
+    # title     :string
+    # notes     :text
+    # is_kids   :boolean
+
     # Validations
 
     validates   :title,   

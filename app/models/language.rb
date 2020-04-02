@@ -1,5 +1,10 @@
 class Language < ApplicationRecord
 
+    # DB Fields
+
+    # title     :string
+    # notes     :text
+
     # Validations
 
     validates   :title, 

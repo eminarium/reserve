@@ -1,5 +1,13 @@
 class Shift < ApplicationRecord
 
+    # DB Fields
+
+    # title         :string
+    # start_time    :time
+    # end_time      :time
+    # notes         :text
+
+
     # Validations
 
     validates   :title,       

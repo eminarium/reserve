@@ -1,5 +1,16 @@
 class Reservation < ApplicationRecord
 
+  # DB Fields
+
+  # applicant_id  :integer (references 'applicant' model)
+  # season_id     :integer (references 'season' model)
+  # shift_id      :integer (references 'shift' model)
+  # subject_id    :integer (references 'subject' model)
+  # is_registered :boolean
+  # is_sms_sent   :boolean
+  # is_called     :boolean
+  # notes         :text
+
   # Validations
 
   validates   :applicant_id,  

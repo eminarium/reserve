@@ -1,5 +1,15 @@
 class SubjectTest < ApplicationRecord
 
+  # DB Fields
+
+  # applicant_id    :integer (references 'applicant' model)
+  # subject_id      :integer (references 'subject' model)
+  # season_id       :integer (references 'season' model)
+  # test_date       :date
+  # result          :float
+  # notes           :text
+
+  
   # Validations
 
   validates   :applicant_id,  

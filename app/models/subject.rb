@@ -1,5 +1,15 @@
 class Subject < ApplicationRecord
 
+  # DB Fields
+
+  # title                 :string
+  # level                 :integer
+  # notes                 :text
+  # subject_category_id   :integer (references 'subject_category' model)
+  # language_id           :integer (references 'language' model)
+
+
+
   # Validations
 
   validates   :title,               

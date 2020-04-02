@@ -1,5 +1,18 @@
 class Applicant < ApplicationRecord
 
+
+    # DB fields
+    
+    # first_name    :string
+    # last_name     :string
+    # patronymic    :string
+    # home_phone    :string
+    # mobile_phone  :string
+    # photo_url     :string
+    # birth_date    :date
+    # notes         :text
+    
+
     # Validations
 
     validates   :first_name,  
