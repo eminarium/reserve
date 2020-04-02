@@ -5,7 +5,8 @@ class SubjectCategory < ApplicationRecord
     validates   :title,   
                 length: { minimum: 3 }, 
                 presence: true,
-                message: "Ders görnüşiniň ady hökman girizilmeli we azyndan 3 belgi bolmaly..."
+                uniqueness: true,
+                message: "Ders görnüşiniň ady hökman girizilmeli, öň girizilmedik we azyndan 3 belgi bolmaly..."
 
     validates   :is_kids, 
                 presence: true,

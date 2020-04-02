@@ -4,12 +4,14 @@ class Season < ApplicationRecord
     validates   :title,           
                 length: { minimum: 3 }, 
                 presence: true,
-                message: "Tapgyr ady hökman girizilmeli we azyndan 3 belgi bolmaly..."
+                uniqueness: true,
+                message: "Tapgyr ady hökman girizilmeli, öň ulanylmadyk we azyndan 3 belgi bolmaly..."
 
     validates   :order_no,        
                 numericality: { only_integer: true }, 
                 presence: true,
-                message: "Tapgyr tertip belgisi hökman girizilmeli..."
+                uniqueness: true,
+                message: "Tapgyr tertip belgisi hökman girizilmeli we gaýtalanmaýan san bolmaly..."
 
     validates   :start_date,      
                 presence: true,

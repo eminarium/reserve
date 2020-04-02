@@ -5,7 +5,8 @@ class Shift < ApplicationRecord
     validates   :title,       
                 length: { minimum: 3 }, 
                 presence: true,
-                message: "Seans ady hökman girizilmeli we azyndan 3 belgi bolmaly..."
+                uniqueness: true
+                message: "Seans ady hökman girizilmeli, öň gaýtalanmaýan we azyndan 3 belgi bolmaly..."
 
     validates   :start_time,  
                 presence: true,

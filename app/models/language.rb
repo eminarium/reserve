@@ -5,7 +5,8 @@ class Language < ApplicationRecord
     validates   :title, 
                 length: { minimum: 2 },
                 presence: true,
-                message: "Diliň at tarypy hökman girizilmeli..."
+                uniqueness: true,
+                message: "Diliň at tarypy hökman girizilmeli, bazada öň bolmaýan we azyndan 2 belgiden ybarat bolmaly..."
 
 
     # Associations
