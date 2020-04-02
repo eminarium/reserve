@@ -1,4 +1,7 @@
 class Api::V1::SubjectTestsController < ApplicationController
+
+  before_action :set_subject_test, only: [:show, :update, :destroy]
+
   def index
   end
 

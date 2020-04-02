@@ -1,4 +1,7 @@
 class Api::V1::SubjectCategoriesController < ApplicationController
+
+  before_action :set_subject_category, only: [:show, :update, :destroy]
+
   def index
   end
 

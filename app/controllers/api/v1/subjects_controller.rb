@@ -1,4 +1,7 @@
 class Api::V1::SubjectsController < ApplicationController
+
+  before_action :set_subject, only: [:show, :update, :destroy]
+
   def index
   end
 

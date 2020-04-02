@@ -1,4 +1,6 @@
 class Api::V1::LanguagesController < ApplicationController
+
+  before_action :set_language, only: [:show, :update, :destroy]
   
   def index
   end

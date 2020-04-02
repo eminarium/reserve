@@ -1,4 +1,7 @@
 class Api::V1::ShiftsController < ApplicationController
+
+  before_action :set_shift, only: [:show, :update, :destroy]
+
   def index
   end
 

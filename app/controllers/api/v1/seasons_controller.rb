@@ -1,4 +1,7 @@
 class Api::V1::SeasonsController < ApplicationController
+
+  before_action :set_season, only: [:show, :update, :destroy]
+
   def index
   end
 
