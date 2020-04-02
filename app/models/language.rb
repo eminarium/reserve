@@ -2,7 +2,10 @@ class Language < ApplicationRecord
 
     # Validations
 
-    validates :title, length: { minimum: 2 } presence: true
+    validates   :title, 
+                length: { minimum: 2 },
+                presence: true,
+                message: "Diliň at tarypy hökman girizilmeli..."
 
 
     # Associations
