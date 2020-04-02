@@ -13,25 +13,46 @@ class Api::V1::LanguagesController < ApplicationController
     if @language
       respond_with @language, status: :ok
     else
-      respond_with @language.errors, status: :unprocessable_entity
+      render json: { 
+        error: @language.errors, 
+        message: "Soralan maglumatlar talabalaýyk däl ..." 
+      },
+      status: :unprocessable_entity
     end  
   end
 
   def create
+
     @language = Language.create(language_params)
 
     if @language.save
       respond_with @language
     else
-      respond_with @language.errors
+      render json: { 
+        error: @language.errors, 
+        message: "Berlen maglumatlar talabalaýyk däl ..." 
+      },
+      status: :unprocessable_entity
     end  
+
+    rescue ActionController::ParameterMissing => e
+      render json: {
+        error: e,
+        message: "Parametrler berilmedik..."
+      },
+      status: :unprocessable_entity
+
   end
 
   def update
     if @language.update_attributes(language_params)
       respond_with @language, status: :ok
     else
-      respond_with @language.errors, status: :unprocessable_entity
+      render json: { 
+        error: @language.errors, 
+        message: "Berlen maglumatlar talabalaýyk däl ..." 
+      },
+      status: :unprocessable_entity
     end
   end
 
@@ -39,7 +60,11 @@ class Api::V1::LanguagesController < ApplicationController
     if @language.destroy
       respond_with @language, status: :ok
     else
-      respond_with @language.errors, status: :unprocessable_entity
+      render json: { 
+        error: @language.errors, 
+        message: "Görkezilen dili bozup bolmady ..." 
+      },
+      status: :unprocessable_entity
     end
   end
 
@@ -49,7 +74,11 @@ class Api::V1::LanguagesController < ApplicationController
     @language = Language.find(params[:id])
 
     rescue ActiveRecord::RecordNotFound => e
-      render json: { error: e, message: params[:id] + " belgili dil tapylmady..."}
+      render json: { 
+        error: e, 
+        message: params[:id] + " belgili dil tapylmady..."
+      }, 
+      status: 404
   end
 
   def language_params

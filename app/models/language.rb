@@ -7,14 +7,12 @@ class Language < ApplicationRecord
 
     # Validations
 
-    validates   :title, 
-                length: { minimum: 2 },
-                presence: true,
-                uniqueness: true,
-                message: "Diliň at tarypy hökman girizilmeli, bazada öň bolmaýan we azyndan 2 belgiden ybarat bolmaly..."
+    validates   :title, presence: { message: "Diliň at tarypy hökman girizilmeli..." }
+    validates   :title, length: { minimum: 2, message: "Diliň at tarypy azyndan 2 belgiden ybarat bolmaly..." }
+    validates   :title, uniqueness: { message: "Diliň at tarypy öň ulanylmadyk söz bolmaly ..." }
 
 
     # Associations
 
-    has_many: subjects
+    has_many :subjects
 end
