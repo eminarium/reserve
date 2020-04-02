@@ -1,4 +1,4 @@
-class LanguagesController < ApplicationController
+class Api::V1::LanguagesController < ApplicationController
   
   def index
   end

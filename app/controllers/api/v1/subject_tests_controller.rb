@@ -1,4 +1,4 @@
-class SubjectTestsController < ApplicationController
+class Api::V1::SubjectTestsController < ApplicationController
   def index
   end
 

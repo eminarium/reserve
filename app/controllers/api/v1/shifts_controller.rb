@@ -1,4 +1,4 @@
-class ShiftsController < ApplicationController
+class Api::V1::ShiftsController < ApplicationController
   def index
   end
 
