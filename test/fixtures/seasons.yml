@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  order_no: 1
+  start_date: 2020-04-02
+  end_date: 2020-04-02
+  return_deadline: 2020-04-02
+  notes: MyText
+
+two:
+  title: MyString
+  order_no: 1
+  start_date: 2020-04-02
+  end_date: 2020-04-02
+  return_deadline: 2020-04-02
+  notes: MyText
