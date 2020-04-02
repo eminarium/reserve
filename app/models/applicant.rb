@@ -7,4 +7,9 @@ class Applicant < ApplicationRecord
     validates :patronymic,  length: { minimum: 3 }, presence: true
     validates :photo_url,   presence: true
 
+    # Associations
+
+    has_many :reservations
+    has_many :subject_tests
+
 end

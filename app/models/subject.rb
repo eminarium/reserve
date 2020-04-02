@@ -11,4 +11,7 @@ class Subject < ApplicationRecord
 
   belongs_to :subject_category
   belongs_to :language
+
+  has_many :reservations
+  has_many :subject_tests
 end

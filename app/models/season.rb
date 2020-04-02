@@ -6,4 +6,9 @@ class Season < ApplicationRecord
     validates :start_date,      presence: true
     validates :end_date,        presence: true
     validates :return_deadline, presence: true
+
+    # Associations
+
+    has_many :reservations
+    has_many :subject_tests
 end
