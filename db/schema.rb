@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_02_071114) do
+ActiveRecord::Schema.define(version: 2020_04_02_074248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,20 @@ ActiveRecord::Schema.define(version: 2020_04_02_071114) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "subject_tests", force: :cascade do |t|
+    t.bigint "applicant_id"
+    t.bigint "subject_id"
+    t.date "test_date"
+    t.bigint "season_id"
+    t.float "result"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["applicant_id"], name: "index_subject_tests_on_applicant_id"
+    t.index ["season_id"], name: "index_subject_tests_on_season_id"
+    t.index ["subject_id"], name: "index_subject_tests_on_subject_id"
+  end
+
   create_table "subjects", force: :cascade do |t|
     t.string "title"
     t.integer "level"
@@ -81,6 +95,9 @@ ActiveRecord::Schema.define(version: 2020_04_02_071114) do
     t.index ["subject_category_id"], name: "index_subjects_on_subject_category_id"
   end
 
+  add_foreign_key "subject_tests", "applicants"
+  add_foreign_key "subject_tests", "seasons"
+  add_foreign_key "subject_tests", "subjects"
   add_foreign_key "subjects", "languages"
   add_foreign_key "subjects", "subject_categories"
 end

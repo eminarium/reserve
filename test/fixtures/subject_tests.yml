@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  applicant: one
+  subject: one
+  test_date: 2020-04-02
+  season: one
+  result: 1.5
+  notes: MyText
+
+two:
+  applicant: two
+  subject: two
+  test_date: 2020-04-02
+  season: two
+  result: 1.5
+  notes: MyText
