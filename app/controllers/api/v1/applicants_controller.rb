@@ -21,6 +21,9 @@ class Api::V1::ApplicantsController < ApplicationController
 
   def set_applicant
     @applicant = Applicant.find(params[:id])
+
+    rescue ActiveRecord::RecordNotFound => e
+      render json: { error: e, message: params[:id] + " belgili diňleýji tapylmady..."}
   end
 
   def applicant_params

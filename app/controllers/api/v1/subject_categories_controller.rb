@@ -21,6 +21,9 @@ class Api::V1::SubjectCategoriesController < ApplicationController
 
   def set_subject_category
     @subject_category = SubjectCategory.find(params[:id])
+
+    rescue ActiveRecord::RecordNotFound => e
+      render json: { error: e, message: params[:id] + " belgili ders görnüşi tapylmady..."}
   end
 
   def subject_category_params

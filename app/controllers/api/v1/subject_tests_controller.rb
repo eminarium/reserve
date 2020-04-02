@@ -21,6 +21,9 @@ class Api::V1::SubjectTestsController < ApplicationController
 
   def set_subject_test
     @subject_test = SubjectTest.find(params[:id])
+
+    rescue ActiveRecord::RecordNotFound => e
+      render json: { error: e, message: params[:id] + " belgili synag tapylmady..."}
   end
 
   def subject_test_params

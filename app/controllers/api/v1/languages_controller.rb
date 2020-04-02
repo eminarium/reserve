@@ -21,6 +21,9 @@ class Api::V1::LanguagesController < ApplicationController
 
   def set_language
     @language = Language.find(params[:id])
+
+    rescue ActiveRecord::RecordNotFound => e
+      render json: { error: e, message: params[:id] + " belgili dil tapylmady..."}
   end
 
   def language_params

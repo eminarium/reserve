@@ -21,6 +21,9 @@ class Api::V1::ShiftsController < ApplicationController
 
   def set_shift
     @shift = Shift.find(params[:id])
+
+    rescue ActiveRecord::RecordNotFound => e
+      render json: { error: e, message: params[:id] + " belgili wagt (seans) tapylmady..."}
   end
 
   def shift_params

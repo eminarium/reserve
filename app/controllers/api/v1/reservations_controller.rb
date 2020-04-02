@@ -21,6 +21,9 @@ class Api::V1::ReservationsController < ApplicationController
 
   def set_reservation
     @reservation = Reservation.find(params[:id])
+
+    rescue ActiveRecord::RecordNotFound => e
+      render json: { error: e, message: params[:id] + " belgili rezerw ýazgy tapylmady..."}
   end
 
   def reservation_params

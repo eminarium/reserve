@@ -21,6 +21,9 @@ class Api::V1::SubjectsController < ApplicationController
 
   def set_subject
     @subject = Subject.find(params[:id])
+
+    rescue ActiveRecord::RecordNotFound => e
+      render json: { error: e, message: params[:id] + " belgili ders tapylmady..."}
   end
 
   def subject_params

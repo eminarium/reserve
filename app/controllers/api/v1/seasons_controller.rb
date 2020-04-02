@@ -21,6 +21,9 @@ class Api::V1::SeasonsController < ApplicationController
 
   def set_season
     @season = Season.find(params[:id])
+
+    rescue ActiveRecord::RecordNotFound => e
+      render json: { error: e, message: params[:id] + " belgili tapgyr tapylmady..."}
   end
 
   def season_params
