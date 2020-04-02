@@ -27,6 +27,6 @@ test:
 
 production:
   <<: *default
-  database: reserve_production
+  database: reserve
   username: postgres
   password: gnpass
