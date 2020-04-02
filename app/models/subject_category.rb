@@ -1,0 +1,2 @@
+class SubjectCategory < ApplicationRecord
+end
