@@ -5,18 +5,42 @@ class Api::V1::LanguagesController < ApplicationController
 
   
   def index
+    @languages = Language.order('title ASC')
+    respond_with @languages, status: :ok
   end
 
   def show
+    if @language
+      respond_with @language, status: :ok
+    else
+      respond_with @language.errors, status: :unprocessable_entity
+    end  
   end
 
   def create
+    @language = Language.create(language_params)
+
+    if @language.save
+      respond_with @language
+    else
+      respond_with @language.errors
+    end  
   end
 
   def update
+    if @language.update_attributes(language_params)
+      respond_with @language, status: :ok
+    else
+      respond_with @language.errors, status: :unprocessable_entity
+    end
   end
 
   def destroy
+    if @language.destroy
+      respond_with @language, status: :ok
+    else
+      respond_with @language.errors, status: :unprocessable_entity
+    end
   end
 
   private 
