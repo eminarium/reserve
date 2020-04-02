@@ -13,4 +13,15 @@ class SubjectCategoriesController < ApplicationController
 
   def destroy
   end
+
+  private
+
+  def set_subject_category
+    @subject_category = SubjectCategory.find(params[:id])
+  end
+
+  def subject_category_params
+    params.require(:subject_category).permit(:title, :is_kids, :notes)
+  end
+
 end

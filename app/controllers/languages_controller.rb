@@ -14,4 +14,15 @@ class LanguagesController < ApplicationController
 
   def destroy
   end
+
+  private 
+
+  def set_language
+    @language = Language.find(params[:id])
+  end
+
+  def language_params
+    params.require(:language).permit(:title, :notes)
+  end
+
 end
