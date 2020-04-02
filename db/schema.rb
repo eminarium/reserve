@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_02_074248) do
+ActiveRecord::Schema.define(version: 2020_04_02_074933) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,23 @@ ActiveRecord::Schema.define(version: 2020_04_02_074248) do
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "reservations", force: :cascade do |t|
+    t.bigint "applicant_id"
+    t.bigint "season_id"
+    t.bigint "shift_id"
+    t.bigint "subject_id"
+    t.boolean "is_registered"
+    t.boolean "is_sms_sent"
+    t.boolean "is_called"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["applicant_id"], name: "index_reservations_on_applicant_id"
+    t.index ["season_id"], name: "index_reservations_on_season_id"
+    t.index ["shift_id"], name: "index_reservations_on_shift_id"
+    t.index ["subject_id"], name: "index_reservations_on_subject_id"
   end
 
   create_table "seasons", force: :cascade do |t|
@@ -95,6 +112,10 @@ ActiveRecord::Schema.define(version: 2020_04_02_074248) do
     t.index ["subject_category_id"], name: "index_subjects_on_subject_category_id"
   end
 
+  add_foreign_key "reservations", "applicants"
+  add_foreign_key "reservations", "seasons"
+  add_foreign_key "reservations", "shifts"
+  add_foreign_key "reservations", "subjects"
   add_foreign_key "subject_tests", "applicants"
   add_foreign_key "subject_tests", "seasons"
   add_foreign_key "subject_tests", "subjects"

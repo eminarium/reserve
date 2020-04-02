@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  applicant: one
+  season: one
+  shift: one
+  subject: one
+  is_registered: false
+  is_sms_sent: false
+  is_called: false
+  notes: MyText
+
+two:
+  applicant: two
+  season: two
+  shift: two
+  subject: two
+  is_registered: false
+  is_sms_sent: false
+  is_called: false
+  notes: MyText
