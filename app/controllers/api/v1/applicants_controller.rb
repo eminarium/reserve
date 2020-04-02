@@ -1,6 +1,7 @@
 class Api::V1::ApplicantsController < ApplicationController
 
   before_action :set_applicant, only: [:show, :update, :destroy]
+  respond_to :json
 
   def index
   end

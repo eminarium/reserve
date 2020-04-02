@@ -1,6 +1,7 @@
 class Api::V1::SubjectsController < ApplicationController
 
   before_action :set_subject, only: [:show, :update, :destroy]
+  respond_to :json
 
   def index
   end

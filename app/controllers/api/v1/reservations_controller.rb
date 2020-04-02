@@ -1,6 +1,7 @@
 class Api::V1::ReservationsController < ApplicationController
 
   before_action :set_reservation, only: [:show, :update, :destroy]
+  respond_to :json
 
   def index
   end
