@@ -4,18 +4,65 @@ class Api::V1::ReservationsController < ApplicationController
   respond_to :json
 
   def index
+    @reservations = Reservation.order('created_at ASC')
+    respond_with @reservations, status: :ok    
   end
 
   def show
+    if @reservation
+      respond_with @reservation, status: :ok
+    else
+      render json: { 
+        error: @reservation.errors, 
+        message: "Soralan maglumatlar talabalaýyk däl ..." 
+      },
+      status: :unprocessable_entity
+    end      
   end
 
   def create
+    @reservation = Reservation.create(reservation_params)
+
+    if @reservation.save
+      respond_with @reservation
+    else
+      render json: { 
+        error: @reservation.errors, 
+        message: "Berlen maglumatlar talabalaýyk däl ..." 
+      },
+      status: :unprocessable_entity
+    end  
+
+    rescue ActionController::ParameterMissing => e
+      render json: {
+        error: e,
+        message: "Parametrler berilmedik..."
+      },
+      status: :unprocessable_entity    
   end
 
   def update
+    if @reservation.update_attributes(reservation_params)
+      respond_with @reservation, status: :ok
+    else
+      render json: { 
+        error: @reservation.errors, 
+        message: "Berlen maglumatlar talabalaýyk däl ..." 
+      },
+      status: :unprocessable_entity
+    end    
   end
 
   def destroy
+    if @reservation.destroy
+      respond_with @reservation, status: :ok
+    else
+      render json: { 
+        error: @reservation.errors, 
+        message: "Görkezilen rezerwi bozup bolmady ..." 
+      },
+      status: :unprocessable_entity
+    end    
   end
 
   private
@@ -24,7 +71,11 @@ class Api::V1::ReservationsController < ApplicationController
     @reservation = Reservation.find(params[:id])
 
     rescue ActiveRecord::RecordNotFound => e
-      render json: { error: e, message: params[:id] + " belgili rezerw ýazgy tapylmady..."}
+      render json: { 
+        error: e, 
+        message: params[:id] + " belgili rezerw tapylmady..."
+      }, 
+      status: 404
   end
 
   def reservation_params

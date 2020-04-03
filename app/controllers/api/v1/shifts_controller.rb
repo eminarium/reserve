@@ -4,18 +4,65 @@ class Api::V1::ShiftsController < ApplicationController
   respond_to :json
 
   def index
+    @shifts = Shift.order('start_time ASC')
+    respond_with @shifts, status: :ok
   end
 
   def show
+    if @shift
+      respond_with @shift, status: :ok
+    else
+      render json: { 
+        error: @shift.errors, 
+        message: "Soralan maglumatlar talabalaýyk däl ..." 
+      },
+      status: :unprocessable_entity
+    end      
   end
 
   def create
+    @shift = Shift.create(shift_params)
+
+    if @shift.save
+      respond_with @shift
+    else
+      render json: { 
+        error: @shift.errors, 
+        message: "Berlen maglumatlar talabalaýyk däl ..." 
+      },
+      status: :unprocessable_entity
+    end  
+
+    rescue ActionController::ParameterMissing => e
+      render json: {
+        error: e,
+        message: "Parametrler berilmedik..."
+      },
+      status: :unprocessable_entity    
   end
 
   def update
+    if @shift.update_attributes(shift_params)
+      respond_with @shift, status: :ok
+    else
+      render json: { 
+        error: @shift.errors, 
+        message: "Berlen maglumatlar talabalaýyk däl ..." 
+      },
+      status: :unprocessable_entity
+    end    
   end
 
   def destroy
+    if @shift.destroy
+      respond_with @shift, status: :ok
+    else
+      render json: { 
+        error: @shift.errors, 
+        message: "Görkezilen wagty (smenany) bozup bolmady ..." 
+      },
+      status: :unprocessable_entity
+    end    
   end
 
   private
@@ -24,7 +71,11 @@ class Api::V1::ShiftsController < ApplicationController
     @shift = Shift.find(params[:id])
 
     rescue ActiveRecord::RecordNotFound => e
-      render json: { error: e, message: params[:id] + " belgili wagt (seans) tapylmady..."}
+      render json: { 
+        error: e, 
+        message: params[:id] + " belgili wagt (seans) tapylmady..."
+      }, 
+      status: 404
   end
 
   def shift_params
