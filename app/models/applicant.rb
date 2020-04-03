@@ -11,6 +11,7 @@ class Applicant < ApplicationRecord
     # photo_url     :string
     # birth_date    :date
     # notes         :text
+    # user_id       :integer
     
 
     # Validations
@@ -32,7 +33,9 @@ class Applicant < ApplicationRecord
 
     # Associations
 
-    has_many :reservations
-    has_many :subject_tests
+    belongs_to  :user
+
+    has_many    :reservations
+    has_many    :subject_tests
 
 end

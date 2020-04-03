@@ -6,6 +6,7 @@ class Shift < ApplicationRecord
     # start_time    :time
     # end_time      :time
     # notes         :text
+    # user_id       :integer
 
 
     # Validations
@@ -26,5 +27,7 @@ class Shift < ApplicationRecord
 
     # Associations
 
-    has_many :reservations
+    belongs_to  :user    
+
+    has_many    :reservations
 end

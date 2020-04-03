@@ -8,6 +8,8 @@ class SubjectTest < ApplicationRecord
   # test_date       :date
   # result          :float
   # notes           :text
+  # user_id         :integer
+
 
   
   # Validations
@@ -35,6 +37,7 @@ class SubjectTest < ApplicationRecord
 
   # Associations
 
+  belongs_to :user  
   belongs_to :applicant
   belongs_to :subject
   belongs_to :season

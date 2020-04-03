@@ -8,6 +8,7 @@ class Season < ApplicationRecord
     # end_date          :date
     # return_deadline   :date
     # notes             :text
+    # user_id           :integer
     
 
     # Validations
@@ -37,6 +38,8 @@ class Season < ApplicationRecord
 
     # Associations
 
-    has_many :reservations
-    has_many :subject_tests
+    belongs_to  :user
+
+    has_many    :reservations
+    has_many    :subject_tests
 end

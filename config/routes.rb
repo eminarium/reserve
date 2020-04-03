@@ -1,8 +1,24 @@
 Rails.application.routes.draw do
   
+  devise_for :users,
+    #defaults: {
+    #  format: :json
+    #},
+    path: '',
+    path_names: {
+      sign_in: 'login',
+      sign_out: 'logout'
+    },
+    controllers: {
+      sessions: 'sessions'
+    }  
+
+  root to: 'site#index'
+
   namespace :api do
     namespace :v1, defaults: { format: 'json' } do
-      resources :languages
+      resources :languages,           only: [:index, :show, :create, :update, :destroy]
+      resources :users,               only: [:index, :show, :create, :update, :destroy]
     end
   end
 

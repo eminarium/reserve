@@ -4,6 +4,7 @@ class Language < ApplicationRecord
 
     # title     :string
     # notes     :text
+    # user_id   :integer
 
     # Validations
 
@@ -14,5 +15,7 @@ class Language < ApplicationRecord
 
     # Associations
 
-    has_many :subjects
+    belongs_to  :user
+
+    has_many    :subjects
 end

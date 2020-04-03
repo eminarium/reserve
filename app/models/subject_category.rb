@@ -5,6 +5,8 @@ class SubjectCategory < ApplicationRecord
     # title     :string
     # notes     :text
     # is_kids   :boolean
+    # user_id   :integer
+
 
     # Validations
 
@@ -20,5 +22,7 @@ class SubjectCategory < ApplicationRecord
 
     # Associations
 
-    has_many :subjects
+    belongs_to  :user    
+
+    has_many    :subjects
 end

@@ -10,7 +10,9 @@ class Reservation < ApplicationRecord
   # is_sms_sent   :boolean
   # is_called     :boolean
   # notes         :text
+  # user_id       :integer
 
+  
   # Validations
 
   validates   :applicant_id,  
@@ -43,6 +45,7 @@ class Reservation < ApplicationRecord
 
   # Associations
 
+  belongs_to :user  
   belongs_to :applicant
   belongs_to :season
   belongs_to :shift

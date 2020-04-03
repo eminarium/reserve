@@ -7,6 +7,7 @@ class Subject < ApplicationRecord
   # notes                 :text
   # subject_category_id   :integer (references 'subject_category' model)
   # language_id           :integer (references 'language' model)
+  # user_id               :integer
 
 
 
@@ -32,6 +33,7 @@ class Subject < ApplicationRecord
 
   # Associations
 
+  belongs_to :user
   belongs_to :subject_category
   belongs_to :language
 

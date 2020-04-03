@@ -1,9 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  title: MyString
-  notes: MyText
+lang_tkm:
+  title: TKM
+  notes: Türkmen dili
 
-two:
-  title: MyString
-  notes: MyText
+lang_rus:
+  title: RUS
+  notes: Rus dili
+
+lang_deu:
+  title: DEU
+  notes: Nemes dili
