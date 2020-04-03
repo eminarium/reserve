@@ -1,0 +1,12 @@
+json.(
+    @subject_test, 
+        :id, 
+        :test_date, 
+        :result,
+        :notes, 
+        :subject_id,
+        :season_id,
+        :applicant_id,
+        :created_at, 
+        :updated_at,
+)

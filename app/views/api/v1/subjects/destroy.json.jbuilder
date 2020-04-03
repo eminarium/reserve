@@ -1,0 +1,11 @@
+json.(
+    @subject, 
+        :id, 
+        :title, 
+        :level,
+        :subject_category_id,
+        :language_id,
+        :notes, 
+        :created_at, 
+        :updated_at,
+)

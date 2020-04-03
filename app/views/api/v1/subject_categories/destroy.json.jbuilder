@@ -1,0 +1,9 @@
+json.(
+    @subject_category, 
+        :id, 
+        :title, 
+        :is_kids,
+        :notes, 
+        :created_at, 
+        :updated_at
+)
