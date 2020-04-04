@@ -15,6 +15,7 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount() {
+        /*
         axios.get('/api/v1/customers', {
             headers: {
                 "Content-type": "application/json",
@@ -65,6 +66,7 @@ class Dashboard extends React.Component {
             //console.log("Contractor error status: " + JSON.stringify(errors.response.status));
             //console.log("Contractor error headers: " + JSON.stringify(errors.response.headers));
         })
+        */
     }
 
     render() {
@@ -72,44 +74,6 @@ class Dashboard extends React.Component {
             <div>
                 <h1>ГЛАВНАЯ ПАНЕЛЬ</h1>
                 <br/><br/><br/>
-                <div className="row">
-                
-                    &nbsp;&nbsp;&nbsp;
-                    
-                    <div className="card" style={{width: "18rem"}}>
-                        <div className="card-body">
-                            <h5 className="card-title">Заказчики</h5>
-                            <h6 className="card-subtitle mb-2 text-muted">
-                                Всего : {this.state.customers}
-                            </h6>
-                            <p className="card-text">Инстанции или Субъекты заказавшие Вам перечень работ.</p>
-                            
-                            <Link to={"/customers/"} className="card-link" >
-                                Перейти
-                            </Link>     
-
-                        </div>
-                    </div>  
-
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                    <div className="card" style={{width: "18rem"}}>
-                        <div className="card-body">
-                            <h5 className="card-title">Подрядчики</h5>
-                            <h6 className="card-subtitle mb-2 text-muted">
-                                Всего : {this.state.contractors}
-                            </h6>
-                            <p className="card-text">Инстанции или Субъекты которым Вы заказали перечень работ.</p>
-                            
-                            <Link to={"/contractors/"} className="card-link" >
-                                Перейти
-                            </Link>     
-
-                        </div>
-                    </div>  
-
-                </div>
-
             </div>
         )
     }

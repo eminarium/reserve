@@ -14,13 +14,14 @@ class User < ApplicationRecord
 
   # Validations
 
+  validates :email, uniqueness: true
   validates :username, uniqueness: true
 
   devise :database_authenticatable, :authentication_keys => [:username]
   devise :rememberable, :validatable
   devise :jwt_authenticatable, jwt_revocation_strategy: JwtBlacklist
-  devise :registerable
 
+  
   # Associations
 
   has_many :applicants

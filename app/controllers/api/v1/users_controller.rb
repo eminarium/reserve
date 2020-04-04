@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApplicationController
 #class Api::V1::UsersController < Devise::RegistrationsController
-
+  load_and_authorize_resource
   before_action :set_user, only: [:show, :update, :destroy]
   respond_to :json
 

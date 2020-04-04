@@ -11,6 +11,8 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Login from '../components/login.js.jsx'
 import Welcome from '../components/welcome.js.jsx'
