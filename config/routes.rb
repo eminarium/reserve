@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1, defaults: { format: 'json' } do
       resources :languages,           only: [:index, :show, :create, :update, :destroy]
+      resources :shifts,              only: [:index, :show, :create, :update, :destroy]
       resources :users,               only: [:index, :create, :update]
     end
   end

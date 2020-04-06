@@ -33,9 +33,9 @@ class Main extends React.Component {
     return (
       <Router>
         <Route path="/"
-          render={() => (
-            (localStorage.getItem('currentUser')) ? (<Welcome />) : (<Redirect to="/login" />)
-          )
+            render={() => (
+              (localStorage.getItem('currentUser')) ? (<Welcome />) : (<Redirect to="/login" />)
+            )
           }
         />
         <Route exact path="/login" component={Login} />

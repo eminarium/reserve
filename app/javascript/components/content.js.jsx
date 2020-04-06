@@ -7,6 +7,11 @@ import {
 
 import Dashboard from './dashboard.js.jsx'
 
+import Languages from './languages/languages.js'
+import LanguageNewForm from './languages/language_new_form.js'
+
+import Shifts from './shifts/shifts.js'
+
 class Content extends React.Component  {
     render() {
         return (
@@ -19,6 +24,11 @@ class Content extends React.Component  {
                             }
                         
                         />
+
+                        <Route exact path="/languages" component={Languages} />
+                        <Route exact path="/languages/new" component={LanguageNewForm} />
+
+                        <Route exact path="/shifts" component={Shifts} />
                     </Switch>
                 </main>
         );

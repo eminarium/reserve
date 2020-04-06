@@ -24,6 +24,7 @@ class Api::V1::LanguagesController < ApplicationController
   def create
 
     @language = Language.create(language_params)
+    @language.user_id = current_user.id
 
     if @language.save
       respond_with @language
@@ -82,7 +83,7 @@ class Api::V1::LanguagesController < ApplicationController
   end
 
   def language_params
-    params.require(:language).permit(:title, :notes)
+    params.require(:language).permit(:title, :notes, :user_id)
   end
 
 end

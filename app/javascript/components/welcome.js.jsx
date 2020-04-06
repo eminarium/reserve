@@ -1,4 +1,6 @@
 import React from 'react'
+import { Provider } from 'react-redux'
+import store from '../redux-store/store'
 import axios from 'axios'
 
 import {
@@ -16,8 +18,10 @@ class Welcome extends React.Component {
     render() {
         return (
             <div>
-                <TopNav />
-                <Container />
+                <Provider store={store}>
+                    <TopNav />
+                    <Container />
+                </Provider>
             </div>
         )
     }

@@ -22,6 +22,7 @@ class Api::V1::ShiftsController < ApplicationController
 
   def create
     @shift = Shift.create(shift_params)
+    @shift.user_id = current_user.id
 
     if @shift.save
       respond_with @shift
