@@ -3,6 +3,8 @@ json.array! @shifts do |shift|
         shift, 
             :id, 
             :title, 
+            :start_time,
+            :end_time,
             :notes, 
             :created_at, 
             :updated_at

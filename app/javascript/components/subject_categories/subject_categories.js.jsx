@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { 
-    fetchLanguages,
-    editLanguage,
-    languageInfo,
-    removeLanguage
+    fetchSubjectCategories,
+    editSubjectCategory,
+    subjectCategoryInfo,
+    removeSubjectCategory
 } from '../../redux-store'
 import LoaderImage from 'images/loader.gif'
 
@@ -12,13 +12,13 @@ import {
     Link
 } from "react-router-dom";
 
-class Languages extends React.Component {
+class SubjectCategories extends React.Component {
     constructor(props) {
         super(props);
     }
 
     componentDidMount() {
-        this.props.fetchLanguages()
+        this.props.fetchSubjectCategories()
     }
 
     render() {
@@ -29,10 +29,10 @@ class Languages extends React.Component {
                     <thead>
                         <tr>
                             <th scope="col" colSpan="3">
-                                Diller
+                                Ders Görnüşleri
                             </th>
                             <th>
-                                <Link to={"/languages/new"}>
+                                <Link to={"/subject_categories/new"}>
                                     <button className="btn btn-info">
                                         <i className="fa fa-plus"></i>
                                     </button>
@@ -41,7 +41,8 @@ class Languages extends React.Component {
                         </tr>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Diliň Ady</th>
+                            <th scope="col">Ders Görnüşiniň Ady</th>
+                            <th scope="col">Çaga Toparymy ?</th>
                             <th scope="col">Teswiri</th>
                             <th scope="col">Amallar</th>
                         </tr>
@@ -71,25 +72,32 @@ class Languages extends React.Component {
                                     </td>
                                 </tr>                                
                             ) :
-                            this.props.languages.map( (language, index) => {
+                            this.props.subject_categories.map( (subject_category, index) => {
                                 return (
-                                    <tr key={language.id}>
+                                    <tr key={subject_category.id}>
                                         <th scope="row">{index+1}</th>
-                                        <td>{language.title}</td>
-                                        <td>{language.notes}</td>
+                                        <td>{subject_category.title}</td>
                                         <td>
-                                            <Link to={"/languages/" + language.id}>
+                                            {
+                                                subject_category.is_kids ?
+                                                <i className="fa fa-check" style={{ color: 'green', fontSize: 20 }}></i> :
+                                                <i className="fa fa-times" style={{color: 'red', fontSize:20}}></i>
+                                            }                                            
+                                        </td>
+                                        <td>{subject_category.notes}</td>
+                                        <td>
+                                            <Link to={"/subject_categories/" + subject_category.id}>
                                                 <button className="btn btn-primary"
-                                                    onClick={() => this.props.languageInfo(language.id)}
+                                                    onClick={() => this.props.subjectCategoryInfo(subject_category.id)}
                                                 >
                                                     <i className="fa fa-info"></i>
                                                 </button>
                                             </Link> 
                                             &nbsp;
                                             &nbsp;
-                                            <Link to={"/languages/" + language.id + "/edit"}>
+                                            <Link to={"/subject_categories/" + subject_category.id + "/edit"}>
                                                 <button className="btn btn-warning"
-                                                    onClick={() => this.props.editLanguage(language.id)}
+                                                    onClick={() => this.props.editSubjectCategory(subject_category.id)}
                                                 >
                                                     <i className="fa fa-pencil"></i>
                                                 </button>
@@ -97,7 +105,7 @@ class Languages extends React.Component {
                                             &nbsp;
                                             &nbsp;
                                             <button className="btn btn-danger"
-                                                onClick={() => { if (window.confirm("Dili bozmalymy ?")) this.props.removeLanguage(language.id) }}
+                                                onClick={() => { if (window.confirm("Ders Görnüşini bozmalymy ?")) this.props.removeSubjectCategory(subject_category.id) }}
                                             >
                                                 <i className="fa fa-trash"></i>
                                             </button>
@@ -116,20 +124,20 @@ class Languages extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        languages: state.languages.languages,
-        loading: state.languages.loading,
-        error: state.languages.error,
+        subject_categories: state.subject_categories.subject_categories,
+        loading: state.subject_categories.loading,
+        error: state.subject_categories.error,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchLanguages: () => dispatch(fetchLanguages()),
-        editLanguage: (id) => dispatch(editLanguage(id)),
-        removeLanguage: (id) => dispatch(removeLanguage(id)),
-        languageInfo: (id) => dispatch(languageInfo(id))
+        fetchSubjectCategories: () => dispatch(fetchSubjectCategories()),
+        editSubjectCategory: (id) => dispatch(editSubjectCategory(id)),
+        removeSubjectCategory: (id) => dispatch(removeSubjectCategory(id)),
+        subjectCategoryInfo: (id) => dispatch(subjectCategoryInfo(id))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Languages)
+export default connect(mapStateToProps, mapDispatchToProps)(SubjectCategories)
 

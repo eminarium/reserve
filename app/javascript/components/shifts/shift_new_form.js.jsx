@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { postLanguage } from '../../redux-store'
+import { postShift } from '../../redux-store'
 import LoaderImage from 'images/loader.gif'
 
 
-class LanguageNewForm extends React.Component {
+class ShiftNewForm extends React.Component {
     constructor() {
         super();
 
@@ -27,13 +27,15 @@ class LanguageNewForm extends React.Component {
             //console.log("Reference : " + this.getTitle.value + " " + this.getNotes.value);
 
 
-            this.props.postLanguage({
+            this.props.postShift({
                 title: event.target.title.value,
-                notes: event.target.notes.value
+                notes: event.target.notes.value,
+                start_time: event.target.start_time.value,
+                end_time: event.target.end_time.value
             })
 
             if (!this.props.loading)
-                this.props.history.push('/languages')
+                this.props.history.push('/shifts')
         }
     }
 
@@ -44,7 +46,7 @@ class LanguageNewForm extends React.Component {
                 <div className="card" style={{ width: '28rem' }}>
                     <div className="card-body">
                         <h5 className="card-title">
-                            Täze Dil Goş &nbsp; &nbsp; &nbsp; 
+                            Täze Wagt (Smena) Goş &nbsp; &nbsp; &nbsp; 
                             {
                                 (this.props.loading) ? <img src={LoaderImage} /> :""
                             }
@@ -52,10 +54,28 @@ class LanguageNewForm extends React.Component {
                         <form noValidate onSubmit={this.submitForm}>
 
                             <div className="form-group row">
-                                <label htmlFor="title" className="col-sm-10 col-form-label">Diliň Ady</label>
+                                <label htmlFor="title" className="col-sm-10 col-form-label">Wagtyň (Smenanyň) Ady</label>
                                 <div className="col-sm-10">
                                     <input type="text" id="title" name="title" className="form-control" required 
                                         ref={(input) => this.getTitle = input}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="form-group row">
+                                <label htmlFor="title" className="col-sm-10 col-form-label">Başlaýan wagty</label>
+                                <div className="col-sm-10">
+                                    <input type="time" id="start_time" name="start_time" className="form-control" required
+                                        ref={(input) => this.getStartTime = input}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="form-group row">
+                                <label htmlFor="title" className="col-sm-10 col-form-label">Tamamlanýan wagty</label>
+                                <div className="col-sm-10">
+                                    <input type="time" id="end_time" name="end_time" className="form-control" required
+                                        ref={(input) => this.getEndTime = input}
                                     />
                                 </div>
                             </div>
@@ -86,15 +106,15 @@ class LanguageNewForm extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        loading: state.languages.loading,
-        error: state.languages.error
+        loading: state.shifts.loading,
+        error: state.shifts.error
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        postLanguage: (language) => dispatch(postLanguage(language))
+        postShift: (shift) => dispatch(postShift(shift))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LanguageNewForm)
+export default connect(mapStateToProps, mapDispatchToProps)(ShiftNewForm)

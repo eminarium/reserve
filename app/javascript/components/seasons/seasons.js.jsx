@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { 
-    fetchLanguages,
-    editLanguage,
-    languageInfo,
-    removeLanguage
+    fetchSeasons,
+    editSeason,
+    seasonInfo,
+    removeSeason
 } from '../../redux-store'
 import LoaderImage from 'images/loader.gif'
 
@@ -12,13 +12,13 @@ import {
     Link
 } from "react-router-dom";
 
-class Languages extends React.Component {
+class Seasons extends React.Component {
     constructor(props) {
         super(props);
     }
 
     componentDidMount() {
-        this.props.fetchLanguages()
+        this.props.fetchSeasons()
     }
 
     render() {
@@ -28,11 +28,11 @@ class Languages extends React.Component {
                 <table className="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col" colSpan="3">
-                                Diller
+                            <th scope="col" colSpan="5">
+                                Tapgyrlar
                             </th>
                             <th>
-                                <Link to={"/languages/new"}>
+                                <Link to={"/seasons/new"}>
                                     <button className="btn btn-info">
                                         <i className="fa fa-plus"></i>
                                     </button>
@@ -41,7 +41,11 @@ class Languages extends React.Component {
                         </tr>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Diliň Ady</th>
+                            <th scope="col">Ady</th>
+                            <th scope="col">Belgisi</th>
+                            <th scope="col">Başlaýan senesi</th>
+                            <th scope="col">Gutarýan senesi</th>
+                            <th scope="col">Gaýtarma soňky senesi</th>
                             <th scope="col">Teswiri</th>
                             <th scope="col">Amallar</th>
                         </tr>
@@ -71,25 +75,45 @@ class Languages extends React.Component {
                                     </td>
                                 </tr>                                
                             ) :
-                            this.props.languages.map( (language, index) => {
+                            this.props.seasons.map( (season, index) => {
+                                var dstart = new Date(season.start_date)
+                                var dend = new Date(season.end_date)
+                                var dreturn = new Date(season.return_deadline)
+
                                 return (
-                                    <tr key={language.id}>
+                                    <tr key={season.id}>
                                         <th scope="row">{index+1}</th>
-                                        <td>{language.title}</td>
-                                        <td>{language.notes}</td>
+                                        <td>{season.title}</td>
+                                        <td>{season.order_no}</td>
                                         <td>
-                                            <Link to={"/languages/" + language.id}>
+                                            {dstart.getDate() < 9 ? "0" : ""}{dstart.getDate()}-
+                                            {dstart.getMonth() < 9 ? "0" : ""}{dstart.getMonth() + 1}-
+                                            {dstart.getFullYear()} 
+                                        </td>
+                                        <td>
+                                            {dend.getDate() < 9 ? "0" : ""}{dend.getDate()}-
+                                            {dend.getMonth() < 9 ? "0" : ""}{dend.getMonth() + 1}-
+                                            {dend.getFullYear()} 
+                                        </td>
+                                        <td>
+                                            {dreturn.getDate() < 9 ? "0" : ""}{dreturn.getDate()}-
+                                            {dreturn.getMonth() < 9 ? "0" : ""}{dreturn.getMonth() + 1}-
+                                            {dreturn.getFullYear()} 
+                                        </td>
+                                        <td>{season.notes}</td>
+                                        <td>
+                                            <Link to={"/seasons/" + season.id}>
                                                 <button className="btn btn-primary"
-                                                    onClick={() => this.props.languageInfo(language.id)}
+                                                    onClick={() => this.props.seasonInfo(season.id)}
                                                 >
                                                     <i className="fa fa-info"></i>
                                                 </button>
                                             </Link> 
                                             &nbsp;
                                             &nbsp;
-                                            <Link to={"/languages/" + language.id + "/edit"}>
+                                            <Link to={"/seasons/" + season.id + "/edit"}>
                                                 <button className="btn btn-warning"
-                                                    onClick={() => this.props.editLanguage(language.id)}
+                                                    onClick={() => this.props.editSeason(season.id)}
                                                 >
                                                     <i className="fa fa-pencil"></i>
                                                 </button>
@@ -97,7 +121,7 @@ class Languages extends React.Component {
                                             &nbsp;
                                             &nbsp;
                                             <button className="btn btn-danger"
-                                                onClick={() => { if (window.confirm("Dili bozmalymy ?")) this.props.removeLanguage(language.id) }}
+                                                onClick={() => { if (window.confirm("Tapgyry bozmalymy ?")) this.props.removeSeason(season.id) }}
                                             >
                                                 <i className="fa fa-trash"></i>
                                             </button>
@@ -116,20 +140,20 @@ class Languages extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        languages: state.languages.languages,
-        loading: state.languages.loading,
-        error: state.languages.error,
+        seasons: state.seasons.seasons,
+        loading: state.seasons.loading,
+        error: state.seasons.error
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchLanguages: () => dispatch(fetchLanguages()),
-        editLanguage: (id) => dispatch(editLanguage(id)),
-        removeLanguage: (id) => dispatch(removeLanguage(id)),
-        languageInfo: (id) => dispatch(languageInfo(id))
+        fetchSeasons: () => dispatch(fetchSeasons()),
+        editSeason: (id) => dispatch(editSeason(id)),
+        removeSeason: (id) => dispatch(removeSeason(id)),
+        seasonInfo: (id) => dispatch(seasonInfo(id))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Languages)
+export default connect(mapStateToProps, mapDispatchToProps)(Seasons)
 

@@ -1,13 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { postLanguage } from '../../redux-store'
+import { updateLanguage } from '../../redux-store'
 import LoaderImage from 'images/loader.gif'
 
 
-class LanguageNewForm extends React.Component {
+class LanguageEditForm extends React.Component {
     constructor() {
         super();
-
         this.submitForm = this.submitForm.bind(this);
     }
 
@@ -23,11 +22,12 @@ class LanguageNewForm extends React.Component {
         }
         else {
             console.log("Form is Valid!");
-            //console.log("Event Target : " + event.target.title.value + " " + event.target.notes.value);
-            //console.log("Reference : " + this.getTitle.value + " " + this.getNotes.value);
+            console.log("Event Target : " + event.target.id.value + " " + event.target.title.value + " " + event.target.notes.value);
+            console.log("Reference : " + this.getTitle.value + " " + this.getNotes.value);
 
 
-            this.props.postLanguage({
+            this.props.updateLanguage({
+                id: event.target.id.value,
                 title: event.target.title.value,
                 notes: event.target.notes.value
             })
@@ -44,17 +44,20 @@ class LanguageNewForm extends React.Component {
                 <div className="card" style={{ width: '28rem' }}>
                     <div className="card-body">
                         <h5 className="card-title">
-                            Täze Dil Goş &nbsp; &nbsp; &nbsp; 
+                            Dil Maglumatlaryny Üýtget &nbsp; &nbsp; &nbsp;
                             {
-                                (this.props.loading) ? <img src={LoaderImage} /> :""
+                                (this.props.loading) ? <img src={LoaderImage} /> : ""
                             }
                         </h5>
                         <form noValidate onSubmit={this.submitForm}>
 
+                            <input type="hidden" name="id" id="id" defaultValue={this.props.language.id} />
+
                             <div className="form-group row">
                                 <label htmlFor="title" className="col-sm-10 col-form-label">Diliň Ady</label>
                                 <div className="col-sm-10">
-                                    <input type="text" id="title" name="title" className="form-control" required 
+                                    <input type="text" id="title" name="title" className="form-control" required
+                                        defaultValue={this.props.language.title}
                                         ref={(input) => this.getTitle = input}
                                     />
                                 </div>
@@ -64,6 +67,7 @@ class LanguageNewForm extends React.Component {
                                 <label htmlFor="notes" className="col-sm-10 col-form-label">Bellikler</label>
                                 <div className="col-sm-10">
                                     <textarea type="text" id="notes" name="notes" className="form-control" required 
+                                        defaultValue={this.props.language.notes}
                                         ref={(input) => this.getNotes = input}
                                     />
                                 </div>
@@ -87,14 +91,15 @@ class LanguageNewForm extends React.Component {
 const mapStateToProps = state => {
     return {
         loading: state.languages.loading,
-        error: state.languages.error
+        error: state.languages.error,
+        language: state.languages.languages.find(lang => lang.id == state.languages.editingLanguageId)
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        postLanguage: (language) => dispatch(postLanguage(language))
+        updateLanguage: (language) => dispatch(updateLanguage(language))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LanguageNewForm)
+export default connect(mapStateToProps, mapDispatchToProps)(LanguageEditForm)

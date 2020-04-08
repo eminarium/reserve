@@ -7,7 +7,18 @@ import {
 
     POST_LANGUAGE_REQUEST,
     POST_LANGUAGE_SUCCESS,
-    POST_LANGUAGE_FAILURE
+    POST_LANGUAGE_FAILURE,
+
+    UPDATE_LANGUAGE_REQUEST,
+    UPDATE_LANGUAGE_SUCCESS,
+    UPDATE_LANGUAGE_FAILURE,
+
+    EDIT_LANGUAGE,
+    LANGUAGE_INFO,
+
+    REMOVE_LANGUAGE_REQUEST,
+    REMOVE_LANGUAGE_SUCCESS,
+    REMOVE_LANGUAGE_FAILURE
 
 } from "./languageTypes"
 
@@ -46,6 +57,59 @@ const postLanguageSuccess = (language) => {
 const postLanguageFailure = (error) => {
     return {
         type: POST_LANGUAGE_FAILURE,
+        payload: error
+    }
+}
+
+const updateLanguageRequest = () => {
+    return {
+        type: UPDATE_LANGUAGE_REQUEST,
+    }
+}
+
+const updateLanguageSuccess = (language) => {
+    return {
+        type: UPDATE_LANGUAGE_SUCCESS,
+        payload: language
+    }
+}
+const updateLanguageFailure = (error) => {
+    return {
+        type: UPDATE_LANGUAGE_FAILURE,
+        payload: error
+    }
+}
+
+export const editLanguage = (id) => {
+    return {
+        type: EDIT_LANGUAGE,
+        payload: id
+    }
+}
+
+export const languageInfo = (id) => {
+    return {
+        type: LANGUAGE_INFO,
+        payload: id
+    }
+}
+
+export const removeLanguageRequest = () => {
+    return {
+        type: REMOVE_LANGUAGE_REQUEST,
+    }
+}
+
+export const removeLanguageSuccess = (id) => {
+    return {
+        type: REMOVE_LANGUAGE_SUCCESS,
+        payload: id
+    }
+}
+
+export const removeLanguageFailure = (error) => {
+    return {
+        type: REMOVE_LANGUAGE_FAILURE,
         payload: error
     }
 }
@@ -95,7 +159,7 @@ export const postLanguage = (language) => {
         })
         .then(response => {
             //console.log(response.data)
-            dispatch(postLanguageSuccess(language))
+            dispatch(postLanguageSuccess(response.data))
         })
         .catch(error => {
             if (error.response.status === 401) {
@@ -106,6 +170,65 @@ export const postLanguage = (language) => {
             console.log(error.error)
             const errorMsg = error.message
             dispatch(postLanguageFailure(errorMsg))
+        })
+    }
+}
+
+
+export const updateLanguage = (language) => {
+    return (dispatch) => {
+
+        dispatch(updateLanguageRequest)
+
+        axios.put('api/v1/languages/'+language.id, JSON.stringify({
+            title: language.title,
+            notes: language.notes
+        }), {
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": localStorage.getItem('Token')
+            }
+        })
+        .then(response => {
+            //console.log(response.data)
+            dispatch(updateLanguageSuccess(response.data))
+        })
+        .catch(error => {
+            if (error.response.status === 401) {
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('Token');
+            }
+
+            console.log(error.error)
+            const errorMsg = error.message
+            dispatch(updateLanguageFailure(errorMsg))
+        })
+    }
+}
+
+export const removeLanguage = (id) => {
+    return (dispatch) => {
+
+        dispatch(removeLanguageRequest)
+
+        axios.delete('api/v1/languages/'+id, {
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": localStorage.getItem('Token')
+            }
+        })
+        .then(response => {
+            dispatch(removeLanguageSuccess(id))
+        })
+        .catch(error => {
+            if (error.response.status === 401) {
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('Token');
+            }
+
+            console.log(error.error)
+            const errorMsg = error.message
+            dispatch(removeLanguageFailure(errorMsg))
         })
     }
 }

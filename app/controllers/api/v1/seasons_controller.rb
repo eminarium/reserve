@@ -22,6 +22,7 @@ class Api::V1::SeasonsController < ApplicationController
 
   def create
     @season = Season.create(season_params)
+    @season.user_id = current_user.id
 
     if @season.save
       respond_with @season

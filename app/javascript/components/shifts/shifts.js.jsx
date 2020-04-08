@@ -1,6 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchShifts } from '../../redux-store'
+import { 
+    fetchShifts,
+    editShift,
+    shiftInfo,
+    removeShift
+} from '../../redux-store'
 import LoaderImage from 'images/loader.gif'
 
 import {
@@ -16,14 +21,14 @@ class Shifts extends React.Component {
         this.props.fetchShifts()
     }
 
-     render() {
+    render() {
 
         return (
             <div>
                 <table className="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col" colSpan="3">
+                            <th scope="col" colSpan="5">
                                 Wagtlar (Smenalar)
                             </th>
                             <th>
@@ -37,6 +42,8 @@ class Shifts extends React.Component {
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Wagtyň (smenanyň) Ady</th>
+                            <th scope="col">Başlaýan wagty</th>
+                            <th scope="col">Gutarýan wagty</th>
                             <th scope="col">Teswiri</th>
                             <th scope="col">Amallar</th>
                         </tr>
@@ -67,28 +74,39 @@ class Shifts extends React.Component {
                                 </tr>                                
                             ) :
                             this.props.shifts.map( (shift, index) => {
+                                var dstart = new Date(shift.start_time)
+                                var startMinutes = dstart.getMinutes() < 10 ? ("0"+dstart.getMinutes()) : dstart.getMinutes()
+
+                                var dend = new Date(shift.end_time)
+                                var endMinutes = dend.getMinutes() < 10 ? ("0" + dend.getMinutes()) : dend.getMinutes()
                                 return (
                                     <tr key={shift.id}>
                                         <th scope="row">{index+1}</th>
                                         <td>{shift.title}</td>
+                                        <td>{dstart.getUTCHours()} : {startMinutes} </td>
+                                        <td>{dend.getUTCHours()} : {endMinutes}</td>
                                         <td>{shift.notes}</td>
                                         <td>
-                                            <Link to={"/shift/" + shift.id}>
-                                                <button className="btn btn-primary">
+                                            <Link to={"/shifts/" + shift.id}>
+                                                <button className="btn btn-primary"
+                                                    onClick={() => this.props.shiftInfo(shift.id)}
+                                                >
                                                     <i className="fa fa-info"></i>
                                                 </button>
                                             </Link> 
                                             &nbsp;
                                             &nbsp;
-                                            <Link to={"/shift/" + shift.id + "/edit"}>
-                                                <button className="btn btn-warning">
+                                            <Link to={"/shifts/" + shift.id + "/edit"}>
+                                                <button className="btn btn-warning"
+                                                    onClick={() => this.props.editShift(shift.id)}
+                                                >
                                                     <i className="fa fa-pencil"></i>
                                                 </button>
                                             </Link> 
                                             &nbsp;
                                             &nbsp;
                                             <button className="btn btn-danger"
-                                                //onClick={() => { if (window.confirm("Dili bozmalymy ?")) this.removeLanguage(language.id) }}
+                                                onClick={() => { if (window.confirm("Wagty (smenany) bozmalymy ?")) this.props.removeShift(shift.id) }}
                                             >
                                                 <i className="fa fa-trash"></i>
                                             </button>
@@ -115,7 +133,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchShifts: () => dispatch(fetchShifts())
+        fetchShifts: () => dispatch(fetchShifts()),
+        editShift: (id) => dispatch(editShift(id)),
+        removeShift: (id) => dispatch(removeShift(id)),
+        shiftInfo: (id) => dispatch(shiftInfo(id))
     }
 }
 
