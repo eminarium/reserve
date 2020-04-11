@@ -16,20 +16,15 @@ class Applicant < ApplicationRecord
 
     # Validations
 
-    validates   :first_name,  
-                length: { minimum: 3 }, 
-                presence: true,
-                message: "Ady hökman girizilmeli..."
+    validates   :first_name, presence: { message: "Ady hökman girizilmeli..." }
+    validates   :first_name, length: { minimum: 2, message: "Ady azyndan 3 belgiden ybarat bolmaly..." }
 
-    validates   :last_name,   
-                length: { minimum: 3 }, 
-                presence: true,
-                message: "Familiýasy hökman girizilmeli..."
+    validates   :last_name, presence: { message: "Familiýasy hökman girizilmeli..." }
+    validates   :last_name, length: { minimum: 2, message: "Familiýasy azyndan 3 belgiden ybarat bolmaly..." }
 
-    validates   :patronymic,  
-                length: { minimum: 3 }, 
-                presence: true,
-                message: "Atasynyň ady hökman girizilmeli"
+    validates   :patronymic, presence: { message: "Atasynyň ady hökman girizilmeli..." }
+    validates   :patronymic, length: { minimum: 2, message: "Atasynyň ady azyndan 3 belgiden ybarat bolmaly..." }
+
 
     # Associations
 

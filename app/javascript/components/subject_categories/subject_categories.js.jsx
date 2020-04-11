@@ -28,7 +28,7 @@ class SubjectCategories extends React.Component {
                 <table className="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col" colSpan="3">
+                            <th scope="col" colSpan="4">
                                 Ders Görnüşleri
                             </th>
                             <th>
@@ -53,7 +53,7 @@ class SubjectCategories extends React.Component {
                             (this.props.loading) ?
                             (
                                 <tr>
-                                    <td colSpan="4">
+                                    <td colSpan="5">
                                         <div style={{ alignItems: 'center' }} >
                                             <img src={LoaderImage} />
                                         </div>
@@ -65,7 +65,7 @@ class SubjectCategories extends React.Component {
                             (this.props.error) ?
                             (
                                 <tr>
-                                    <td colSpan="4">
+                                    <td colSpan="5">
                                         <h3>
                                             {this.props.error}
                                         </h3>

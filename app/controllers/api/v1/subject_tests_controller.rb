@@ -21,7 +21,8 @@ class Api::V1::SubjectTestsController < ApplicationController
   end
 
   def create
-    @subject_test = SubjectTest.create(subject_test_params)
+    @subject_test = SubjectTest.new(subject_test_params)
+    @subject_test.user_id = current_user.id
 
     if @subject_test.save
       respond_with @subject_test

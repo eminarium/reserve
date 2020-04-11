@@ -1,4 +1,5 @@
 import axios from 'axios'
+import settings from '../settings'
 
 import { 
     FETCH_SUBJECT_CATEGORIES_REQUEST,
@@ -119,7 +120,7 @@ export const fetchSubjectCategories = () => {
 
         dispatch(fetchSubjectCategoriesRequest)
 
-        axios.get('api/v1/subject_categories', {
+        axios.get(settings.rootUrl + 'api/v1/subject_categories', {
             headers: {
                 "Content-type": "application/json",
                 "Authorization": localStorage.getItem('Token')
@@ -148,7 +149,7 @@ export const postSubjectCategory = (subject_category) => {
 
         dispatch(postSubjectCategoryRequest)
 
-        axios.post('api/v1/subject_categories', JSON.stringify({
+        axios.post(settings.rootUrl + 'api/v1/subject_categories', JSON.stringify({
             title: subject_category.title,
             is_kids: subject_category.is_kids,
             notes: subject_category.notes
@@ -169,7 +170,7 @@ export const postSubjectCategory = (subject_category) => {
             }
 
             console.log(error.error)
-            const errorMsg = error.message
+            const errorMsg = error.response.message
             dispatch(postSubjectCategoryFailure(errorMsg))
         })
     }
@@ -181,7 +182,7 @@ export const updateSubjectCategory = (subject_category) => {
 
         dispatch(updateSubjectCategoryRequest)
 
-        axios.put('api/v1/subject_categories/' + subject_category.id, JSON.stringify({
+        axios.put(settings.rootUrl + 'api/v1/subject_categories/' + subject_category.id, JSON.stringify({
             title: subject_category.title,
             is_kids: subject_category.is_kids,
             notes: subject_category.notes
@@ -202,7 +203,8 @@ export const updateSubjectCategory = (subject_category) => {
             }
 
             console.log(error.error)
-            const errorMsg = error.message
+            console.log(error.response)
+            const errorMsg = error.response.message
             dispatch(updateSubjectCategoryFailure(errorMsg))
         })
     }
@@ -213,7 +215,7 @@ export const removeSubjectCategory = (id) => {
 
         dispatch(removeSubjectCategoryRequest)
 
-        axios.delete('api/v1/subject_categories/'+id, {
+        axios.delete(settings.rootUrl + 'api/v1/subject_categories/'+id, {
             headers: {
                 "Content-type": "application/json",
                 "Authorization": localStorage.getItem('Token')
@@ -229,7 +231,7 @@ export const removeSubjectCategory = (id) => {
             }
 
             console.log(error.error)
-            const errorMsg = error.message
+            const errorMsg = error.response.message
             dispatch(removeSubjectCategoryFailure(errorMsg))
         })
     }

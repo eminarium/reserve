@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { updateLanguage } from '../../redux-store'
+import { updateSubjectCategory } from '../../redux-store'
 import LoaderImage from 'images/loader.gif'
 
 
-class LanguageEditForm extends React.Component {
+class SubjectCategoryEditForm extends React.Component {
     constructor() {
         super();
         this.submitForm = this.submitForm.bind(this);
@@ -22,18 +22,19 @@ class LanguageEditForm extends React.Component {
         }
         else {
             console.log("Form is Valid!");
-            console.log("Event Target : " + event.target.id.value + " " + event.target.title.value + " " + event.target.notes.value);
+            console.log("Event Target : " + event.target.id.value + " " + (event.target.is_kids.checked) + " " + event.target.title.value + " " + event.target.notes.value);
             console.log("Reference : " + this.getTitle.value + " " + this.getNotes.value);
 
 
-            this.props.updateLanguage({
+            this.props.updateSubjectCategory({
                 id: event.target.id.value,
                 title: event.target.title.value,
+                is_kids: event.target.is_kids.checked,
                 notes: event.target.notes.value
             })
 
             if (!this.props.loading)
-                this.props.history.push('/languages')
+                this.props.history.push('/subject_categories')
         }
     }
 
@@ -44,21 +45,31 @@ class LanguageEditForm extends React.Component {
                 <div className="card" style={{ width: '28rem' }}>
                     <div className="card-body">
                         <h5 className="card-title">
-                            Dil Maglumatlaryny Üýtget &nbsp; &nbsp; &nbsp;
+                            Ders Görnüşiniň Maglumatlaryny Üýtget &nbsp; &nbsp; &nbsp;
                             {
                                 (this.props.loading) ? <img src={LoaderImage} /> : ""
                             }
                         </h5>
                         <form noValidate onSubmit={this.submitForm}>
 
-                            <input type="hidden" name="id" id="id" defaultValue={this.props.language.id} />
+                            <input type="hidden" name="id" id="id" defaultValue={this.props.subject_category.id} />
 
                             <div className="form-group row">
-                                <label htmlFor="title" className="col-sm-10 col-form-label">Diliň Ady</label>
+                                <label htmlFor="title" className="col-sm-10 col-form-label">Ders Görnüşiniň Ady</label>
                                 <div className="col-sm-10">
                                     <input type="text" id="title" name="title" className="form-control" required
-                                        defaultValue={this.props.language.title}
+                                        defaultValue={this.props.subject_category.title}
                                         ref={(input) => this.getTitle = input}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="form-group row">
+                                <label htmlFor="is_kids" className="col-sm-10 col-form-label">Çaga Toparymy ?</label>
+                                <div className="col-sm-10">
+                                    <input type="checkbox" id="is_kids" name="is_kids" className="form-control"
+                                        defaultChecked={this.props.subject_category.is_kids}
+                                        ref={(input) => this.getIsKids = input}
                                     />
                                 </div>
                             </div>
@@ -67,7 +78,7 @@ class LanguageEditForm extends React.Component {
                                 <label htmlFor="notes" className="col-sm-10 col-form-label">Bellikler</label>
                                 <div className="col-sm-10">
                                     <textarea type="text" id="notes" name="notes" className="form-control" required 
-                                        defaultValue={this.props.language.notes}
+                                        defaultValue={this.props.subject_category.notes}
                                         ref={(input) => this.getNotes = input}
                                     />
                                 </div>
@@ -90,16 +101,16 @@ class LanguageEditForm extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        loading: state.languages.loading,
-        error: state.languages.error,
-        language: state.languages.languages.find(lang => lang.id == state.languages.editingLanguageId)
+        loading: state.subject_categories.loading,
+        error: state.subject_categories.error,
+        subject_category: state.subject_categories.subject_categories.find(sc => sc.id == state.subject_categories.editingSubjectCategoryId)
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateLanguage: (language) => dispatch(updateLanguage(language))
+        updateSubjectCategory: (sc) => dispatch(updateSubjectCategory(sc))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LanguageEditForm)
+export default connect(mapStateToProps, mapDispatchToProps)(SubjectCategoryEditForm)

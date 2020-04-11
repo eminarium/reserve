@@ -54,7 +54,7 @@ class Shifts extends React.Component {
                             (this.props.loading) ?
                             (
                                 <tr>
-                                    <td colSpan="4">
+                                    <td colSpan="6">
                                         <div style={{ alignItems: 'center' }} >
                                             <img src={LoaderImage} />
                                         </div>
@@ -66,7 +66,7 @@ class Shifts extends React.Component {
                             (this.props.error) ?
                             (
                                 <tr>
-                                    <td colSpan="4">
+                                    <td colSpan="6">
                                         <h3>
                                             {this.props.error}
                                         </h3>

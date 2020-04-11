@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { postLanguage } from '../../redux-store'
+import { postSubjectCategory } from '../../redux-store'
 import LoaderImage from 'images/loader.gif'
 
 
-class LanguageNewForm extends React.Component {
+class SubjectCategoryNewForm extends React.Component {
     constructor() {
         super();
 
@@ -27,13 +27,14 @@ class LanguageNewForm extends React.Component {
             //console.log("Reference : " + this.getTitle.value + " " + this.getNotes.value);
 
 
-            this.props.postLanguage({
+            this.props.postSubjectCategory({
                 title: event.target.title.value,
+                is_kids: event.target.is_kids.checked,
                 notes: event.target.notes.value
             })
 
             if (!this.props.loading)
-                this.props.history.push('/languages')
+                this.props.history.push('/subject_categories')
         }
     }
 
@@ -44,7 +45,7 @@ class LanguageNewForm extends React.Component {
                 <div className="card" style={{ width: '28rem' }}>
                     <div className="card-body">
                         <h5 className="card-title">
-                            Täze Dil Goş &nbsp; &nbsp; &nbsp; 
+                            Täze Ders Görnüşi Goş &nbsp; &nbsp; &nbsp; 
                             {
                                 (this.props.loading) ? <img src={LoaderImage} /> :""
                             }
@@ -52,13 +53,23 @@ class LanguageNewForm extends React.Component {
                         <form noValidate onSubmit={this.submitForm}>
 
                             <div className="form-group row">
-                                <label htmlFor="title" className="col-sm-10 col-form-label">Diliň Ady</label>
+                                <label htmlFor="title" className="col-sm-10 col-form-label">Ders Görnüşiniň Ady</label>
                                 <div className="col-sm-10">
                                     <input type="text" id="title" name="title" className="form-control" required 
                                         ref={(input) => this.getTitle = input}
                                     />
                                 </div>
                             </div>
+
+                            <div className="form-group row">
+                                <label htmlFor="is_kids" className="col-sm-10 col-form-label">Çaga Toparymy ?</label>
+                                <div className="col-sm-10">
+                                    <input type="checkbox" id="is_kids" name="is_kids" className="form-control"
+                                        ref={(input) => this.getIsKids = input}
+                                    />
+                                </div>
+                            </div>
+
 
                             <div className="form-group row">
                                 <label htmlFor="notes" className="col-sm-10 col-form-label">Bellikler</label>
@@ -86,15 +97,15 @@ class LanguageNewForm extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        loading: state.languages.loading,
-        error: state.languages.error
+        loading: state.subject_categories.loading,
+        error: state.subject_categories.error
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        postLanguage: (language) => dispatch(postLanguage(language))
+        postSubjectCategory: (sc) => dispatch(postSubjectCategory(sc))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LanguageNewForm)
+export default connect(mapStateToProps, mapDispatchToProps)(SubjectCategoryNewForm)

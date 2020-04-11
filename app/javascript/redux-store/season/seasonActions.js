@@ -1,4 +1,5 @@
 import axios from 'axios'
+import settings from '../settings'
 
 import { 
     FETCH_SEASONS_REQUEST,
@@ -15,6 +16,7 @@ import {
 
     EDIT_SEASON,
     SEASON_INFO,
+    SET_ACTIVE_SEASON,
 
     REMOVE_SEASON_REQUEST,
     REMOVE_SEASON_SUCCESS,
@@ -98,6 +100,13 @@ export const seasonInfo = (id) => {
     }
 }
 
+export const setActiveSeason = (id) => {
+    return {
+        type: SET_ACTIVE_SEASON,
+        payload: id
+    }
+}
+
 export const removeSeasonRequest = () => {
     return {
         type: REMOVE_SEASON_REQUEST,
@@ -123,7 +132,7 @@ export const fetchSeasons = () => {
 
         dispatch(fetchSeasonsRequest)
 
-        axios.get('api/v1/seasons', {
+        axios.get(settings.rootUrl + 'api/v1/seasons', {
             headers: {
                 "Content-type": "application/json",
                 "Authorization": localStorage.getItem('Token')
@@ -154,7 +163,7 @@ export const postSeason = (season) => {
 
         dispatch(postSeasonRequest)
 
-        axios.post('api/v1/seasons', JSON.stringify({
+        axios.post(settings.rootUrl + 'api/v1/seasons', JSON.stringify({
             title: season.title,
             order_no: season.order_no,
             start_date: season.start_date,
@@ -178,7 +187,7 @@ export const postSeason = (season) => {
             }
 
             console.log(error.error)
-            const errorMsg = error.message
+            const errorMsg = error.response.message
             dispatch(postSeasonFailure(errorMsg))
         })
     }
@@ -190,7 +199,7 @@ export const updateSeason = (season) => {
 
         dispatch(updateSeasonRequest)
 
-        axios.put('api/v1/seasons/' + season.id, JSON.stringify({
+        axios.put(settings.rootUrl + 'api/v1/seasons/' + season.id, JSON.stringify({
             title: season.title,
             order_no: season.order_no,
             start_date: season.start_date,
@@ -214,7 +223,7 @@ export const updateSeason = (season) => {
             }
 
             console.log(error.error)
-            const errorMsg = error.message
+            const errorMsg = error.response.message
             dispatch(updateSeasonFailure(errorMsg))
         })
     }
@@ -225,7 +234,7 @@ export const removeSeason = (id) => {
 
         dispatch(removeSeasonRequest)
 
-        axios.delete('api/v1/seasons/' + id, {
+        axios.delete(settings.rootUrl + 'api/v1/seasons/' + id, {
             headers: {
                 "Content-type": "application/json",
                 "Authorization": localStorage.getItem('Token')
@@ -241,7 +250,7 @@ export const removeSeason = (id) => {
             }
 
             console.log(error.error)
-            const errorMsg = error.message
+            const errorMsg = error.response.message
             dispatch(removeSeasonFailure(errorMsg))
         })
     }

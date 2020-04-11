@@ -13,6 +13,7 @@ import {
 
     EDIT_SEASON,
     SEASON_INFO,
+    SET_ACTIVE_SEASON,
 
     REMOVE_SEASON_REQUEST,
     REMOVE_SEASON_SUCCESS,
@@ -25,7 +26,8 @@ const initialState = {
     seasons: [],
     error: '',
     editingSeasonId: '',
-    currentSeason: ''
+    currentSeason: '',
+    activeSeason: ''
 }
 
 const seasonReducer = (state = initialState, action) => {
@@ -36,7 +38,8 @@ const seasonReducer = (state = initialState, action) => {
                 loading: true,
                 error: '',
                 editingSeasonId: '',
-                currentSeason: ''
+                currentSeason: '',
+                activeSeason: ''
             }
         case FETCH_SEASONS_SUCCESS:
             return {
@@ -44,15 +47,18 @@ const seasonReducer = (state = initialState, action) => {
                 seasons: action.payload,
                 error: '',
                 editingSeasonId: '',
-                currentSeason: ''
+                currentSeason: '',
+                activeSeason: (state.activeSeason === '') ? action.payload.reduce((actSeason, season) => (season.order_no > actSeason.order_no ? season : actSeason), action.payload[0]) : state.activeSeason
+                //activeSeason: state.seasons[0])
             }
         case FETCH_SEASONS_FAILURE:
             return {
                 loading: false,
-                seasons: [],
+                seasons: state.seasons,
                 error: action.payload,
                 editingSeasonId: '',
-                currentSeason: ''
+                currentSeason: '',
+                activeSeason: state.activeSeason
             }
 
         case POST_SEASON_REQUEST:
@@ -61,7 +67,8 @@ const seasonReducer = (state = initialState, action) => {
                 loading: true,
                 error: '',
                 editingSeasonId: '',
-                currentSeason: ''
+                currentSeason: '',
+                activeSeason: state.activeSeason
             }
         case POST_SEASON_SUCCESS:
             return {
@@ -69,7 +76,8 @@ const seasonReducer = (state = initialState, action) => {
                 seasons: state.seasons.concat(action.payload),
                 error: '',
                 editingSeasonId: '',
-                currentSeason: ''
+                currentSeason: '',
+                activeSeason: state.activeSeason
             }
         case POST_SEASON_FAILURE:
             return {
@@ -77,7 +85,8 @@ const seasonReducer = (state = initialState, action) => {
                 seasons: state.seasons,
                 error: action.payload,
                 editingSeasonId: '',
-                currentSeason: ''
+                currentSeason: '',
+                activeSeason: state.activeSeason
             }
 
         case UPDATE_SEASON_REQUEST:
@@ -86,7 +95,8 @@ const seasonReducer = (state = initialState, action) => {
                 loading: true,
                 error: '',
                 editingSeasonId: '',
-                currentSeason: ''
+                currentSeason: '',
+                activeSeason: state.activeSeason
             }
         case UPDATE_SEASON_SUCCESS:
             return {
@@ -94,7 +104,8 @@ const seasonReducer = (state = initialState, action) => {
                 seasons: [...state.seasons.filter(season => (season.id != action.payload.id)), action.payload],
                 error: '',
                 editingSeasonId: '',
-                currentSeason: ''
+                currentSeason: '',
+                activeSeason: state.activeSeason
             }
         case UPDATE_SEASON_FAILURE:
             return {
@@ -102,7 +113,8 @@ const seasonReducer = (state = initialState, action) => {
                 seasons: state.seasons,
                 error: action.payload,
                 editingSeasonId: '',
-                currentSeason: ''
+                currentSeason: '',
+                activeSeason: state.activeSeason
             }
 
         case EDIT_SEASON:
@@ -111,7 +123,8 @@ const seasonReducer = (state = initialState, action) => {
                 seasons: state.seasons,
                 error: '',
                 editingSeasonId: action.payload,
-                currentSeason: ''
+                currentSeason: '',
+                activeSeason: state.activeSeason
             }
 
         case SEASON_INFO:
@@ -120,8 +133,19 @@ const seasonReducer = (state = initialState, action) => {
                 seasons: state.seasons,
                 error: '',
                 editingSeasonId: '',
-                currentSeason: state.seasons.find(season => season.id === action.payload)
+                currentSeason: state.seasons.find(season => season.id === action.payload),
+                activeSeason: state.activeSeason
             }                
+
+        case SET_ACTIVE_SEASON:
+            return {
+                loading: false,
+                seasons: state.seasons,
+                error: '',
+                editingSeasonId: '',
+                currentSeason: '',
+                activeSeason: state.seasons.find(season => season.id === action.payload),
+            }
 
         case REMOVE_SEASON_REQUEST:
             return {

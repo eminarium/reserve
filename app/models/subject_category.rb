@@ -14,7 +14,7 @@ class SubjectCategory < ApplicationRecord
     validates   :title, length: { minimum: 3, message: "Ders görnüşiniň at tarypy azyndan 3 belgiden ybarat bolmaly" }
     validates   :title, uniqueness: { message: "Ders görnüşiniň at tarypy öň gaýtalanmaýan bolmaly..."}
 
-    validates   :is_kids, presence: { message: "Çaga topara degişlidigi baradaky bellik hökman girizilmeli..." }
+    #validates   :is_kids, presence: { message: "Çaga topara degişlidigi baradaky bellik hökman girizilmeli..." }
 
 
     # Associations

@@ -92,7 +92,7 @@ class ShiftEditForm extends React.Component {
                             </div>
 
                             <div className="form-group row">
-                                <label htmlFor="title" className="col-sm-10 col-form-label">Başlaýan wagty</label>
+                                <label htmlFor="start_time" className="col-sm-10 col-form-label">Başlaýan wagty</label>
                                 <div className="col-sm-10 input-group bootstrap-timepicker timepicker">
                                     <input type="time" id="start_time" name="start_time" className="form-control input-small" required
                                         defaultValue={start_time_string}
@@ -104,7 +104,7 @@ class ShiftEditForm extends React.Component {
                             </div>
 
                             <div className="form-group row">
-                                <label htmlFor="title" className="col-sm-10 col-form-label">Tamamlanýan wagty</label>
+                                <label htmlFor="end_time" className="col-sm-10 col-form-label">Tamamlanýan wagty</label>
                                 <div className="col-sm-10 input-group bootstrap-timepicker timepicker">
                                     <input type="time" id="end_time" name="end_time" className="form-control" required
                                         defaultValue={end_time_string}

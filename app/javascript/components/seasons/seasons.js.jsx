@@ -28,7 +28,7 @@ class Seasons extends React.Component {
                 <table className="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col" colSpan="5">
+                            <th scope="col" colSpan="7">
                                 Tapgyrlar
                             </th>
                             <th>
@@ -56,7 +56,7 @@ class Seasons extends React.Component {
                             (this.props.loading) ?
                             (
                                 <tr>
-                                    <td colSpan="4">
+                                    <td colSpan="8">
                                         <div style={{ alignItems: 'center' }} >
                                             <img src={LoaderImage} />
                                         </div>
@@ -68,7 +68,7 @@ class Seasons extends React.Component {
                             (this.props.error) ?
                             (
                                 <tr>
-                                    <td colSpan="4">
+                                    <td colSpan="8">
                                         <h3>
                                             {this.props.error}
                                         </h3>

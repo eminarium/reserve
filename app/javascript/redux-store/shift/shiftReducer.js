@@ -49,7 +49,7 @@ const shiftReducer = (state = initialState, action) => {
         case FETCH_SHIFTS_FAILURE:
             return {
                 loading: false,
-                shifts: [],
+                shifts: state.shifts,
                 error: action.payload,
                 editingShiftId: '',
                 currentShift: ''

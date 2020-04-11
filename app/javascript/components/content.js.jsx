@@ -27,6 +27,27 @@ import SubjectCategoryNewForm from './subject_categories/subject_category_new_fo
 import SubjectCategoryEditForm from './subject_categories/subject_category_edit_form.js'
 import SubjectCategoryInfo from './subject_categories/subject_category_info.js'
 
+import Subjects from './subjects/subjects.js'
+import SubjectNewForm from './subjects/subject_new_form.js'
+import SubjectEditForm from './subjects/subject_edit_form.js'
+import SubjectInfo from './subjects/subject_info.js'
+
+import Applicants from './applicants/applicants.js'
+import ApplicantNewForm from './applicants/applicant_new_form.js'
+import ApplicantEditForm from './applicants/applicant_edit_form.js'
+import ApplicantInfo from './applicants/applicant_info.js'
+
+import SubjectTests from './subject_tests/subject_tests.js'
+import SubjectTestNewForm from './subject_tests/subject_test_new_form.js'
+import SubjectTestEditForm from './subject_tests/subject_test_edit_form.js'
+import SubjectTestInfo from './subject_tests/subject_test_info.js'
+
+import Reservations from './reservations/reservations.js'
+import ReservationNewForm from './reservations/reservation_new_form.js'
+import ReservationEditForm from './reservations/reservation_edit_form.js'
+import ReservationInfo from './reservations/reservation_info.js'
+
+
 class Content extends React.Component  {
     render() {
         return (
@@ -59,6 +80,26 @@ class Content extends React.Component  {
                         <Route exact path="/subject_categories/new" component={SubjectCategoryNewForm} />
                         <Route exact path="/subject_categories/:subjectCategoryId" component={SubjectCategoryInfo} />
                         <Route exact path="/subject_categories/:subjectCategoryId/edit" component={SubjectCategoryEditForm} />
+
+                        <Route exact path="/subjects" component={Subjects} />
+                        <Route exact path="/subjects/new" component={SubjectNewForm} />
+                        <Route exact path="/subjects/:subjectId" component={SubjectInfo} />
+                        <Route exact path="/subjects/:subjectId/edit" component={SubjectEditForm} />
+
+                        <Route exact path="/applicants" component={Applicants} />
+                        <Route exact path="/applicants/new" component={ApplicantNewForm} />
+                        <Route exact path="/applicants/:applicantId" component={ApplicantInfo} />
+                        <Route exact path="/applicants/:applicantId/edit" component={ApplicantEditForm} />
+
+                        <Route exact path="/reservations" component={Reservations} />
+                        <Route exact path="/reservations/new" component={ReservationNewForm} />
+                        <Route exact path="/reservations/:reservationId" component={ReservationInfo} />
+                        <Route exact path="/reservations/:reservationId/edit" component={ReservationEditForm} />
+
+                        <Route exact path="/subject_tests" component={SubjectTests} />
+                        <Route exact path="/subject_tests/new" component={SubjectTestNewForm} />
+                        <Route exact path="/subject_tests/:subjectTestId" component={SubjectTestInfo} />
+                        <Route exact path="/subject_tests/:subjectTestId/edit" component={SubjectTestEditForm} />
 
                     </Switch>
                 </main>

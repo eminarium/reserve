@@ -7,29 +7,27 @@ class Subject < ApplicationRecord
   # notes                 :text
   # subject_category_id   :integer (references 'subject_category' model)
   # language_id           :integer (references 'language' model)
+  # passing_points        :float
   # user_id               :integer
 
 
 
   # Validations
 
-  validates   :title,               
-              length: { minimum: 3 }, 
-              presence: true,
-              message: "Dersiň ady hökman girizilmeli we azyndan 3 belgi uzynlykda bolmaly..."
+  validates   :title, presence: { message: "Dersiň ady hökman girizilmeli..." }
+  validates   :title, length: { minimum: 3, message: "Dersiň ady azyndan 2 belgiden ybarat bolmaly..." }
 
-  validates   :level,               
-              numericality: { only_integer: true}, 
-              presence: true,
-              message: "Ders derejesi hökman girizilmeli..."
+  validates   :passing_points, presence: { message: "Geçiş bahasy hökman girizilmeli..." }
+  validates   :passing_points, numericality: { greater_than_or_equal_to: 0, message: "Geçiş bahasy 0 ýa-da ondan ýokary bolmaly..." }
 
-  validates   :subject_category_id, 
-              presence: true,
-              message: "Ders görnüşi topary hökman saýlanylmaly..."
 
-  validates   :language_id,         
-              presence: true,
-              message: "Diliň ady hökman saýlanylmaly..."
+  validates   :level, presence: { message: "Dersiň derejesi hökman girizilmeli..." }
+  validates   :level, numericality: { only_integer: true, message: "Dersiň derejesi diňe san bolmaly..." }
+
+  validates   :subject_category_id, presence: { message: "Dersiň görnüşi hökman saýlanylmaly..." }
+
+  validates   :subject_category_id, presence: { message: "Diliň ady hökman saýlanylmaly..." }
+
 
   # Associations
 

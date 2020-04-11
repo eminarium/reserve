@@ -1,4 +1,5 @@
 import axios from 'axios'
+import settings from '../settings'
 
 import { 
     FETCH_SHIFTS_REQUEST,
@@ -123,7 +124,7 @@ export const fetchShifts = () => {
 
         dispatch(fetchShiftsRequest)
 
-        axios.get('api/v1/shifts', {
+        axios.get(settings.rootUrl + 'api/v1/shifts', {
             headers: {
                 "Content-type": "application/json",
                 "Authorization": localStorage.getItem('Token')
@@ -154,7 +155,7 @@ export const postShift = (shift) => {
 
         dispatch(postShiftRequest)
 
-        axios.post('api/v1/shifts', JSON.stringify({
+        axios.post(settings.rootUrl + 'api/v1/shifts', JSON.stringify({
             title: shift.title,
             start_time: shift.start_time,
             end_time: shift.end_time,
@@ -176,7 +177,7 @@ export const postShift = (shift) => {
             }
 
             console.log(error.error)
-            const errorMsg = error.message
+            const errorMsg = error.response.message
             dispatch(postShiftFailure(errorMsg))
         })
     }
@@ -188,7 +189,7 @@ export const updateShift = (shift) => {
 
         dispatch(updateShiftRequest)
 
-        axios.put('api/v1/shifts/' + shift.id, JSON.stringify({
+        axios.put(settings.rootUrl + 'api/v1/shifts/' + shift.id, JSON.stringify({
             title: shift.title,
             start_time: shift.start_time,
             end_time: shift.end_time,
@@ -210,7 +211,7 @@ export const updateShift = (shift) => {
             }
 
             console.log(error.error)
-            const errorMsg = error.message
+            const errorMsg = error.response.message
             dispatch(updateShiftFailure(errorMsg))
         })
     }
@@ -221,7 +222,7 @@ export const removeShift = (id) => {
 
         dispatch(removeShiftRequest)
 
-        axios.delete('api/v1/shifts/' + id, {
+        axios.delete(settings.rootUrl + 'api/v1/shifts/' + id, {
             headers: {
                 "Content-type": "application/json",
                 "Authorization": localStorage.getItem('Token')
@@ -237,7 +238,7 @@ export const removeShift = (id) => {
             }
 
             console.log(error.error)
-            const errorMsg = error.message
+            const errorMsg = error.response.message
             dispatch(removeShiftFailure(errorMsg))
         })
     }

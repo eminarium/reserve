@@ -49,7 +49,7 @@ const subjectCategoryReducer = (state = initialState, action) => {
         case FETCH_SUBJECT_CATEGORIES_FAILURE:
             return {
                 loading: false,
-                subject_categories: [],
+                subject_categories: state.subject_categories,
                 error: action.payload,
                 editingSubjectCategoryId: '',
                 currentSubjectCategory: ''

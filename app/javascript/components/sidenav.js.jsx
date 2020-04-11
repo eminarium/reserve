@@ -25,6 +25,11 @@ class SideNav extends React.Component {
                             </Link>
                         </li>
                         <li className="nav-item">
+                            <Link to="/applicants" className="nav-link">
+                                <i className="fa fa-list"></i> &nbsp; Müşderiler <span className="sr-only">(current)</span>
+                            </Link>
+                        </li>
+                        <li className="nav-item">
                             <Link to="/applicants/new" className="nav-link">
                                 <i className="fa fa-plus-circle"></i> &nbsp; Täze Müşderi
                             </Link>

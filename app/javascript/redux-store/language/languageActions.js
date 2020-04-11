@@ -1,4 +1,5 @@
 import axios from 'axios'
+import settings from '../settings'
 
 import { 
     FETCH_LANGUAGES_REQUEST,
@@ -119,7 +120,7 @@ export const fetchLanguages = () => {
 
         dispatch(fetchLanguagesRequest)
 
-        axios.get('api/v1/languages', {
+        axios.get(settings.rootUrl + 'api/v1/languages', {
             headers: {
                 "Content-type": "application/json",
                 "Authorization": localStorage.getItem('Token')
@@ -148,7 +149,7 @@ export const postLanguage = (language) => {
 
         dispatch(postLanguageRequest)
 
-        axios.post('api/v1/languages', JSON.stringify({
+        axios.post(settings.rootUrl + 'api/v1/languages', JSON.stringify({
             title: language.title,
             notes: language.notes
         }), {
@@ -168,7 +169,7 @@ export const postLanguage = (language) => {
             }
 
             console.log(error.error)
-            const errorMsg = error.message
+            const errorMsg = error.response.message
             dispatch(postLanguageFailure(errorMsg))
         })
     }
@@ -180,7 +181,7 @@ export const updateLanguage = (language) => {
 
         dispatch(updateLanguageRequest)
 
-        axios.put('api/v1/languages/'+language.id, JSON.stringify({
+        axios.put(settings.rootUrl + 'api/v1/languages/'+language.id, JSON.stringify({
             title: language.title,
             notes: language.notes
         }), {
@@ -200,7 +201,7 @@ export const updateLanguage = (language) => {
             }
 
             console.log(error.error)
-            const errorMsg = error.message
+            const errorMsg = error.response.message
             dispatch(updateLanguageFailure(errorMsg))
         })
     }
@@ -211,7 +212,7 @@ export const removeLanguage = (id) => {
 
         dispatch(removeLanguageRequest)
 
-        axios.delete('api/v1/languages/'+id, {
+        axios.delete(settings.rootUrl + 'api/v1/languages/'+id, {
             headers: {
                 "Content-type": "application/json",
                 "Authorization": localStorage.getItem('Token')
@@ -227,7 +228,7 @@ export const removeLanguage = (id) => {
             }
 
             console.log(error.error)
-            const errorMsg = error.message
+            const errorMsg = error.response.message
             dispatch(removeLanguageFailure(errorMsg))
         })
     }

@@ -4,7 +4,12 @@ class Api::V1::ReservationsController < ApplicationController
   respond_to :json
 
   def index
-    @reservations = Reservation.order('created_at ASC')
+    if params[:applicant_id]
+      @reservations = Reservation.where(applicant_id: params[:applicant_id]).order('created_at DESC').includes(:season, :shift, :subject)
+    else
+      @reservations = Reservation.order('created_at DESC').includes(:season, :shift, :subject)
+    end
+
     respond_with @reservations, status: :ok    
   end
 
@@ -21,7 +26,11 @@ class Api::V1::ReservationsController < ApplicationController
   end
 
   def create
-    @reservation = Reservation.create(reservation_params)
+
+    @applicant = Applicant.find(params[:applicant_id])
+
+    @reservation = @applicant.reservations.build(reservation_params)
+    @reservation.user_id = current_user.id
 
     if @reservation.save
       respond_with @reservation

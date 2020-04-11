@@ -21,7 +21,7 @@ class Api::V1::SubjectCategoriesController < ApplicationController
   end
 
   def create
-    @subject_category = SubjectCategory.create(subject_category_params)
+    @subject_category = SubjectCategory.new(subject_category_params)
     @subject_category.user_id = current_user.id
 
     if @subject_category.save

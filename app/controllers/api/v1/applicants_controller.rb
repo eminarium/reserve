@@ -21,7 +21,8 @@ class Api::V1::ApplicantsController < ApplicationController
   end
 
   def create
-    @applicant = Applicant.create(applicant_params)
+    @applicant = Applicant.new(applicant_params)
+    @applicant.user_id = current_user.id
 
     if @applicant.save
       respond_with @applicant

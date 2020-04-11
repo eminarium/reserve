@@ -4,7 +4,7 @@ class Api::V1::SubjectsController < ApplicationController
   respond_to :json
 
   def index
-    @subjects = Subject.order('title ASC')
+    @subjects = Subject.order('title ASC').includes(:subject_category, :language)
     respond_with @subjects, status: :ok    
   end
 
@@ -21,10 +21,11 @@ class Api::V1::SubjectsController < ApplicationController
   end
 
   def create
-    @subject = Subject.create(subject_params)
+    @subject = Subject.new(subject_params)
+    @subject.user_id = current_user.id
 
     if @subject.save
-      respond_with @subject
+      respond_with @subject, status: :ok
     else
       render json: { 
         error: @subject.errors, 
@@ -79,7 +80,7 @@ class Api::V1::SubjectsController < ApplicationController
   end
 
   def subject_params
-    params.require(:subject).permit(:title, :level, :subject_category_id, :language_id, :notes)
+    params.require(:subject).permit(:title, :level, :subject_category_id, :language_id, :passing_points, :notes)
   end
 
 end

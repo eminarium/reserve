@@ -49,7 +49,7 @@ const languageReducer = (state = initialState, action) => {
         case FETCH_LANGUAGES_FAILURE:
             return {
                 loading: false,
-                languages: [],
+                languages: state.languages,
                 error: action.payload,
                 editingLanguageId: '',
                 currentLanguage: ''
