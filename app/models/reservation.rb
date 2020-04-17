@@ -19,9 +19,9 @@ class Reservation < ApplicationRecord
   validates   :season_id, presence: { message: "Tapgyry hökman saýlanylmaly..." }
   validates   :shift_id, presence: { message: "Wagty (Seans) hökman saýlanylmaly..." }
   validates   :subject_id, presence: { message: "Dersi hökman saýlanylmaly..." }
-  validates   :is_registered, presence: { message: "Ýazylyp ýazylmandygy hökman belli edilmeli..." }
-  validates   :is_sms_sent, presence: { message: "SMS ugradylyp ugradylmandygy hökman belli edilmeli..." }
-  validates   :is_called, presence: { message: "Jaň etmek baradaky bellik hökman belli edilmeli..." }
+  #validates   :is_registered, presence: { message: "Ýazylyp ýazylmandygy hökman belli edilmeli..." }
+  #validates   :is_sms_sent, presence: { message: "SMS ugradylyp ugradylmandygy hökman belli edilmeli..." }
+  #validates   :is_called, presence: { message: "Jaň etmek baradaky bellik hökman belli edilmeli..." }
 
 
   # Associations

@@ -1,7 +1,11 @@
-import { 
-    FETCH_APPLICANTS_REQUEST, 
-    FETCH_APPLICANTS_SUCCESS, 
+import {
+    FETCH_APPLICANTS_REQUEST,
+    FETCH_APPLICANTS_SUCCESS,
     FETCH_APPLICANTS_FAILURE,
+
+    FETCH_SEARCH_APPLICANTS_REQUEST,
+    FETCH_SEARCH_APPLICANTS_SUCCESS,
+    FETCH_SEARCH_APPLICANTS_FAILURE,
 
     POST_APPLICANT_REQUEST,
     POST_APPLICANT_SUCCESS,
@@ -13,6 +17,7 @@ import {
 
     EDIT_APPLICANT,
     APPLICANT_INFO,
+    EMPTY_APPLICANTS,
 
     REMOVE_APPLICANT_REQUEST,
     REMOVE_APPLICANT_SUCCESS,
@@ -29,7 +34,7 @@ const initialState = {
 }
 
 const applicantReducer = (state = initialState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case FETCH_APPLICANTS_REQUEST:
             return {
                 ...state,
@@ -55,6 +60,31 @@ const applicantReducer = (state = initialState, action) => {
                 currentApplicant: ''
             }
 
+        case FETCH_SEARCH_APPLICANTS_REQUEST:
+            return {
+                ...state,
+                loading: true,
+                error: '',
+                editingApplicantId: '',
+                currentApplicant: ''
+            }
+        case FETCH_SEARCH_APPLICANTS_SUCCESS:
+            return {
+                loading: false,
+                applicants: action.payload,
+                error: '',
+                editingApplicantId: '',
+                currentApplicant: ''
+            }
+        case FETCH_SEARCH_APPLICANTS_FAILURE:
+            return {
+                loading: false,
+                applicants: state.applicants,
+                error: action.payload,
+                editingApplicantId: '',
+                currentApplicant: ''
+            }
+
         case POST_APPLICANT_REQUEST:
             return {
                 ...state,
@@ -69,7 +99,7 @@ const applicantReducer = (state = initialState, action) => {
                 applicants: state.applicants.concat(action.payload),
                 error: '',
                 editingApplicantId: '',
-                currentApplicant: ''
+                currentApplicant: state.applicants.find(applicant => applicant.id === action.payload.id)
             }
         case POST_APPLICANT_FAILURE:
             return {
@@ -85,16 +115,16 @@ const applicantReducer = (state = initialState, action) => {
                 ...state,
                 loading: true,
                 error: '',
-                editingApplicantId: '',
-                currentApplicant: ''
+                editingApplicantId: state.editingApplicantId,
+                currentApplicant: state.currentApplicant
             }
         case UPDATE_APPLICANT_SUCCESS:
             return {
                 loading: false,
                 applicants: [...state.applicants.filter(applicant => (applicant.id != action.payload.id)), action.payload],
                 error: '',
-                editingApplicantId: '',
-                currentApplicant: ''
+                editingApplicantId: state.editingApplicantId,
+                currentApplicant: state.currentApplicant
             }
         case UPDATE_APPLICANT_FAILURE:
             return {
@@ -102,7 +132,7 @@ const applicantReducer = (state = initialState, action) => {
                 applicants: state.applicants,
                 error: action.payload,
                 editingApplicantId: '',
-                currentApplicant: ''
+                currentApplicant: state.currentApplicant
             }
 
         case EDIT_APPLICANT:
@@ -111,7 +141,7 @@ const applicantReducer = (state = initialState, action) => {
                 applicants: state.applicants,
                 error: '',
                 editingApplicantId: action.payload,
-                currentApplicant: ''
+                currentApplicant: state.applicants.find(applicant => applicant.id === action.payload)
             }
 
         case APPLICANT_INFO:
@@ -121,7 +151,16 @@ const applicantReducer = (state = initialState, action) => {
                 error: '',
                 editingApplicantId: '',
                 currentApplicant: state.applicants.find(applicant => applicant.id === action.payload)
-            }                
+            }
+
+        case EMPTY_APPLICANTS:
+            return {
+                loading: false,
+                applicants: [],
+                error: '',
+                editingApplicantId: '',
+                currentApplicant: ''
+            }
 
         case REMOVE_APPLICANT_REQUEST:
             return {

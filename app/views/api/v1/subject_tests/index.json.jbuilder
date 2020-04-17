@@ -2,7 +2,6 @@ json.array! @subject_tests do |subject_test|
     json.(
         subject_test, 
             :id, 
-            :test_date, 
             :result,
             :notes, 
             :created_at, 

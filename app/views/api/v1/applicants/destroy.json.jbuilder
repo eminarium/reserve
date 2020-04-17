@@ -4,11 +4,12 @@ json.(
         :first_name,
         :last_name,
         :patronymic,
-        :birth_date,
+        :age,
         :home_phone,
         :mobile_phone,
-        :photo_url,
+        :school_grade,
         :notes, 
         :created_at, 
-        :updated_at
+        :updated_at,
+        :user_id
 )

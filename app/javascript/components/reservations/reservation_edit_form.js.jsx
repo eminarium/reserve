@@ -1,156 +1,232 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { 
-    updateSubject,
+import {
+    updateReservation,
     fetchSubjectCategories,
-    fetchLanguages
+    fetchSubjects,
+    fetchShifts
 } from '../../redux-store'
 import LoaderImage from 'images/loader.gif'
 
+class ReservationEditForm extends React.Component {
+    constructor(props) {
+        super(props);
 
-class SubjectEditForm extends React.Component {
-    constructor() {
-        super();
-        this.submitForm = this.submitForm.bind(this);
+        this.state = {
+            applicant: '',
+            season: '',
+            shift: '',
+            subject: '',
+            is_registered: false,
+            is_sms_sent: false,
+            is_called: false,
+            notes: '',
+            errorMsg: ''
+        }
+
+        this.submitReservation = this.submitReservation.bind(this);
+        this.setSubject = this.setSubject.bind(this);
+        this.setShift = this.setShift.bind(this);
+        this.checkReservationValidity = this.checkReservationValidity.bind(this)
+        this.setNotes = this.setNotes.bind(this)
     }
 
     componentDidMount() {
         this.props.fetchSubjectCategories()
-        this.props.fetchLanguages()
+        this.props.fetchSubjects()
+        this.props.fetchShifts()
+
+        this.setState({
+            applicant: this.props.reservation.applicant,
+            season: this.props.activeSeason,
+            shift: this.props.reservation.shift,
+            subject: this.props.reservation.subject
+        })
     }
 
-    submitForm(event) {
-        event.preventDefault();
+    checkReservationValidity() {
+        if (this.state.applicant == '' || this.state.season == '' || this.state.subject == '' || this.state.shift == '')
+            return false;
 
-        if (!event.target.checkValidity()) {
+        return true;
+    }
+
+    setSubject(subject) {
+        this.setState({
+            subject: subject
+        })
+    }
+
+    setShift(shift) {
+        this.setState({
+            shift: shift
+        })
+    }
+
+    setNotes(e) {
+        this.setState({
+            notes: e.target.notes.value
+        })
+    }
+
+    submitReservation() {
+
+        if (!this.checkReservationValidity()) {
             console.log("Form is invalid!");
             this.setState({
-                errorMsg: "Все поля должны быть заполнены !"
+                errorMsg: "Ähli Maglumatlary Giriziň..."
             })
             return;
         }
         else {
-            console.log("Form is Valid!");
-            console.log("Event Target : " + event.target.id.value + " " + event.target.title.value + " " + event.target.notes.value);
-            //console.log("Reference : " + this.getTitle.value + " " + this.getNotes.value);
-            console.log("Indexes : " + event.target.subject_category_id.selectedIndex + " " + event.target.language_id.selectedIndex);
-
-            var scid = event.target.subject_category_id.options[event.target.subject_category_id.selectedIndex]
-            var lid = event.target.language_id.options[event.target.language_id.selectedIndex]
-
-            this.props.updateSubject({
-                id: event.target.id.value,
-                title: event.target.title.value,
-                level: event.target.level.value,
-                subject_category_id: event.target.subject_category_id.options[event.target.subject_category_id.selectedIndex].value,
-                language_id: event.target.language_id.options[event.target.language_id.selectedIndex].value,
-                passing_points: event.target.passing_points.value,
-                notes: event.target.notes.value
+            this.props.updateReservation({
+                id: this.props.reservation.id,
+                applicant_id: this.state.applicant.id,
+                season_id: this.state.season.id,
+                shift_id: this.state.shift.id,
+                subject_id: this.state.subject.id,
+                //is_registered: this.state.is_registered,
+                //is_sms_sent: this.state.is_sms_sent,
+                //is_called: this.state.is_called,
+                //notes: this.state.notes,
+                notes: this.getNotes.value,
             })
-
-            if (!this.props.loading)
-                this.props.history.push('/subjects')
         }
+
+        //if (!this.props.loading)
+        //this.props.history.push('/applicants/' + this.state.applicant.id)
     }
 
     render() {
         return (
             <div>
 
-                <div className="card" style={{ width: '28rem' }}>
+                <div className="card" style={{ width: '65rem' }}>
                     <div className="card-body">
                         <h5 className="card-title">
-                            Ders Maglumatlaryny Üýtget &nbsp; &nbsp; &nbsp;
+                            Rezerw Maglumatlaryny Üýtget &nbsp; &nbsp; &nbsp;
                             {
                                 (this.props.loading) ? <img src={LoaderImage} /> : ""
                             }
                         </h5>
-                        <form noValidate onSubmit={this.submitForm}>
 
-                            <input type="hidden" name="id" id="id" defaultValue={this.props.subject.id} />
+                        <br />
+                        <div style={{ color: "red" }}>
+                            {this.state.errorMsg}
+                        </div>
 
-                            <div className="form-group row">
-                                <label htmlFor="title" className="col-sm-10 col-form-label">Dersiň Ady</label>
-                                <div className="col-sm-10">
-                                    <input type="text" id="title" name="title" className="form-control" required
-                                        defaultValue={this.props.subject.title}
-                                        ref={(input) => this.getTitle = input}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="form-group row">
-                                <label htmlFor="level" className="col-sm-10 col-form-label">Derejesi</label>
-                                <div className="col-sm-10">
-                                    <input type="text" id="level" name="level" className="form-control" required
-                                        defaultValue={this.props.subject.level}
-                                        ref={(input) => this.getLevelId = input}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="form-group row">
-                                <label htmlFor="subject_category_id" className="col-sm-10 col-form-label">Dili</label>
-                                <div className="col-sm-10">
-                                    <select className="custom-select" id="subject_category_id" name="subject_category_id">
-                                        {
-                                            this.props.subject_categories.map(sc => {
-                                                return (
-                                                    <option selected={sc.id === this.props.subject.subject_category.id} value={sc.id} key={sc.id}>
-                                                        {sc.title}
-                                                    </option>
-                                                )
-                                            })
+                        <div className="card" style={{ marginBottom: "5px" }}>
+                            <div className="card-body">
+                                <ul>
+                                    <li>
+                                        Diňleýji : {this.state.applicant.first_name}  {this.state.applicant.last_name}
+                                    </li>
+                                    <li>
+                                        Tapgyry : {this.state.season.title ? this.state.season.order_no : "*********"}
+                                    </li>
+                                    <li>
+                                        Dersi : {
+                                            this.state.subject.title ?
+                                                this.state.subject.title :
+                                                <span style={{ color: 'red', fontStyle: 'italic' }}>SAÝLANMADY...</span>
                                         }
-                                    </select>
-                                </div>
-                            </div>
-
-
-                            <div className="form-group row">
-                                <label htmlFor="language_id" className="col-sm-10 col-form-label">Dili</label>
-                                <div className="col-sm-10">
-                                    <select className="custom-select" id="language_id" name="language_id">
-                                        {
-                                            this.props.languages.map( language => {
-                                                return (
-                                                    <option selected={language.id === this.props.subject.language.id} value={language.id} key={language.id}>
-                                                        {language.title}
-                                                    </option>
-                                                )
-                                            })
+                                    </li>
+                                    <li>
+                                        Wagty (Seans) : {
+                                            this.state.shift.title ?
+                                                this.state.shift.title :
+                                                <span style={{ color: 'red', fontStyle: 'italic' }}>SAÝLANMADY...</span>
                                         }
-                                    </select>
-                                </div>
+                                    </li>
+                                    <br />
+                                    <button
+                                        className="btn btn-primary"
+                                        onClick={() => this.submitReservation()}
+                                    >
+                                        KABUL ET
+                                    </button>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div className="card" style={{ float: "left", width: "25rem" }}>
+                            <div className="card-header">
+                                Dersler
                             </div>
 
-                            <div className="form-group row">
-                                <label htmlFor="passing_points" className="col-sm-10 col-form-label">Geçiş Bahasy</label>
-                                <div className="col-sm-10">
-                                    <input type="text" id="passing_points" name="passing_points" className="form-control" required
-                                        defaultValue={this.props.subject.passing_points}
-                                        ref={(input) => this.getPassingPoints = input}
-                                    />
+                            <div className="card-body">
+                                <div className="accordion" id='subjects-accordion'>
+                                    {
+                                        this.props.subject_categories.map((sc, index) => {
+
+                                            var subjects = this.props.subjects.filter(subject => subject.subject_category.id == sc.id)
+
+                                            return (
+
+                                                <div className="card" key={sc.id}>
+                                                    <div className="card-header" id={`heading-${index}`}>
+                                                        <h2 className="mb-0">
+                                                            <button className="btn btn-link collapsed" type="button" data-toggle="collapse" data-target={`#collapse-${index}`} aria-expanded="false" aria-controls={`collapse-${index}`}>
+                                                                {sc.title}
+                                                            </button>
+                                                        </h2>
+                                                    </div>
+
+                                                    <div id={`collapse-${index}`} className="collapse" aria-labelledby={`heading-${index}`} data-parent="#subjects-accordion">
+                                                        <div className="card-body">
+                                                            {
+                                                                subjects.map(sub => {
+                                                                    return (
+                                                                        <button id={sub.id} key={sub.title} type="button" className="btn btn-secondary" style={{ margin: 3 }} onClick={() => this.setSubject(sub)}>
+                                                                            {sub.title}
+                                                                        </button>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            )
+                                        })
+                                    }
                                 </div>
                             </div>
+                        </div>
+                        &nbsp;&nbsp;&nbsp;
+                        <div className="card" style={{ width: "15rem", float: "left", marginLeft: "5px", marginRight: "5px" }}>
+                            <div className="card-header">
+                                Wagtlar (Smenalar)
+                            </div>
 
+                            <div className="card-body">
+                                <div className="btn-group-vertical">
+                                    {
+                                        this.props.shifts.map((shift, index) => {
 
+                                            return (
+                                                <button id={shift.id} key={shift.title} type="button" className="btn btn-secondary" style={{ margin: 3 }} onClick={() => this.setShift(shift)}>
+                                                    {shift.title}
+                                                </button>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <form noValidate>
                             <div className="form-group row">
                                 <label htmlFor="notes" className="col-sm-10 col-form-label">Bellikler</label>
                                 <div className="col-sm-10">
-                                    <textarea type="text" id="notes" name="notes" className="form-control" required 
-                                        defaultValue={this.props.subject.notes}
+                                    <textarea type="text" id="notes" name="notes" className="form-control"
+                                        defaultValue={this.props.reservation.notes}
+                                        //onChange={() => this.setState({ notes: this.value })}
                                         ref={(input) => this.getNotes = input}
                                     />
                                 </div>
                             </div>
-
-                            <button className="btn btn-primary">Kabul Et</button>
                         </form>
-                        <br/>
-                        <div style={{color: "red"}}>
-                            { this.props.error }
-                        </div>
 
                     </div>
                 </div>
@@ -164,18 +240,23 @@ const mapStateToProps = state => {
     return {
         loading: state.subjects.loading,
         error: state.subjects.error,
-        subject: state.subjects.subjects.find(subject => subject.id == state.subjects.editingSubjectId),
-        subject_categories: state.subject_categories.subject_categories,        
-        languages: state.languages.languages
+        shifts: state.shifts.shifts,
+        subjects: state.subjects.subjects,
+        subject_categories: state.subject_categories.subject_categories,
+        seasons: state.seasons.seasons,
+        activeSeason: state.seasons.activeSeason,
+        reservation: state.reservations.reservations.find(reservation => reservation.id == state.reservations.editingReservationId)
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateSubject: (subject) => dispatch(updateSubject(subject)),
+        updateReservation: (reservation) => dispatch(updateReservation(reservation)),
+        //fetchSeasons: () => dispatch(fetchSeasons()),
+        fetchShifts: () => dispatch(fetchShifts()),
+        fetchSubjects: () => dispatch(fetchSubjects()),
         fetchSubjectCategories: () => dispatch(fetchSubjectCategories()),
-        fetchLanguages: () => dispatch(fetchLanguages())
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SubjectEditForm)
+export default connect(mapStateToProps, mapDispatchToProps)(ReservationEditForm)

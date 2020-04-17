@@ -1,32 +1,30 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { updateApplicant } from '../../redux-store'
-import $ from 'jquery'
 import LoaderImage from 'images/loader.gif'
 
 
 class ApplicantEditForm extends React.Component {
     constructor() {
         super();
+
         this.submitForm = this.submitForm.bind(this);
+        this.checkFormValidity = this.checkFormValidity.bind(this);
     }
 
-    componentDidMount() {
-        //this.loadJquery()
-    }
+    checkFormValidity(form) {
 
-    /*
-    loadJquery() {
-        <script type="text/javascript">
-            $('#start_time').timepicker()
-        </script>
+        if (form.first_name.value == "" || form.last_name.value == "" || form.mobile_phone.value == "")
+            return false;
+
+        return true;
+
     }
-    */
 
     submitForm(event) {
         event.preventDefault();
 
-        if (!event.target.checkValidity()) {
+        if (!this.checkFormValidity(event.target)) {
             console.log("Form is invalid!");
             this.setState({
                 errorMsg: "Все поля должны быть заполнены !"
@@ -37,6 +35,7 @@ class ApplicantEditForm extends React.Component {
             console.log("Form is Valid!");
             //console.log("Event Target : " + event.target.id.value + " " + event.target.title.value + " " + event.target.start_time.value + " " + event.target.end_time.value + " " + event.target.notes.value);
             //console.log("Reference : " + this.getTitle.value + " " + this.getStartTime.value + " " + this.getEndTime.value + " " + this.getNotes.value);
+            console.log("THIS IS APPLICANT ID : " + event.target.id.value)
 
 
             this.props.updateApplicant({
@@ -46,13 +45,13 @@ class ApplicantEditForm extends React.Component {
                 patronymic: event.target.patronymic.value,
                 home_phone: event.target.home_phone.value,
                 mobile_phone: event.target.mobile_phone.value,
-                birth_date: event.target.birth_date.value,
-                photo_url: event.target.photo_url.files[0].name,
+                school_grade: event.target.school_grade.value,
+                age: event.target.age.value,
                 notes: event.target.notes.value
             })
 
-            if (!this.props.loading)
-                this.props.history.push('/applicants')
+            //if (!this.props.loading)
+            //this.props.history.push('/applicants')
         }
     }
 
@@ -120,27 +119,25 @@ class ApplicantEditForm extends React.Component {
                                         ref={(input) => this.getMobilePhone = input}
                                     />
                                 </div>
-                            </div>                            
+                            </div>
 
                             <div className="form-group row">
-                                <label htmlFor="birth_date" className="col-sm-10 col-form-label">Doglan Senesi</label>
-                                <div className="col-sm-10 input-group bootstrap-datepicker datepicker">
-                                    <input type="date" id="birth_date" name="birth_date" className="form-control input-small" required
-                                        defaultValue={this.props.applicant.birth_date}
-                                        ref={(input) => this.getBirthDate = input}
+                                <label htmlFor="school_grade" className="col-sm-10 col-form-label">Synpy</label>
+                                <div className="col-sm-10">
+                                    <input type="text" id="school_grade" name="school_grade" className="form-control"
+                                        defaultValue={this.props.applicant.school_grade}
+                                        ref={(input) => this.getSchoolGrade = input}
                                     />
-                                    <span className="input-group-addon"><i className="glyphicon glyphicon-time"></i></span>
                                 </div>
                             </div>
 
                             <div className="form-group row">
-                                <label htmlFor="photo_url" className="col-sm-10 col-form-label">Suraty</label>
+                                <label htmlFor="age" className="col-sm-10 col-form-label">Ýaşy</label>
                                 <div className="col-sm-10">
-                                    <input type="file" id="photo_url" name="photo_url" className="form-control input-small" required
-                                        defaultValue={""}
-                                        ref={(input) => this.getPhotoUrl = input}
+                                    <input type="text" id="age" name="age" className="form-control"
+                                        defaultValue={this.props.applicant.age}
+                                        ref={(input) => this.getAge = input}
                                     />
-                                    <span className="input-group-addon"><i className="glyphicon glyphicon-time"></i></span>
                                 </div>
                             </div>
 
@@ -148,7 +145,7 @@ class ApplicantEditForm extends React.Component {
                             <div className="form-group row">
                                 <label htmlFor="notes" className="col-sm-10 col-form-label">Bellikler</label>
                                 <div className="col-sm-10">
-                                    <textarea type="text" id="notes" name="notes" className="form-control" required 
+                                    <textarea type="text" id="notes" name="notes" className="form-control" required
                                         defaultValue={this.props.applicant.notes}
                                         ref={(input) => this.getNotes = input}
                                     />
@@ -157,9 +154,9 @@ class ApplicantEditForm extends React.Component {
 
                             <button className="btn btn-primary">Kabul Et</button>
                         </form>
-                        <br/>
-                        <div style={{color: "red"}}>
-                            { this.props.error }
+                        <br />
+                        <div style={{ color: "red" }}>
+                            {this.props.error}
                         </div>
 
                     </div>

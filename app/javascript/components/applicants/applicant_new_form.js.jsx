@@ -4,17 +4,33 @@ import { postApplicant } from '../../redux-store'
 import LoaderImage from 'images/loader.gif'
 
 
+
 class ApplicantNewForm extends React.Component {
     constructor() {
         super();
 
+        this.state = {
+
+        }
+
         this.submitForm = this.submitForm.bind(this);
+        this.checkFormValidity = this.checkFormValidity.bind(this);
+    }
+
+    checkFormValidity(form) {
+
+        if (form.first_name.value == "" || form.last_name.value == "" || form.mobile_phone.value == "")
+            return false;
+        
+        return true;
+
     }
 
     submitForm(event) {
         event.preventDefault();
 
-        if (!event.target.checkValidity()) {
+        //if (!event.target.checkValidity()) {
+        if (!this.checkFormValidity(event.target)) {
             console.log("Form is invalid!");
             this.setState({
                 errorMsg: "Все поля должны быть заполнены !"
@@ -23,10 +39,6 @@ class ApplicantNewForm extends React.Component {
         }
         else {
             console.log("Form is Valid!");
-            //console.log("Event Target : " + event.target.title.value + " " + event.target.notes.value);
-            //console.log("Reference : " + this.getTitle.value + " " + this.getNotes.value);
-            console.log("File paths : " + event.target.photo_url.files[0].name);
-
 
             this.props.postApplicant({
                 first_name: event.target.first_name.value,
@@ -34,29 +46,29 @@ class ApplicantNewForm extends React.Component {
                 patronymic: event.target.patronymic.value,
                 home_phone: event.target.home_phone.value,
                 mobile_phone: event.target.mobile_phone.value,
-                birth_date: event.target.birth_date.value,
-                photo_url: event.target.photo_url.files[0].name,
-                notes: event.target.notes.value
+                school_grade: event.target.school_grade.value,
+                age: event.target.age.value,
+                notes: (event.target.notes.value)
             })
             /*
-            .then(response => {
+            .then((response) => {
                 //console.log(response.data)
-                this.props.history.push('applicants/'+response.data.id)
+                //this.props.history.push('/applicants/'+response.data.id)
+                //this.props.history.push('applicants/' + this.props.applicants)
             })
-            .catch(error => {
-                /*
-                if (error.response.status === 401) {
-                    localStorage.removeItem('currentUser');
-                    localStorage.removeItem('Token');
-                }
+            .catch(() => {
+                console.log("SOMETHINGS IS WRONG !!!!!!!!!!!!!!!")
+                //if (error.response.status === 401) {
+                //    localStorage.removeItem('currentUser');
+                //    localStorage.removeItem('Token');
+                //}
 
-                console.log(error.error)
-                const errorMsg = error.response.message
-                dispatch(postApplicantFailure(errorMsg))
+                //console.log(error.error)
+                //const errorMsg = error.response.message
+                //dispatch(postApplicantFailure(errorMsg))
                 
             })
             */
-
             //if (!this.props.loading)
                 //this.props.history.push('/applicants')
         }
@@ -123,19 +135,19 @@ class ApplicantNewForm extends React.Component {
                             </div>
 
                             <div className="form-group row">
-                                <label htmlFor="photo_url" className="col-sm-10 col-form-label">Suraty</label>
+                                <label htmlFor="school_grade" className="col-sm-10 col-form-label">Synpy</label>
                                 <div className="col-sm-10">
-                                    <input type="file" id="photo_url" name="photo_url" className="form-control" required
-                                        ref={(input) => this.getPhotoUrl = input}
+                                    <input type="text" id="school_grade" name="school_grade" className="form-control"
+                                        ref={(input) => this.getSchoolGrade = input}
                                     />
                                 </div>
                             </div>
 
                             <div className="form-group row">
-                                <label htmlFor="birth_date" className="col-sm-10 col-form-label">Doglan Senesi</label>
+                                <label htmlFor="age" className="col-sm-10 col-form-label">Ýaşy</label>
                                 <div className="col-sm-10">
-                                    <input type="date" id="birth_date" name="birth_date" className="form-control" required data-date-format="DD MM YYYY" placeholder="YYYY-MM-DD"
-                                        ref={(input) => this.getBirthDate = input}
+                                    <input type="text" id="age" name="age" className="form-control" 
+                                        ref={(input) => this.getAge = input}
                                     />
                                 </div>
                             </div>

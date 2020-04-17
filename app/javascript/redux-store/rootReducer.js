@@ -1,5 +1,6 @@
 //import { combineReducers } from '../../../node_modules/redux'
 import { combineReducers } from 'redux'
+import { connectRouter } from 'connected-react-router'
 import languageReducer from './language/languageReducer'
 import shiftReducer from './shift/shiftReducer'
 import seasonReducer from './season/seasonReducer'
@@ -9,7 +10,8 @@ import applicantReducer from './applicants/applicantReducer'
 import subjectTestReducer from './subject_tests/subjectTestReducer'
 import reservationReducer from './reservations/reservationReducer'
 
-const rootReducer = combineReducers({
+const createRootReducer = (history) => combineReducers({
+    router: connectRouter(history),
     languages: languageReducer,
     shifts: shiftReducer,
     seasons: seasonReducer,
@@ -20,4 +22,17 @@ const rootReducer = combineReducers({
     reservations: reservationReducer
 })
 
-export default rootReducer
+/*
+const rootReducer = combineReducers({
+    languages: languageReducer,
+    shifts: shiftReducer,
+    seasons: seasonReducer,
+    subject_categories: subjectCategoryReducer,
+    subjects: subjectReducer,
+    applicants: applicantReducer,
+    subject_tests: subjectTestReducer,
+    reservations: reservationReducer
+})
+*/
+// export default rootReducer
+export default createRootReducer

@@ -1,5 +1,5 @@
 const settings = {
-    rootUrl: "http://localhost:3000/",
+    rootUrl: "http://192.168.0.18:3300/",
 }
 
 export default settings;

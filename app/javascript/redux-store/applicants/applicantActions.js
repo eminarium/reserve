@@ -1,10 +1,15 @@
 import axios from 'axios'
 import settings from '../settings'
+import { push } from 'connected-react-router'
 
-import { 
+import {
     FETCH_APPLICANTS_REQUEST,
     FETCH_APPLICANTS_SUCCESS,
     FETCH_APPLICANTS_FAILURE,
+
+    FETCH_SEARCH_APPLICANTS_REQUEST,
+    FETCH_SEARCH_APPLICANTS_SUCCESS,
+    FETCH_SEARCH_APPLICANTS_FAILURE,
 
     POST_APPLICANT_REQUEST,
     POST_APPLICANT_SUCCESS,
@@ -16,6 +21,7 @@ import {
 
     EDIT_APPLICANT,
     APPLICANT_INFO,
+    EMPTY_APPLICANTS,
 
     REMOVE_APPLICANT_REQUEST,
     REMOVE_APPLICANT_SUCCESS,
@@ -45,7 +51,25 @@ const fetchApplicantsFailure = (error) => {
     }
 }
 
+const fetchSearchApplicantsRequest = () => {
+    return {
+        type: FETCH_SEARCH_APPLICANTS_REQUEST
+    }
+}
 
+const fetchSearchApplicantsSuccess = (applicants) => {
+    return {
+        type: FETCH_SEARCH_APPLICANTS_SUCCESS,
+        payload: applicants
+    }
+}
+
+const fetchSearchApplicantsFailure = (error) => {
+    return {
+        type: FETCH_SEARCH_APPLICANTS_FAILURE,
+        payload: error
+    }
+}
 
 const postApplicantRequest = () => {
     return {
@@ -99,6 +123,12 @@ export const applicantInfo = (id) => {
     }
 }
 
+export const emptyApplicants = () => {
+    return {
+        type: EMPTY_APPLICANTS
+    }
+}
+
 export const removeApplicantRequest = () => {
     return {
         type: REMOVE_APPLICANT_REQUEST,
@@ -130,25 +160,53 @@ export const fetchApplicants = () => {
                 "Authorization": localStorage.getItem('Token')
             }
         })
-        //.then(response => response.json())
-        .then( response => {
-            const applicants = response.data
-            dispatch(fetchApplicantsSuccess(applicants))
-        })
-        .catch( error => {
-            if (error.response.status === 401) {
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('Token');
-            }
+            //.then(response => response.json())
+            .then(response => {
+                const applicants = response.data
+                dispatch(fetchApplicantsSuccess(applicants))
+            })
+            .catch(error => {
+                if (error.response.status === 401) {
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('Token');
+                }
 
-            console.log(error.error)
-            const errorMsg = error.message
-            dispatch(fetchApplicantsFailure(errorMsg))
-        })
+                console.log(error.error)
+                const errorMsg = error.message
+                dispatch(fetchApplicantsFailure(errorMsg))
+            })
     }
 }
 
 
+export const fetchSearchApplicants = (search_params) => {
+    return (dispatch) => {
+
+        dispatch(fetchSearchApplicantsRequest)
+
+        axios.get(settings.rootUrl + 'api/v1/applicants?first_name=' + search_params.first_name + '&last_name=' + search_params.last_name + '&patronymic=' + search_params.patronymic, {
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": localStorage.getItem('Token')
+            }
+        })
+            //.then(response => response.json())
+            .then(response => {
+                const applicants = response.data
+                dispatch(fetchSearchApplicantsSuccess(applicants))
+            })
+            .catch(error => {
+                if (error.response.status === 401) {
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('Token');
+                }
+
+                console.log(error.error)
+                const errorMsg = error.message
+                dispatch(fetchSearchApplicantsFailure(errorMsg))
+            })
+    }
+}
 
 export const postApplicant = (applicant) => {
     return (dispatch) => {
@@ -161,8 +219,8 @@ export const postApplicant = (applicant) => {
             patronymic: applicant.patronymic,
             home_phone: applicant.home_phone,
             mobile_phone: applicant.mobile_phone,
-            birth_date: applicant.birth_date,
-            photo_url: applicant.photo_url,
+            age: applicant.age,
+            school_grade: applicant.school_grade,
             notes: applicant.notes
         }), {
             headers: {
@@ -170,20 +228,25 @@ export const postApplicant = (applicant) => {
                 "Authorization": localStorage.getItem('Token')
             }
         })
-        .then(response => {
-            //console.log(response.data)
-            dispatch(postApplicantSuccess(response.data))
-        })
-        .catch(error => {
-            if (error.response.status === 401) {
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('Token');
+            .then(response => {
+                var applicant = response.data
+                console.log(applicant)
+                dispatch(postApplicantSuccess(applicant))
+                dispatch(applicantInfo(applicant.id))
+                dispatch(push('/applicants/' + applicant.id))
+                //browserHistory.push('/applicants/'+response.data)
             }
+            )
+            .catch(error => {
+                //if (error.response.status === 401) {
+                //    localStorage.removeItem('currentUser');
+                //    localStorage.removeItem('Token');
+                //}
 
-            console.log(error.error)
-            const errorMsg = error.response.message
-            dispatch(postApplicantFailure(errorMsg))
-        })
+                //console.log(error.error)
+                //const errorMsg = error.response.message
+                //dispatch(postApplicantFailure(errorMsg))
+            })
     }
 }
 
@@ -199,8 +262,8 @@ export const updateApplicant = (applicant) => {
             patronymic: applicant.patronymic,
             home_phone: applicant.home_phone,
             mobile_phone: applicant.mobile_phone,
-            birth_date: applicant.birth_date,
-            photo_url: applicant.photo_url,
+            age: applicant.age,
+            school_grade: applicant.school_grade,
             notes: applicant.notes
         }), {
             headers: {
@@ -208,20 +271,33 @@ export const updateApplicant = (applicant) => {
                 "Authorization": localStorage.getItem('Token')
             }
         })
-        .then(response => {
-            //console.log(response.data)
-            dispatch(updateApplicantSuccess(response.data))
-        })
-        .catch(error => {
-            if (error.response.status === 401) {
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('Token');
-            }
-
-            console.log(error.error)
-            const errorMsg = error.response.message
-            dispatch(updateApplicantFailure(errorMsg))
-        })
+            .then(response => {
+                console.log(response)
+                dispatch(updateApplicantSuccess(response.data))
+                dispatch(push('/applicants/' + response.data.id))
+                dispatch(applicantInfo(response.data.id))
+                //dispatch(push('/applicants/'+applicant.id))
+                //var applicant = response.data
+                //console.log(applicant)
+                //dispatch(updateApplicantSuccess(applicant))
+                //dispatch(applicantInfo(applicant.id))
+                //dispatch(push('/applicants/' + applicant.id))            
+                //var applicant = response.data
+                //console.log(response.data)
+                //dispatch(push('/applicants/' + response.data.id))
+            })
+            .catch(error => {
+                /*
+                if (error.response.status === 401) {
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('Token');
+                }
+    
+                console.log(error.error)
+                const errorMsg = error.response.message
+                dispatch(updateApplicantFailure(errorMsg))
+                */
+            })
     }
 }
 
@@ -236,18 +312,18 @@ export const removeApplicant = (id) => {
                 "Authorization": localStorage.getItem('Token')
             }
         })
-        .then(response => {
-            dispatch(removeApplicantSuccess(id))
-        })
-        .catch(error => {
-            if (error.response.status === 401) {
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('Token');
-            }
+            .then(response => {
+                dispatch(removeApplicantSuccess(id))
+            })
+            .catch(error => {
+                if (error.response.status === 401) {
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('Token');
+                }
 
-            console.log(error.error)
-            const errorMsg = error.response.message
-            dispatch(removeApplicantFailure(errorMsg))
-        })
+                console.log(error.error)
+                const errorMsg = error.response.message
+                dispatch(removeApplicantFailure(errorMsg))
+            })
     }
 }

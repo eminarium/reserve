@@ -4,7 +4,7 @@ class Api::V1::SubjectTestsController < ApplicationController
   respond_to :json
 
   def index
-    @subject_tests = SubjectTest.order('test_date ASC')
+    @subject_tests = SubjectTest.order('created_at ASC').includes(:applicant, :subject, :season, :user)
     respond_with @subject_tests, status: :ok        
   end
 
@@ -80,7 +80,7 @@ class Api::V1::SubjectTestsController < ApplicationController
   end
 
   def subject_test_params
-    params.require(:subject_test).permit(:applicant_id, :subject_id, :season_id, :test_date, :result, :notes)
+    params.require(:subject_test).permit(:applicant_id, :subject_id, :season_id, :result, :notes)
   end
   
 end

@@ -121,7 +121,7 @@ class Seasons extends React.Component {
                                             &nbsp;
                                             &nbsp;
                                             <button className="btn btn-danger"
-                                                onClick={() => { if (window.confirm("Tapgyry bozmalymy ?")) this.props.removeSeason(season.id) }}
+                                                //onClick={() => { if (window.confirm("Tapgyry bozmalymy ?")) this.props.removeSeason(season.id) }}
                                             >
                                                 <i className="fa fa-trash"></i>
                                             </button>

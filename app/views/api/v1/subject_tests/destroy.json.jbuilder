@@ -1,7 +1,6 @@
 json.(
     @subject_test, 
         :id, 
-        :test_date, 
         :result,
         :notes, 
         :subject_id,

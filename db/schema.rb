@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_09_154514) do
+ActiveRecord::Schema.define(version: 2020_04_14_142553) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,12 +21,12 @@ ActiveRecord::Schema.define(version: 2020_04_09_154514) do
     t.string "patronymic"
     t.string "home_phone"
     t.string "mobile_phone"
-    t.string "photo_url"
-    t.date "birth_date"
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.integer "school_grade"
+    t.integer "age"
     t.index ["first_name"], name: "index_applicants_on_first_name"
     t.index ["home_phone"], name: "index_applicants_on_home_phone"
     t.index ["last_name"], name: "index_applicants_on_last_name"
@@ -109,7 +109,6 @@ ActiveRecord::Schema.define(version: 2020_04_09_154514) do
   create_table "subject_tests", force: :cascade do |t|
     t.bigint "applicant_id"
     t.bigint "subject_id"
-    t.date "test_date"
     t.bigint "season_id"
     t.float "result"
     t.text "notes"

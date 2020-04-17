@@ -4,7 +4,14 @@ class Api::V1::ApplicantsController < ApplicationController
   respond_to :json
 
   def index
-    @applicants = Applicant.order('first_name ASC')
+    @applicants = Applicant.includes(:user).order('created_at DESC')
+
+    if (params[:first_name] || params[:last_name] || params[:patronymic])
+      @applicants = @applicants.where("lower(first_name) LIKE ?", "%" + params[:first_name].downcase + "%") if params[:first_name] != ""
+      @applicants = @applicants.where("lower(last_name) LIKE ?", "%" + params[:last_name].downcase + "%") if params[:last_name] != ""
+      @applicants = @applicants.where("lower(patronymic) LIKE ?", "%" + params[:patronymic].downcase + "%") if params[:patronymic] != ""
+    end
+
     respond_with @applicants, status: :ok    
   end
 
@@ -25,7 +32,7 @@ class Api::V1::ApplicantsController < ApplicationController
     @applicant.user_id = current_user.id
 
     if @applicant.save
-      respond_with @applicant
+      respond_with @applicant, status: :ok
     else
       render json: { 
         error: @applicant.errors, 
@@ -80,7 +87,7 @@ class Api::V1::ApplicantsController < ApplicationController
   end
 
   def applicant_params
-    params.require(:applicant).permit(:first_name, :last_name, :patronymic, :home_phone, :mobile_phone, :photo_url, :birth_date, :notes)
+    params.require(:applicant).permit(:first_name, :last_name, :patronymic, :home_phone, :mobile_phone, :school_grade, :age, :notes)
   end
 
 end

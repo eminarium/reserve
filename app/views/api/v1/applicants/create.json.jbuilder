@@ -4,11 +4,17 @@ json.(
         :first_name,
         :last_name,
         :patronymic,
-        :birth_date,
+        :age,
         :home_phone,
         :mobile_phone,
-        :photo_url,
+        :school_grade,
         :notes, 
         :created_at, 
-        :updated_at
+        :updated_at,
 )
+
+json.user {
+    json.id         @applicant.user.id
+    json.username   @applicant.user.username
+    json.role       @applicant.user.role
+}

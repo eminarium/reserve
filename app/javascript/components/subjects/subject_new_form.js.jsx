@@ -83,7 +83,7 @@ class SubjectNewForm extends React.Component {
                             </div>
 
                             <div className="form-group row">
-                                <label htmlFor="subject_category_id" className="col-sm-10 col-form-label">Dili</label>
+                                <label htmlFor="subject_category_id" className="col-sm-10 col-form-label">Ders Görnüşi</label>
                                 <div className="col-sm-10">
                                     <select className="custom-select" id="subject_category_id" name="subject_category_id">
                                         {

@@ -5,9 +5,9 @@ class Api::V1::ReservationsController < ApplicationController
 
   def index
     if params[:applicant_id]
-      @reservations = Reservation.where(applicant_id: params[:applicant_id]).order('created_at DESC').includes(:season, :shift, :subject)
+      @reservations = Reservation.where(applicant_id: params[:applicant_id]).order('created_at DESC').includes(:applicant, :season, :shift, :subject, :user)
     else
-      @reservations = Reservation.order('created_at DESC').includes(:season, :shift, :subject)
+      @reservations = Reservation.order('created_at DESC').includes(:applicant, :season, :shift, :subject, :user)
     end
 
     respond_with @reservations, status: :ok    

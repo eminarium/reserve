@@ -105,7 +105,7 @@ class Subjects extends React.Component {
                                             &nbsp;
                                             &nbsp;
                                             <button className="btn btn-danger"
-                                                onClick={() => { if (window.confirm("Dersi bozmalymy ?")) this.props.removeSubject(subject.id) }}
+                                                //onClick={() => { if (window.confirm("Dersi bozmalymy ?")) this.props.removeSubject(subject.id) }}
                                             >
                                                 <i className="fa fa-trash"></i>
                                             </button>

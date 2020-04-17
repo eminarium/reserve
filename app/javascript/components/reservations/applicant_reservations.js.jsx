@@ -28,27 +28,32 @@ class ApplicantReservations extends React.Component {
                 <table className="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col" colSpan="10">
+                            <th scope="col" colSpan="11">
                                 Rezerwler
                             </th>
                             <th>
-                                <Link to={"/applicants/" + this.props.applicant.id + "/reservations/new"}>
+                                <Link to={{ pathname: "/applicants/" + this.props.applicant.id + "/reservations/new", state: { applicant: this.props.applicant } }}>
                                     <button className="btn btn-info">
                                         <i className="fa fa-plus"></i>
                                     </button>
                                 </Link>
+                                &nbsp;
+                                <button className="btn btn-warning" onClick={() => this.props.fetchReservations()}>
+                                    <i className="fa fa-refresh"></i>
+                                </button>
                             </th>
                         </tr>
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Diňleýji</th>
                             <th scope="col">Dersi</th>
-                            <th scope="col">Wagty (Smena)</th>
-                            <th scope="col">Bellenilen Senesi</th>
+                            <th scope="col"><i className="fa fa-clock-o" style={{ fontSize: 24 }}></i></th>
+                            <th scope="col"><i className="fa fa-calendar" style={{ fontSize: 24 }}></i></th>
                             <th scope="col">Tapgyry</th>
                             <th scope="col">SMS ?</th>
                             <th scope="col">JAŇ ?</th>
                             <th scope="col">Ýazyldymy ?</th>
+                            <th scope="col"><i className="fa fa-user" style={{ fontSize: 24 }}></i></th>
                             <th scope="col">Teswiri</th>
                             <th scope="col">Amallar</th>
                         </tr>
@@ -59,7 +64,7 @@ class ApplicantReservations extends React.Component {
                             (this.props.loading) ?
                                 (
                                     <tr>
-                                        <td colSpan="11">
+                                        <td colSpan="12">
                                             <div style={{ alignItems: 'center' }} >
                                                 <img src={LoaderImage} />
                                             </div>
@@ -71,7 +76,7 @@ class ApplicantReservations extends React.Component {
                             (this.props.error) ?
                                 (
                                     <tr>
-                                        <td colSpan="11">
+                                        <td colSpan="12">
                                             <h3>
                                                 {this.props.error}
                                             </h3>
@@ -79,24 +84,54 @@ class ApplicantReservations extends React.Component {
                                     </tr>
                                 ) :
                                 this.props.reservations.map((reservation, index) => {
+
+                                    var reg_date = new Date(reservation.created_at)
+
                                     return (
                                         <tr key={reservation.id}>
                                             <th scope="row">{index + 1}</th>
                                             <td>
-                                                {reservation.applicant.first_name}
-                                                {reservation.applicant.last_name}
+                                                {reservation.applicant.first_name} &nbsp;
+                                                {reservation.applicant.last_name} &nbsp;
                                                 {reservation.applicant.patronymic}
                                             </td>
                                             <td>
-                                                {reservation.subject.title}
-                                            ({reservation.subject.language.title})
-                                        </td>
-                                            <td>{reservation.shift.title}</td>
-                                            <td>{reservation.reg_datetime}</td>
-                                            <td>{reservation.season.order_no}</td>
-                                            <td>{reservation.is_sms_sent}</td>
-                                            <td>{reservation.is_called}</td>
-                                            <td>{reservation.is_registered}</td>
+                                                {reservation.subject.title} &nbsp;
+                                                ({reservation.subject.language.title})
+                                            </td>
+                                            <td>
+                                                {reservation.shift.title}
+                                            </td>
+                                            <td>
+                                                {reg_date.getDate() < 9 ? "0" : ""}{reg_date.getDate()}-
+                                                {reg_date.getMonth() < 9 ? "0" : ""}{reg_date.getMonth() + 1}-
+                                                {reg_date.getFullYear()}
+                                            </td>
+                                            <td>
+                                                {reservation.season.order_no}
+                                            </td>
+                                            <td>
+                                                {
+                                                    reservation.is_sms_sent ?
+                                                        <i className="fa fa-check" style={{ color: 'green', fontSize: 20 }}></i> :
+                                                        <i className="fa fa-times" style={{ color: 'red', fontSize: 20 }}></i>
+                                                }
+                                            </td>
+                                            <td>
+                                                {
+                                                    reservation.is_called ?
+                                                        <i className="fa fa-check" style={{ color: 'green', fontSize: 20 }}></i> :
+                                                        <i className="fa fa-times" style={{ color: 'red', fontSize: 20 }}></i>
+                                                }
+                                            </td>
+                                            <td>
+                                                {
+                                                    reservation.is_registered ?
+                                                        <i className="fa fa-check" style={{ color: 'green', fontSize: 20 }}></i> :
+                                                        <i className="fa fa-times" style={{ color: 'red', fontSize: 20 }}></i>
+                                                }
+                                            </td>
+                                            <td>{reservation.user.username}</td>
                                             <td>{reservation.notes}</td>
                                             <td>
                                                 <Link to={"/reservations/" + reservation.id}>
@@ -137,7 +172,7 @@ class ApplicantReservations extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        reservations: state.reservations.reservations,
+        reservations: state.reservations.reservations.filter(reservation => reservation.applicant.id === state.applicants.currentApplicant.id),
         loading: state.reservations.loading,
         error: state.reservations.error,
     }

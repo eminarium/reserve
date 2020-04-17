@@ -97,7 +97,7 @@ class Languages extends React.Component {
                                             &nbsp;
                                             &nbsp;
                                             <button className="btn btn-danger"
-                                                onClick={() => { if (window.confirm("Dili bozmalymy ?")) this.props.removeLanguage(language.id) }}
+                                                //onClick={() => { if (window.confirm("Dili bozmalymy ?")) this.props.removeLanguage(language.id) }}
                                             >
                                                 <i className="fa fa-trash"></i>
                                             </button>

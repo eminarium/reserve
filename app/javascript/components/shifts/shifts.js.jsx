@@ -106,7 +106,7 @@ class Shifts extends React.Component {
                                             &nbsp;
                                             &nbsp;
                                             <button className="btn btn-danger"
-                                                onClick={() => { if (window.confirm("Wagty (smenany) bozmalymy ?")) this.props.removeShift(shift.id) }}
+                                                //onClick={() => { if (window.confirm("Wagty (smenany) bozmalymy ?")) this.props.removeShift(shift.id) }}
                                             >
                                                 <i className="fa fa-trash"></i>
                                             </button>

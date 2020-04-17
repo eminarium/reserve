@@ -81,7 +81,7 @@ class SubjectTests extends React.Component {
                                             {subject_test.subject.title}
                                             ({subject_test.subject.language.title})
                                         </td>
-                                        <td>{subject_test.test_date}</td>
+                                        <td>{subject_test.created_at}</td>
                                         <td>{subject_test.result}</td>
                                         <td>{subject_test.season.order_no}</td>
                                         <td>{subject_test.notes}</td>

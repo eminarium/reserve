@@ -27,7 +27,7 @@ Rails.application.routes.draw do
       resources :applicants,          only: [:index, :show, :create, :update, :destroy]
       resources :users,               only: [:index, :create, :update]
 
-      resources :applicants,              only: [:index, :show, :create, :update, :destroy] do
+      resources :applicants do
         resources :subject_tests,         only: [:index, :show, :create, :update, :destroy]
         resources :reservations,          only: [:index, :show, :create, :update, :destroy]
       end

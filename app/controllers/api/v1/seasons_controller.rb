@@ -4,7 +4,7 @@ class Api::V1::SeasonsController < ApplicationController
   respond_to :json
 
   def index
-    @seasons = Season.order('order_no ASC')
+    @seasons = Season.includes(:user).order('order_no ASC')
     respond_with @seasons, status: :ok    
   end
 

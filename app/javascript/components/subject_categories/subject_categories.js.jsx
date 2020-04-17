@@ -105,7 +105,7 @@ class SubjectCategories extends React.Component {
                                             &nbsp;
                                             &nbsp;
                                             <button className="btn btn-danger"
-                                                onClick={() => { if (window.confirm("Ders Görnüşini bozmalymy ?")) this.props.removeSubjectCategory(subject_category.id) }}
+                                                //onClick={() => { if (window.confirm("Ders Görnüşini bozmalymy ?")) this.props.removeSubjectCategory(subject_category.id) }}
                                             >
                                                 <i className="fa fa-trash"></i>
                                             </button>

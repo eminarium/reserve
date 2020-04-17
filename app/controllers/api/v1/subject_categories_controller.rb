@@ -4,7 +4,7 @@ class Api::V1::SubjectCategoriesController < ApplicationController
   respond_to :json
 
   def index
-    @subject_categories = SubjectCategory.order('title ASC')
+    @subject_categories = SubjectCategory.includes(:user).order('title ASC')
     respond_with @subject_categories, status: :ok    
   end
 

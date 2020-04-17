@@ -1,10 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { 
+import {
     fetchReservations,
     editReservation,
     reservationInfo,
-    removeReservation
+    removeReservation,
+    applicantInfo
 } from '../../redux-store'
 import LoaderImage from 'images/loader.gif'
 
@@ -28,7 +29,7 @@ class Reservations extends React.Component {
                 <table className="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col" colSpan="8">
+                            <th scope="col" colSpan="11">
                                 Rezerwler
                             </th>
                         </tr>
@@ -50,75 +51,102 @@ class Reservations extends React.Component {
                     <tbody>
                         {
                             (this.props.loading) ?
-                            (
-                                <tr>
-                                    <td colSpan="8">
-                                        <div style={{ alignItems: 'center' }} >
-                                            <img src={LoaderImage} />
-                                        </div>
-                                    </td>
-                                </tr>
-                            ) : (<tr><td></td></tr>)
+                                (
+                                    <tr>
+                                        <td colSpan="11">
+                                            <div style={{ alignItems: 'center' }} >
+                                                <img src={LoaderImage} />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ) : (<tr><td></td></tr>)
                         }
                         {
                             (this.props.error) ?
-                            (
-                                <tr>
-                                    <td colSpan="8">
-                                        <h3>
-                                            {this.props.error}
-                                        </h3>
-                                    </td>
-                                </tr>                                
-                            ) :
-                            this.props.reservations.map((reservation, index) => {
-                                return (
-                                    <tr key={reservation.id}>
-                                        <th scope="row">{index+1}</th>
-                                        <td>
-                                            {reservation.applicant.first_name} 
-                                            {reservation.applicant.last_name} 
-                                            {reservation.applicant.patronymic} 
+                                (
+                                    <tr>
+                                        <td colSpan="11">
+                                            <h3>
+                                                {this.props.error}
+                                            </h3>
                                         </td>
-                                        <td>
-                                            {reservation.subject.title}
-                                            ({reservation.subject.language.title})
+                                    </tr>
+                                ) :
+                                this.props.reservations.map((reservation, index) => {
+
+                                    var reg_date = new Date(reservation.created_at)
+
+                                    return (
+                                        <tr key={reservation.id}>
+                                            <th scope="row">{index + 1}</th>
+                                            <td>
+                                                <Link onClick={() => this.props.applicantInfo(reservation.applicant.id)} to={"/applicants/" + reservation.applicant.id} >
+                                                    {reservation.applicant.first_name} &nbsp;
+                                                {reservation.applicant.last_name} &nbsp;
+                                                {reservation.applicant.patronymic}
+                                                </Link>
+                                            </td>
+                                            <td>
+                                                {reservation.subject.title} &nbsp;
+                                                ({reservation.subject.language.title})
                                         </td>
-                                        <td>{reservation.shift.title}</td>
-                                        <td>{reservation.reg_datetime}</td>
-                                        <td>{reservation.season.order_no}</td>
-                                        <td>{reservation.is_sms_sent}</td>
-                                        <td>{reservation.is_called}</td>
-                                        <td>{reservation.is_registered}</td>
-                                        <td>{reservation.notes}</td>
-                                        <td>
-                                            <Link to={"/reservations/" + reservation.id}>
-                                                <button className="btn btn-primary"
-                                                    onClick={() => this.props.reservationInfo(reservation.id)}
-                                                >
-                                                    <i className="fa fa-info"></i>
-                                                </button>
-                                            </Link> 
+                                            <td>{reservation.shift.title}</td>
+                                            <td>
+                                                {reg_date.getDate() < 9 ? "0" : ""}{reg_date.getDate()}-
+                                            {reg_date.getMonth() < 9 ? "0" : ""}{reg_date.getMonth() + 1}-
+                                            {reg_date.getFullYear()}
+                                            </td>
+                                            <td>{reservation.season.order_no}</td>
+                                            <td>
+                                                {
+                                                    reservation.is_sms_sent ?
+                                                        <i className="fa fa-check" style={{ color: 'green', fontSize: 20 }}></i> :
+                                                        <i className="fa fa-times" style={{ color: 'red', fontSize: 20 }}></i>
+                                                }
+                                            </td>
+                                            <td>
+                                                {
+                                                    reservation.is_called ?
+                                                        <i className="fa fa-check" style={{ color: 'green', fontSize: 20 }}></i> :
+                                                        <i className="fa fa-times" style={{ color: 'red', fontSize: 20 }}></i>
+                                                }
+                                            </td>
+                                            <td>
+                                                {
+                                                    reservation.is_registered ?
+                                                        <i className="fa fa-check" style={{ color: 'green', fontSize: 20 }}></i> :
+                                                        <i className="fa fa-times" style={{ color: 'red', fontSize: 20 }}></i>
+                                                }
+                                            </td>
+                                            <td>{reservation.notes}</td>
+                                            <td>
+                                                <Link to={"/reservations/" + reservation.id}>
+                                                    <button className="btn btn-primary"
+                                                        onClick={() => this.props.reservationInfo(reservation.id)}
+                                                    >
+                                                        <i className="fa fa-info"></i>
+                                                    </button>
+                                                </Link>
                                             &nbsp;
                                             &nbsp;
                                             <Link to={"/reservations/" + reservation.id + "/edit"}>
-                                                <button className="btn btn-warning"
-                                                    onClick={() => this.props.editReservation(reservation.id)}
-                                                >
-                                                    <i className="fa fa-pencil"></i>
-                                                </button>
-                                            </Link> 
+                                                    <button className="btn btn-warning"
+                                                        onClick={() => this.props.editReservation(reservation.id)}
+                                                    >
+                                                        <i className="fa fa-pencil"></i>
+                                                    </button>
+                                                </Link>
                                             &nbsp;
                                             &nbsp;
                                             <button className="btn btn-danger"
-                                                onClick={() => { if (window.confirm("Rezerwi bozmalymy ?")) this.props.removeReservation(reservation.id) }}
-                                            >
-                                                <i className="fa fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                );
-                            })
+                                                    onClick={() => { if (window.confirm("Rezerwi bozmalymy ?")) this.props.removeReservation(reservation.id) }}
+                                                >
+                                                    <i className="fa fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })
                         }
 
                     </tbody>
@@ -141,7 +169,8 @@ const mapDispatchToProps = dispatch => {
         fetchReservations: () => dispatch(fetchReservations()),
         editReservation: (id) => dispatch(editReservation(id)),
         removeReservation: (id) => dispatch(removeReservation(id)),
-        reservationInfo: (id) => dispatch(reservationInfo(id))
+        reservationInfo: (id) => dispatch(reservationInfo(id)),
+        applicantInfo: (id) => dispatch(applicantInfo(id))
     }
 }
 

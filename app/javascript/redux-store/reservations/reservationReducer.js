@@ -1,4 +1,4 @@
-import { 
+import {
     FETCH_RESERVATIONS_REQUEST,
     FETCH_RESERVATIONS_SUCCESS,
     FETCH_RESERVATIONS_FAILURE,
@@ -29,7 +29,7 @@ const initialState = {
 }
 
 const reservationReducer = (state = initialState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case FETCH_RESERVATIONS_REQUEST:
             return {
                 ...state,
@@ -85,16 +85,16 @@ const reservationReducer = (state = initialState, action) => {
                 ...state,
                 loading: true,
                 error: '',
-                editingReservationId: '',
-                currentReservation: ''
+                editingReservationId: state.editingReservationId,
+                currentReservation: state.currentReservation
             }
         case UPDATE_RESERVATION_SUCCESS:
             return {
                 loading: false,
                 reservations: [...state.reservations.filter(reservation => (reservation.id != action.payload.id)), action.payload],
                 error: '',
-                editingReservationId: '',
-                currentReservation: ''
+                editingReservationId: state.editingReservationId,
+                currentReservation: state.currentReservation
             }
         case UPDATE_RESERVATION_FAILURE:
             return {
@@ -102,7 +102,7 @@ const reservationReducer = (state = initialState, action) => {
                 reservations: state.reservations,
                 error: action.payload,
                 editingReservationId: '',
-                currentReservation: ''
+                currentReservation: state.currentReservation
             }
 
         case EDIT_RESERVATION:
@@ -111,9 +111,8 @@ const reservationReducer = (state = initialState, action) => {
                 reservations: state.reservations,
                 error: '',
                 editingReservationId: action.payload,
-                currentReservation: ''
+                currentReservation: state.reservations.find(reservation => reservation.id === action.payload)
             }
-
 
         case RESERVATION_INFO:
             return {
@@ -122,8 +121,8 @@ const reservationReducer = (state = initialState, action) => {
                 error: '',
                 editingReservationId: '',
                 currentReservation: state.reservations.find(reservation => reservation.id === action.payload)
-            }            
-        
+            }
+
         case REMOVE_RESERVATION_REQUEST:
             return {
                 loading: true,

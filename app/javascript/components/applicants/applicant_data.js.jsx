@@ -8,9 +8,11 @@ class ApplicantData extends React.Component {
 
     render() {
 
+        var reg_date = new Date(this.props.applicant.created_at)
+
         return (
             <div>
-                <br/>
+                <br />
 
                 <div className="card" style={{ width: '32rem' }}>
                     <div className="card-body">
@@ -30,20 +32,32 @@ class ApplicantData extends React.Component {
                                     <td>{this.props.applicant.patronymic}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Öý Tel. Belgisi</th>
+                                    <th scope="row"><i className="fa fa-phone" style={{ fontSize: 24 }}></i></th>
                                     <td>{this.props.applicant.home_phone}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Mobil Tel. Belgisi</th>
+                                    <th scope="row"><i className="fa fa-mobile" style={{ fontSize: 24 }}></i></th>
                                     <td>{this.props.applicant.mobile_phone}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Suraty</th>
-                                    <td>{this.props.applicant.photo_url}</td>
+                                    <th scope="row">Synpy</th>
+                                    <td>{this.props.applicant.school_grade}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Doglan Senesi</th>
-                                    <td>{this.props.applicant.birth_date}</td>
+                                    <th scope="row">Ýaşy</th>
+                                    <td>{this.props.applicant.age}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><i className="fa fa-calendar" style={{ fontSize: 24 }}></i></th>
+                                    <td>
+                                        {reg_date.getDate() < 9 ? "0" : ""}{reg_date.getDate()}-
+                                        {reg_date.getMonth() < 9 ? "0" : ""}{reg_date.getMonth() + 1}-
+                                        {reg_date.getFullYear()}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><i className="fa fa-user" style={{ fontSize: 24 }}></i></th>
+                                    <td>{this.props.applicant.user.username}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Bellikler</th>
@@ -58,14 +72,14 @@ class ApplicantData extends React.Component {
                                             >
                                                 <i className="fa fa-pencil"></i>
                                             </button>
-                                        </Link> 
+                                        </Link>
                                         &nbsp;
                                         &nbsp;
                                         <Link to={"/applicants"}>
                                             <button className="btn btn-primary">
                                                 <i className="fa fa-list"></i>
                                             </button>
-                                        </Link> 
+                                        </Link>
                                     </td>
                                 </tr>
                             </tbody>

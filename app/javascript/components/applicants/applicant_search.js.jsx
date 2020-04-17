@@ -1,10 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
-    fetchApplicants,
+    fetchSearchApplicants,
     editApplicant,
     applicantInfo,
-    removeApplicant
+    removeApplicant,
+    emptyApplicants
 } from '../../redux-store'
 import LoaderImage from 'images/loader.gif'
 
@@ -12,13 +13,45 @@ import {
     Link
 } from "react-router-dom";
 
-class Applicants extends React.Component {
+class ApplicantSearch extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            no_params_error: ''
+        }
+
+        this.getSearchApplicants = this.getSearchApplicants.bind(this)
+        this.clearSearchParams = this.clearSearchParams.bind(this)
     }
 
     componentDidMount() {
-        this.props.fetchApplicants()
+        this.props.emptyApplicants()
+    }
+
+    clearSearchParams() {
+        this.getFirstName.value = ""
+        this.getLastName.value = ""
+        this.getPatronymic.value = ""
+    }
+
+    getSearchApplicants(event) {
+
+        event.preventDefault()
+
+        if (this.getFirstName.value == "" && this.getLastName.value == "" && this.getPatronymic.value == "") {
+            this.props.emptyApplicants()
+            this.setState({ no_params_error: "Gözleg maglumatlary girizilmedi ..." })
+            return false;
+        }
+        else {
+            this.setState({ no_params_error: '' })
+            this.props.fetchSearchApplicants({
+                first_name: this.getFirstName.value,
+                last_name: this.getLastName.value,
+                patronymic: this.getPatronymic.value
+            })
+        }
     }
 
     render() {
@@ -28,15 +61,51 @@ class Applicants extends React.Component {
                 <table className="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col" colSpan="11">
-                                Müşderiler
+                            <th scope="col" colSpan="10">
+                                Müşderi Gözlegi &nbsp; &nbsp; &nbsp;
+                                {
+                                    this.state.no_params_error != '' ?
+                                        <span style={{ color: 'red', fontStyle: 'italic' }}>
+                                            {" : " + this.state.no_params_error}
+                                        </span>
+                                        : ""
+                                }
                             </th>
-                            <th>
-                                <Link to={"/applicants/new"}>
-                                    <button className="btn btn-info">
-                                        <i className="fa fa-plus"></i>
-                                    </button>
-                                </Link>
+                        </tr>
+                        <tr>
+                            <th scope="col" colSpan="9">
+                                <form noValidate onSubmit={this.getSearchApplicants} >
+                                    <div className="row">
+                                        <div className="col">
+                                            <input type="text" id="first_name" name="first_name" className="form-control" placeholder="Ady"
+                                                ref={(input) => this.getFirstName = input}
+                                            />
+                                        </div>
+                                        <div className="col">
+                                            <input type="text" id="last_name" name="last_name" className="form-control" placeholder="Familiýasy"
+                                                ref={(input) => this.getLastName = input}
+                                            />
+                                        </div>
+                                        <div className="col">
+                                            <input type="text" id="patronymic" name="patronymic" className="form-control" placeholder="Atasynyň Ady"
+                                                ref={(input) => this.getPatronymic = input}
+                                            />
+                                        </div>
+                                        <div className="col">
+                                            <button className="btn btn-info">
+                                                <i className="fa fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </th>
+                            <th scope="col">
+                                <button className="btn btn-warning"
+                                    onClick={this.clearSearchParams}
+                                >
+                                    <i className="fa fa-times"></i>
+                                </button>
                             </th>
                         </tr>
                         <tr>
@@ -46,10 +115,8 @@ class Applicants extends React.Component {
                             <th scope="col">Atasynyň Ady</th>
                             <th scope="col">Synpy</th>
                             <th scope="col">Ýaşy</th>
-                            <th scope="col"><i className="fa fa-phone" style={{ fontSize: 24 }}></i></th>
-                            <th scope="col"><i className="fa fa-mobile" style={{ fontSize: 24 }}></i></th>
-                            <th scope="col"><i className="fa fa-calendar" style={{ fontSize: 24 }}></i></th>
-                            <th scope="col"><i className="fa fa-user" style={{ fontSize: 24 }}></i></th>
+                            <th scope="col">Öý Tel. Belgisi</th>
+                            <th scope="col">Mobil Tel. Belgisi</th>
                             <th scope="col">Teswiri</th>
                             <th scope="col">Amallar</th>
                         </tr>
@@ -60,7 +127,7 @@ class Applicants extends React.Component {
                             (this.props.loading) ?
                                 (
                                     <tr>
-                                        <td colSpan="12">
+                                        <td colSpan="10">
                                             <div style={{ alignItems: 'center' }} >
                                                 <img src={LoaderImage} />
                                             </div>
@@ -72,7 +139,7 @@ class Applicants extends React.Component {
                             (this.props.error) ?
                                 (
                                     <tr>
-                                        <td colSpan="12">
+                                        <td colSpan="10">
                                             <h3>
                                                 {this.props.error}
                                             </h3>
@@ -80,9 +147,6 @@ class Applicants extends React.Component {
                                     </tr>
                                 ) :
                                 this.props.applicants.map((applicant, index) => {
-
-                                    var reg_date = new Date(applicant.created_at)
-
                                     return (
                                         <tr key={applicant.id}>
                                             <th scope="row">{index + 1}</th>
@@ -93,12 +157,6 @@ class Applicants extends React.Component {
                                             <td>{applicant.age}</td>
                                             <td>{applicant.home_phone}</td>
                                             <td>{applicant.mobile_phone}</td>
-                                            <td>
-                                                {reg_date.getDate() < 9 ? "0" : ""}{reg_date.getDate()}-
-                                                {reg_date.getMonth() < 9 ? "0" : ""}{reg_date.getMonth() + 1}-
-                                                {reg_date.getFullYear()}                                         
-                                            </td>
-                                            <td>{applicant.user.username}</td>
                                             <td>{applicant.notes}</td>
                                             <td>
                                                 <Link to={"/applicants/" + applicant.id}>
@@ -147,12 +205,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchApplicants: () => dispatch(fetchApplicants()),
+        fetchSearchApplicants: (search_params) => dispatch(fetchSearchApplicants(search_params)),
         editApplicant: (id) => dispatch(editApplicant(id)),
         removeApplicant: (id) => dispatch(removeApplicant(id)),
-        applicantInfo: (id) => dispatch(applicantInfo(id))
+        applicantInfo: (id) => dispatch(applicantInfo(id)),
+        emptyApplicants: () => dispatch(emptyApplicants())
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Applicants)
+export default connect(mapStateToProps, mapDispatchToProps)(ApplicantSearch)
 

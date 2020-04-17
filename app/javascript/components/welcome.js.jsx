@@ -1,6 +1,5 @@
 import React from 'react'
-import { Provider } from 'react-redux'
-import store from '../redux-store/store'
+//import store from '../redux-store/store'
 import axios from 'axios'
 
 import {
@@ -10,6 +9,8 @@ import {
 import TopNav from './top_nav.js.jsx'
 import Container from './container.js.jsx'
 
+
+
 class Welcome extends React.Component {
     constructor(props) {
         super(props);
@@ -18,10 +19,8 @@ class Welcome extends React.Component {
     render() {
         return (
             <div>
-                <Provider store={store}>
-                    <TopNav />
-                    <Container />
-                </Provider>
+                <TopNav />
+                <Container />
             </div>
         )
     }

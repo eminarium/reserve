@@ -1,6 +1,6 @@
 //export * from './language/languageActions'
-export { 
-    fetchLanguages, 
+export {
+    fetchLanguages,
     postLanguage,
     updateLanguage,
     editLanguage,
@@ -8,7 +8,7 @@ export {
     languageInfo
 } from './language/languageActions'
 
-export { 
+export {
     fetchShifts,
     postShift,
     updateShift,
@@ -47,11 +47,13 @@ export {
 
 export {
     fetchApplicants,
+    fetchSearchApplicants,
     postApplicant,
     updateApplicant,
     editApplicant,
     removeApplicant,
-    applicantInfo
+    applicantInfo,
+    emptyApplicants
 } from './applicants/applicantActions'
 
 export {

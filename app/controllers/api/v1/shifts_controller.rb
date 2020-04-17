@@ -4,7 +4,7 @@ class Api::V1::ShiftsController < ApplicationController
   respond_to :json
 
   def index
-    @shifts = Shift.order('start_time ASC')
+    @shifts = Shift.includes(:user).order('start_time ASC')
     respond_with @shifts, status: :ok
   end
 

@@ -5,7 +5,7 @@ class Api::V1::LanguagesController < ApplicationController
 
   
   def index
-    @languages = Language.order('title ASC')
+    @languages = Language.includes(:user).order('title ASC')
     respond_with @languages, status: :ok
   end
 

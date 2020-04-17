@@ -8,8 +8,8 @@ class Applicant < ApplicationRecord
     # patronymic    :string
     # home_phone    :string
     # mobile_phone  :string
-    # photo_url     :string
-    # birth_date    :date
+    # school_grade  :string
+    # age           :date
     # notes         :text
     # user_id       :integer
     
@@ -22,8 +22,8 @@ class Applicant < ApplicationRecord
     validates   :last_name, presence: { message: "Familiýasy hökman girizilmeli..." }
     validates   :last_name, length: { minimum: 2, message: "Familiýasy azyndan 3 belgiden ybarat bolmaly..." }
 
-    validates   :patronymic, presence: { message: "Atasynyň ady hökman girizilmeli..." }
-    validates   :patronymic, length: { minimum: 2, message: "Atasynyň ady azyndan 3 belgiden ybarat bolmaly..." }
+    #validates   :patronymic, presence: { message: "Atasynyň ady hökman girizilmeli..." }
+    #validates   :patronymic, length: { minimum: 2, message: "Atasynyň ady azyndan 3 belgiden ybarat bolmaly..." }
 
 
     # Associations

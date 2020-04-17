@@ -17,6 +17,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from '../components/login.js.jsx'
 import Welcome from '../components/welcome.js.jsx'
 
+import { Provider } from 'react-redux'
+import configureStore from '../redux-store/store'
+import { ConnectedRouter } from 'connected-react-router'
+import { history } from '../redux-store/store'
+
+const store = configureStore()
+
 class Main extends React.Component {
 
   constructor(props) {
@@ -31,16 +38,17 @@ class Main extends React.Component {
     //} else
 
     return (
-      <Router>
-        <Route path="/"
-            render={() => (
-              (localStorage.getItem('currentUser')) ? (<Welcome />) : (<Redirect to="/login" />)
-            )
-          }
-        />
-        <Route exact path="/login" component={Login} />
-      </Router>
-    )
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <Route path="/"
+              render={() => (
+                (localStorage.getItem('currentUser')) ? (<Welcome />) : (<Redirect to="/login" />)
+              )
+            }
+          />
+          <Route exact path="/login" component={Login} />
+        </ConnectedRouter>
+      </Provider>    )
   }
 
 }

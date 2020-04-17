@@ -5,7 +5,7 @@ class Ability
 
   def initialize(user)
 
-      if user.role == "admin"
+      if user.role == "admin" or user.role == 'registrar'
         can :manage, :all
       else
         can :manage, Language

@@ -1,7 +1,8 @@
 import axios from 'axios'
 import settings from '../settings'
+import { push } from 'connected-react-router'
 
-import { 
+import {
     FETCH_RESERVATIONS_REQUEST,
     FETCH_RESERVATIONS_SUCCESS,
     FETCH_RESERVATIONS_FAILURE,
@@ -126,21 +127,21 @@ export const fetchReservations = () => {
                 "Authorization": localStorage.getItem('Token')
             }
         })
-        //.then(response => response.json())
-        .then( response => {
-            const reservations = response.data
-            dispatch(fetchReservationsSuccess(reservations))
-        })
-        .catch( error => {
-            if (error.response.status === 401) {
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('Token');
-            }
+            //.then(response => response.json())
+            .then(response => {
+                const reservations = response.data
+                dispatch(fetchReservationsSuccess(reservations))
+            })
+            .catch(error => {
+                if (error.response.status === 401) {
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('Token');
+                }
 
-            console.log(error.error)
-            const errorMsg = error.message
-            dispatch(fetchReservationsFailure(errorMsg))
-        })
+                console.log(error.error)
+                const errorMsg = error.message
+                dispatch(fetchReservationsFailure(errorMsg))
+            })
     }
 }
 
@@ -149,33 +150,40 @@ export const postReservation = (reservation) => {
 
         dispatch(postReservationRequest)
 
-        axios.post(settings.rootUrl + 'api/v1/reservations', JSON.stringify({
-            title: reservation.title,
-            level: reservation.level,
-            subject_category_id: reservation.subject_category_id,
-            language_id: reservation.language_id,
-            passing_points: reservation.passing_points,
-            notes: reservation.notes
+        axios.post(settings.rootUrl + 'api/v1/applicants/' + reservation.applicant_id + '/reservations/', JSON.stringify({
+            applicant_id: reservation.applicant_id,
+            season_id: reservation.season_id,
+            shift_id: reservation.shift_id,
+            subject_id: reservation.subject_id,
+            is_registered: reservation.is_registered,
+            is_sms_sent: reservation.is_sms_sent,
+            is_called: reservation.is_called,
+            notes: reservation.notes,
         }), {
             headers: {
                 "Content-type": "application/json",
                 "Authorization": localStorage.getItem('Token')
             }
         })
-        .then(response => {
-            //console.log(response.data)
-            dispatch(postReservationSuccess(response.data))
-        })
-        .catch(error => {
-            if (error.response.status === 401) {
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('Token');
-            }
+            .then(response => {
+                var res = response.data
+                dispatch(postReservationSuccess(response.data))
+                dispatch(applicantInfo(reservation.applicant_id))
+                dispatch(push('/applicants/' + reservation.applicant_id))
 
-            console.log(error.error)
-            const errorMsg = error.response.message
-            dispatch(postReservationFailure(errorMsg))
-        })
+            })
+            .catch(error => {
+                /*
+                if (error.response.status === 401) {
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('Token');
+                }
+                */
+
+                //console.log(error.error)
+                //const errorMsg = error.response.message
+                //dispatch(postReservationFailure(errorMsg))
+            })
     }
 }
 
@@ -185,33 +193,40 @@ export const updateReservation = (reservation) => {
 
         dispatch(updateReservationRequest)
 
-        axios.put(settings.rootUrl + 'api/v1/reservations/' + reservation.id, JSON.stringify({
-            title: reservation.title,
-            level: reservation.level,
-            subject_category_id: reservation.subject_category_id,
-            language_id: reservation.language_id,
-            passing_points: reservation.passing_points,
-            notes: reservation.notes
+        axios.put(settings.rootUrl + 'api/v1/applicants/' + reservation.applicant_id + '/reservations/' + reservation.id, JSON.stringify({
+            applicant_id: reservation.applicant_id,
+            season_id: reservation.season_id,
+            shift_id: reservation.shift_id,
+            subject_id: reservation.subject_id,
+            //is_registered: reservation.is_registered,
+            //is_sms_sent: reservation.is_sms_sent,
+            //is_called: reservation.is_called,
+            notes: reservation.notes,
         }), {
             headers: {
                 "Content-type": "application/json",
                 "Authorization": localStorage.getItem('Token')
             }
         })
-        .then(response => {
-            //console.log(response.data)
-            dispatch(updateReservationSuccess(response.data))
-        })
-        .catch(error => {
-            if (error.response.status === 401) {
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('Token');
-            }
+            .then(response => {
+                console.log(response.data)
+                dispatch(updateReservationSuccess(response.data))
+                dispatch(push('/reservations/' + response.data.id))
+                dispatch(reservationInfo(response.data.id))
 
-            console.log(error.error)
-            const errorMsg = error.response.message
-            dispatch(updateReservationFailure(errorMsg))
-        })
+            })
+            .catch(error => {
+                /*
+                if (error.response.status === 401) {
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('Token');
+                }
+    
+                console.log(error.error)
+                const errorMsg = error.response.message
+                dispatch(updateReservationFailure(errorMsg))
+                */
+            })
     }
 }
 
@@ -220,24 +235,24 @@ export const removeReservation = (id) => {
 
         dispatch(removeReservationRequest)
 
-        axios.delete(settings.rootUrl + 'api/v1/reservations/'+id, {
+        axios.delete(settings.rootUrl + 'api/v1/reservations/' + id, {
             headers: {
                 "Content-type": "application/json",
                 "Authorization": localStorage.getItem('Token')
             }
         })
-        .then(response => {
-            dispatch(removeReservationSuccess(id))
-        })
-        .catch(error => {
-            if (error.response.status === 401) {
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('Token');
-            }
+            .then(response => {
+                dispatch(removeReservationSuccess(id))
+            })
+            .catch(error => {
+                if (error.response.status === 401) {
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('Token');
+                }
 
-            console.log(error.error)
-            const errorMsg = error.response.message
-            dispatch(removeReservationFailure(errorMsg))
-        })
+                console.log(error.error)
+                const errorMsg = error.response.message
+                dispatch(removeReservationFailure(errorMsg))
+            })
     }
 }
