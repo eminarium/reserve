@@ -49,6 +49,8 @@ import ReservationNewForm from './reservations/reservation_new_form.js'
 import ReservationEditForm from './reservations/reservation_edit_form.js'
 import ReservationInfo from './reservations/reservation_info.js'
 
+import NotFoundPage from './not_found_page.js'
+
 class Content extends React.Component {
     render() {
         return (
@@ -105,6 +107,7 @@ class Content extends React.Component {
                     <Route exact path="/subject_tests/:subjectTestId" component={SubjectTestInfo} />
                     <Route exact path="/subject_tests/:subjectTestId/edit" component={SubjectTestEditForm} />
 
+                    <Route path='*' exact={true} component={NotFoundPage} />
                 </Switch>
 
             </main>
