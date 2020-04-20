@@ -1,10 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { 
+import {
     fetchSubjectTests,
     editSubjectTest,
     subjectTestInfo,
-    removeSubjectTest
+    removeSubjectTest,
+    applicantInfo
 } from '../../redux-store'
 import LoaderImage from 'images/loader.gif'
 
@@ -47,72 +48,80 @@ class SubjectTests extends React.Component {
                     <tbody>
                         {
                             (this.props.loading) ?
-                            (
-                                <tr>
-                                    <td colSpan="8">
-                                        <div style={{ alignItems: 'center' }} >
-                                            <img src={LoaderImage} />
-                                        </div>
-                                    </td>
-                                </tr>
-                            ) : (<tr><td></td></tr>)
+                                (
+                                    <tr>
+                                        <td colSpan="8">
+                                            <div style={{ alignItems: 'center' }} >
+                                                <img src={LoaderImage} />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ) : (<tr><td></td></tr>)
                         }
                         {
                             (this.props.error) ?
-                            (
-                                <tr>
-                                    <td colSpan="8">
-                                        <h3>
-                                            {this.props.error}
-                                        </h3>
-                                    </td>
-                                </tr>                                
-                            ) :
-                            this.props.subject_tests.map((subject_test, index) => {
-                                return (
-                                    <tr key={subject_test.id}>
-                                        <th scope="row">{index+1}</th>
-                                        <td>
-                                            {subject_test.applicant.first_name} 
-                                            {subject_test.applicant.last_name} 
-                                            {subject_test.applicant.patronymic} 
+                                (
+                                    <tr>
+                                        <td colSpan="8">
+                                            <h3>
+                                                {this.props.error}
+                                            </h3>
                                         </td>
-                                        <td>
-                                            {subject_test.subject.title}
+                                    </tr>
+                                ) :
+                                this.props.subject_tests.map((subject_test, index) => {
+                                    var reg_date = new Date(subject_test.created_at)
+
+                                    return (
+                                        <tr key={subject_test.id}>
+                                            <th scope="row">{index + 1}</th>
+                                            <td>
+                                                <Link onClick={() => this.props.applicantInfo(subject_test.applicant.id)} to={"/applicants/" + subject_test.applicant.id} >
+                                                    {subject_test.applicant.first_name} &nbsp;
+                                                {subject_test.applicant.last_name} &nbsp;
+                                                {subject_test.applicant.patronymic}
+                                                </Link>
+                                            </td>
+                                            <td>
+                                                {subject_test.subject.title}
                                             ({subject_test.subject.language.title})
                                         </td>
-                                        <td>{subject_test.created_at}</td>
-                                        <td>{subject_test.result}</td>
-                                        <td>{subject_test.season.order_no}</td>
-                                        <td>{subject_test.notes}</td>
-                                        <td>
-                                            <Link to={"/subject_tests/" + subject_test.id}>
-                                                <button className="btn btn-primary"
-                                                    onClick={() => this.props.subjectTestInfo(subject_test.id)}
-                                                >
-                                                    <i className="fa fa-info"></i>
-                                                </button>
-                                            </Link> 
+                                            <td>
+                                                {reg_date.getDate() < 9 ? "0" : ""}{reg_date.getDate()}-
+                                            {reg_date.getMonth() < 9 ? "0" : ""}{reg_date.getMonth() + 1}-
+                                            {reg_date.getFullYear()}
+                                            </td>
+                                            <td>{subject_test.result}</td>
+                                            <td>{subject_test.season.order_no}</td>
+                                            <td>{subject_test.notes}</td>
+                                            <td>
+                                                <Link to={"/subject_tests/" + subject_test.id}>
+                                                    <button className="btn btn-primary"
+                                                        onClick={() => this.props.subjectTestInfo(subject_test.id)}
+                                                    >
+                                                        <i className="fa fa-info"></i>
+                                                    </button>
+                                                </Link>
                                             &nbsp;
                                             &nbsp;
                                             <Link to={"/subject_tests/" + subject_test.id + "/edit"}>
-                                                <button className="btn btn-warning"
-                                                    onClick={() => this.props.editSubjectTest(subject_test.id)}
-                                                >
-                                                    <i className="fa fa-pencil"></i>
-                                                </button>
-                                            </Link> 
+                                                    <button className="btn btn-warning"
+                                                        onClick={() => this.props.editSubjectTest(subject_test.id)}
+                                                    >
+                                                        <i className="fa fa-pencil"></i>
+                                                    </button>
+                                                </Link>
                                             &nbsp;
                                             &nbsp;
                                             <button className="btn btn-danger"
-                                                onClick={() => { if (window.confirm("Synagy bozmalymy ?")) this.props.removeSubjectTest(subject_test.id) }}
-                                            >
-                                                <i className="fa fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                );
-                            })
+                                                    onClick={() => { if (window.confirm("Synagy bozmalymy ?")) this.props.removeSubjectTest(subject_test.id) }}
+                                                >
+                                                    <i className="fa fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })
                         }
 
                     </tbody>
@@ -135,7 +144,8 @@ const mapDispatchToProps = dispatch => {
         fetchSubjectTests: () => dispatch(fetchSubjectTests()),
         editSubjectTest: (id) => dispatch(editSubjectTest(id)),
         removeSubjectTest: (id) => dispatch(removeSubjectTest(id)),
-        subjectTestInfo: (id) => dispatch(subjectTestInfo(id))
+        subjectTestInfo: (id) => dispatch(subjectTestInfo(id)),
+        applicantInfo: (id) => dispatch(applicantInfo(id))
     }
 }
 

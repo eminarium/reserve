@@ -168,8 +168,11 @@ export const postReservation = (reservation) => {
             .then(response => {
                 var res = response.data
                 dispatch(postReservationSuccess(response.data))
-                dispatch(applicantInfo(reservation.applicant_id))
-                dispatch(push('/applicants/' + reservation.applicant_id))
+                //dispatch(applicantInfo(reservation.applicant_id))
+                //dispatch(push('/applicants/' + reservation.applicant_id))
+                dispatch(reservationInfo(res.id))
+                dispatch(push('/reservations/' + res.id))
+
 
             })
             .catch(error => {

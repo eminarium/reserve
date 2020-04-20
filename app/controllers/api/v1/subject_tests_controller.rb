@@ -4,7 +4,12 @@ class Api::V1::SubjectTestsController < ApplicationController
   respond_to :json
 
   def index
-    @subject_tests = SubjectTest.order('created_at ASC').includes(:applicant, :subject, :season, :user)
+    if params[:applicant_id]
+      @subject_tests = SubjectTest.where(applicant_id: params[:applicant_id]).order('created_at DESC').includes(:applicant, :subject, :season, :user)
+    else
+      @subject_tests = SubjectTest.order('created_at DESC').includes(:applicant, :subject, :season, :user)
+    end
+
     respond_with @subject_tests, status: :ok        
   end
 
@@ -21,7 +26,10 @@ class Api::V1::SubjectTestsController < ApplicationController
   end
 
   def create
-    @subject_test = SubjectTest.new(subject_test_params)
+
+    @applicant = Applicant.find(params[:applicant_id])
+
+    @subject_test = @applicant.subject_tests.build(subject_test_params)
     @subject_test.user_id = current_user.id
 
     if @subject_test.save

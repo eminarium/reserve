@@ -1,4 +1,4 @@
-import { 
+import {
     FETCH_SUBJECT_TESTS_REQUEST,
     FETCH_SUBJECT_TESTS_SUCCESS,
     FETCH_SUBJECT_TESTS_FAILURE,
@@ -29,7 +29,7 @@ const initialState = {
 }
 
 const subjectTestReducer = (state = initialState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case FETCH_SUBJECT_TESTS_REQUEST:
             return {
                 ...state,
@@ -85,16 +85,16 @@ const subjectTestReducer = (state = initialState, action) => {
                 ...state,
                 loading: true,
                 error: '',
-                editingSubjectTestId: '',
-                currentSubjectTest: ''
+                editingSubjectTestId: state.editingSubjectTestId,
+                currentSubjectTest: state.currentSubjectTest
             }
         case UPDATE_SUBJECT_TEST_SUCCESS:
             return {
                 loading: false,
                 subject_tests: [...state.subject_tests.filter(subject_test => (subject_test.id != action.payload.id)), action.payload],
                 error: '',
-                editingSubjectTestId: '',
-                currentSubjectTest: ''
+                editingSubjectTestId: state.editingSubjectTestId,
+                currentSubjectTest: state.currentSubjectTest
             }
         case UPDATE_SUBJECT_TEST_FAILURE:
             return {
@@ -102,7 +102,7 @@ const subjectTestReducer = (state = initialState, action) => {
                 subject_tests: state.subject_tests,
                 error: action.payload,
                 editingSubjectTestId: '',
-                currentSubjectTest: ''
+                currentSubjectTest: state.currentSubjectTest
             }
 
         case EDIT_SUBJECT_TEST:
@@ -111,7 +111,7 @@ const subjectTestReducer = (state = initialState, action) => {
                 subject_tests: state.subject_tests,
                 error: '',
                 editingSubjectTestId: action.payload,
-                currentSubjectTest: ''
+                currentSubjectTest: state.subject_tests.find(subject_test => subject_test.id === action.payload)
             }
 
 
@@ -122,8 +122,8 @@ const subjectTestReducer = (state = initialState, action) => {
                 error: '',
                 editingSubjectTestId: '',
                 currentSubjectTest: state.subject_tests.find(subject_test => subject_test.id === action.payload)
-            }            
-        
+            }
+
         case REMOVE_SUBJECT_TEST_REQUEST:
             return {
                 loading: true,

@@ -5,7 +5,6 @@ import {
     Route
 } from "react-router-dom";
 
-
 import Dashboard from './dashboard.js.jsx'
 
 import Languages from './languages/languages.js'
@@ -96,6 +95,7 @@ class Content extends React.Component {
                     <Route exact path="/applicants/:applicantId/edit" component={ApplicantEditForm} />
 
                     <Route exact path="/applicants/:applicantId/reservations/new" component={ReservationNewForm} />
+                    <Route exact path="/applicants/:applicantId/subject_tests/new" component={SubjectTestNewForm} />
 
                     <Route exact path="/reservations" component={Reservations} />
                     <Route exact path="/reservations/new" component={ReservationNewForm} />

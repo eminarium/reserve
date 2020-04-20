@@ -1,145 +1,183 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { 
-    postSubject,
+import {
+    postSubjectTest,
     fetchSubjectCategories,
+    fetchSubjects,
     fetchLanguages
 } from '../../redux-store'
 import LoaderImage from 'images/loader.gif'
 
 
-class SubjectNewForm extends React.Component {
+class SubjectTestNewForm extends React.Component {
     constructor() {
         super();
 
-        this.submitForm = this.submitForm.bind(this);
+        this.state = {
+            applicant: '',
+            season: '',
+            subject: '',
+            result: '',
+            notes: '',
+            errorMsg: ''
+        }
+
+        this.submitSubjectTest = this.submitSubjectTest.bind(this);
+        this.setSubject = this.setSubject.bind(this);
+        this.checkSubjectTestValidity = this.checkSubjectTestValidity.bind(this)
     }
 
     componentDidMount() {
         this.props.fetchSubjectCategories()
-        this.props.fetchLanguages()
+        this.props.fetchSubjects()
+
+        this.setState({
+            applicant: this.props.location.state.applicant,
+            season: this.props.activeSeason
+        })
     }
 
-    submitForm(event) {
-        event.preventDefault();
+    checkSubjectTestValidity() {
+        if (this.state.applicant == '' || this.state.season == '' || this.state.subject == '')
+            return false;
 
-        if (!event.target.checkValidity()) {
+        return true;
+    }
+
+    setSubject(subject) {
+        this.setState({
+            subject: subject
+        })
+    }
+
+    submitSubjectTest() {
+
+        if (!this.checkSubjectTestValidity()) {
             console.log("Form is invalid!");
             this.setState({
-                errorMsg: "Все поля должны быть заполнены !"
+                errorMsg: "Ähli Maglumatlary Giriziň..."
             })
             return;
         }
         else {
-            console.log("Form is Valid!");
-            //console.log("Event Target : " + event.target.title.value + " " + event.target.notes.value);
-            //console.log("Reference : " + this.getTitle.value + " " + this.getNotes.value);
-
-
-            this.props.postSubject({
-                title: event.target.title.value,
-                level: event.target.level.value,
-                subject_category_id: event.target.subject_category_id.options[event.target.subject_category_id.selectedIndex].value,
-                language_id: event.target.language_id.options[event.target.language_id.selectedIndex].value,
-                passing_points: event.target.passing_points.value,
-                notes: event.target.notes.value
+            this.props.postSubjectTest({
+                applicant_id: this.state.applicant.id,
+                season_id: this.state.season.id,
+                subject_id: this.state.subject.id,
+                result: this.getResult.value,
+                notes: this.getNotes.value,
             })
-
-            if (!this.props.loading)
-                this.props.history.push('/subjects')
         }
     }
+
 
     render() {
         return (
             <div>
 
-                <div className="card" style={{ width: '28rem' }}>
+                <div className="card" style={{ width: '65rem' }}>
                     <div className="card-body">
                         <h5 className="card-title">
-                            Täze Ders Goş &nbsp; &nbsp; &nbsp; 
+                            Täze Synag Goş &nbsp; &nbsp; &nbsp;
                             {
-                                (this.props.loading) ? <img src={LoaderImage} /> :""
+                                (this.props.loading) ? <img src={LoaderImage} /> : ""
                             }
                         </h5>
-                        <form noValidate onSubmit={this.submitForm}>
 
-                            <div className="form-group row">
-                                <label htmlFor="title" className="col-sm-10 col-form-label">Dersiň Ady</label>
-                                <div className="col-sm-10">
-                                    <input type="text" id="title" name="title" className="form-control" required 
-                                        ref={(input) => this.getTitle = input}
-                                    />
-                                </div>
-                            </div>
+                        <br />
+                        <div style={{ color: "red" }}>
+                            {this.state.errorMsg}
+                        </div>
 
-                            <div className="form-group row">
-                                <label htmlFor="level" className="col-sm-10 col-form-label">Derejesi</label>
-                                <div className="col-sm-10">
-                                    <input type="text" id="level" name="level" className="form-control" required
-                                        ref={(input) => this.getLevelId = input}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="form-group row">
-                                <label htmlFor="subject_category_id" className="col-sm-10 col-form-label">Dili</label>
-                                <div className="col-sm-10">
-                                    <select className="custom-select" id="subject_category_id" name="subject_category_id">
-                                        {
-                                            this.props.subject_categories.map(sc => {
-                                                return (
-                                                    <option value={sc.id} key={sc.id}>
-                                                        {sc.title}
-                                                    </option>
-                                                )
-                                            })
+                        <div className="card" style={{ marginBottom: "5px" }}>
+                            <div className="card-body">
+                                <ul>
+                                    <li>
+                                        Diňleýji : {this.state.applicant.first_name}  {this.state.applicant.last_name}
+                                    </li>
+                                    <li>
+                                        Tapgyry : {this.state.season.title ? this.state.season.order_no : "*********"}
+                                    </li>
+                                    <li>
+                                        Dersi : {
+                                            this.state.subject.title ?
+                                                this.state.subject.title :
+                                                <span style={{ color: 'red', fontStyle: 'italic' }}>SAÝLANMADY...</span>
                                         }
-                                    </select>
-                                </div>
+                                    </li>
+                                    <br />
+                                    <button
+                                        className="btn btn-primary"
+                                        onClick={() => this.submitSubjectTest()}
+                                    >
+                                        KABUL ET
+                                    </button>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div className="card" style={{ float: "left", width: "25rem" }}>
+                            <div className="card-header">
+                                Dersler
                             </div>
 
+                            <div className="card-body">
+                                <div className="accordion" id='subjects-accordion'>
+                                    {
+                                        this.props.subject_categories.map((sc, index) => {
 
-                            <div className="form-group row">
-                                <label htmlFor="language_id" className="col-sm-10 col-form-label">Dili</label>
-                                <div className="col-sm-10">
-                                    <select className="custom-select" id="language_id" name="language_id">
-                                        {
-                                            this.props.languages.map(language => {
-                                                return (
-                                                    <option value={language.id} key={language.id}>
-                                                        {language.title}
-                                                    </option>
-                                                )
-                                            })
-                                        }
-                                    </select>
+                                            var subjects = this.props.subjects.filter(subject => subject.subject_category.id == sc.id)
+
+                                            return (
+
+                                                <div className="card" key={sc.title}>
+                                                    <div className="card-header" id={`heading-${index}`}>
+                                                        <h2 className="mb-0">
+                                                            <button className="btn btn-link collapsed" type="button" data-toggle="collapse" data-target={`#collapse-${index}`} aria-expanded="false" aria-controls={`collapse-${index}`}>
+                                                                {sc.title}
+                                                            </button>
+                                                        </h2>
+                                                    </div>
+
+                                                    <div key={sc} id={`collapse-${index}`} className="collapse" aria-labelledby={`heading-${index}`} data-parent="#subjects-accordion">
+                                                        <div className="card-body">
+                                                            {
+                                                                subjects.map(sub => {
+                                                                    return (
+                                                                        <button id={sub.id} key={`subject-${sub.title}`} type="button" className="btn btn-secondary" style={{ margin: 3 }} onClick={() => this.setSubject(sub)}>
+                                                                            {sub.title}
+                                                                        </button>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            )
+                                        })
+                                    }
                                 </div>
                             </div>
+                        </div>
 
-                            <div className="form-group row">
-                                <label htmlFor="passing_points" className="col-sm-10 col-form-label">Geçiş Bahasy</label>
-                                <div className="col-sm-10">
-                                    <input type="text" id="passing_points" name="passing_points" className="form-control" required
-                                        ref={(input) => this.getPassingPoints = input}
-                                    />
-                                </div>
+                        <div className="form-group row">
+                            <label htmlFor="result" className="col-sm-10 col-form-label">Netijesi</label>
+                            <div className="col-sm-10">
+                                <textarea type="text" id="result" name="result" className="form-control"
+                                    ref={(input) => this.getResult = input}
+                                />
                             </div>
+                        </div>
 
-                            <div className="form-group row">
-                                <label htmlFor="notes" className="col-sm-10 col-form-label">Bellikler</label>
-                                <div className="col-sm-10">
-                                    <textarea type="text" id="notes" name="notes" className="form-control" required 
-                                        ref={(input) => this.getNotes = input}
-                                    />
-                                </div>
+
+                        <div className="form-group row">
+                            <label htmlFor="notes" className="col-sm-10 col-form-label">Bellikler</label>
+                            <div className="col-sm-10">
+                                <textarea type="text" id="notes" name="notes" className="form-control"
+                                    ref={(input) => this.getNotes = input}
+                                />
                             </div>
-
-                            <button className="btn btn-primary">Kabul Et</button>
-                        </form>
-                        <br/>
-                        <div style={{color: "red"}}>
-                            { this.props.error }
                         </div>
 
                     </div>
@@ -154,17 +192,20 @@ const mapStateToProps = state => {
     return {
         loading: state.subjects.loading,
         error: state.subjects.error,
+        subjects: state.subjects.subjects,
         subject_categories: state.subject_categories.subject_categories,
-        languages: state.languages.languages
+        languages: state.languages.languages,
+        activeSeason: state.seasons.activeSeason
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        postSubject: (subject) => dispatch(postSubject(subject)),
+        postSubjectTest: (subject_test) => dispatch(postSubjectTest(subject_test)),
+        fetchSubjects: () => dispatch(fetchSubjects()),
         fetchSubjectCategories: () => dispatch(fetchSubjectCategories()),
         fetchLanguages: () => dispatch(fetchLanguages())
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SubjectNewForm)
+export default connect(mapStateToProps, mapDispatchToProps)(SubjectTestNewForm)

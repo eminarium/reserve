@@ -7,7 +7,7 @@ import {
     fetchShifts
 } from '../../redux-store'
 import LoaderImage from 'images/loader.gif'
-import NavbarCollapse from 'react-bootstrap/NavbarCollapse';
+
 
 
 class ReservationNewForm extends React.Component {
@@ -80,13 +80,9 @@ class ReservationNewForm extends React.Component {
                 is_registered: this.state.is_registered,
                 is_sms_sent: this.state.is_sms_sent,
                 is_called: this.state.is_called,
-                //notes: this.state.notes,
                 notes: this.getNotes.value,
             })
         }
-
-        if (!this.props.loading)
-            this.props.history.push('/applicants/' + this.state.applicant.id)
     }
 
     render() {
@@ -155,7 +151,7 @@ class ReservationNewForm extends React.Component {
 
                                             return (
 
-                                                <div className="card">
+                                                <div className="card" key={sc.title}>
                                                     <div className="card-header" id={`heading-${index}`}>
                                                         <h2 className="mb-0">
                                                             <button className="btn btn-link collapsed" type="button" data-toggle="collapse" data-target={`#collapse-${index}`} aria-expanded="false" aria-controls={`collapse-${index}`}>
@@ -169,7 +165,7 @@ class ReservationNewForm extends React.Component {
                                                             {
                                                                 subjects.map(sub => {
                                                                     return (
-                                                                        <button id={sub.id} key={index} type="button" className="btn btn-secondary" style={{ margin: 3 }} onClick={() => this.setSubject(sub)}>
+                                                                        <button id={sub.id} key={`subject-${sub.title}`} type="button" className="btn btn-secondary" style={{ margin: 3 }} onClick={() => this.setSubject(sub)}>
                                                                             {sub.title}
                                                                         </button>
                                                                     )
@@ -197,7 +193,7 @@ class ReservationNewForm extends React.Component {
                                         this.props.shifts.map((shift, index) => {
 
                                             return (
-                                                <button id={shift.id} key={index} type="button" className="btn btn-secondary" style={{ margin: 3 }} onClick={() => this.setShift(shift)}>
+                                                <button id={shift.id} key={`shift-${index}`} type="button" className="btn btn-secondary" style={{ margin: 3 }} onClick={() => this.setShift(shift)}>
                                                     {shift.title}
                                                 </button>
                                             )

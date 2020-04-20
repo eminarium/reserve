@@ -16,7 +16,6 @@ class SubjectTest < ApplicationRecord
 
   validates   :applicant_id, presence: { message: "Diňleýji hökman saýlanylmaly..." }
   validates   :subject_id, presence: { message: "Dersi hökman saýlanylmaly..." }
-  validates   :test_date, presence: { message: "Synag senesi hökman saýlanylmaly..." }
   validates   :season_id, presence: { message: "Synag tapgyry hökman saýlanylmaly..." }
   validates   :result, presence: { message: "Synag netijesi hökman girizilmeli..." }
 

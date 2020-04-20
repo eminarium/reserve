@@ -31,11 +31,19 @@ json.array! @subject_tests do |subject_test|
         json.first_name     subject_test.applicant.first_name
         json.last_name      subject_test.applicant.last_name
         json.patronymic     subject_test.applicant.patronymic
-        json.birth_date     subject_test.applicant.birth_date
-        json.photo_url      subject_test.applicant.photo_url
+        json.school_grade   subject_test.applicant.school_grade
+        json.age            subject_test.applicant.age
         json.notes          subject_test.applicant.notes
         json.home_phone     subject_test.applicant.home_phone
         json.mobile_phone   subject_test.applicant.mobile_phone
-    }              
+        json.created_at     subject_test.applicant.created_at
+        json.updated_at     subject_test.applicant.updated_at
+    }         
+    
+    json.user {
+        json.id             subject_test.user.id
+        json.username       subject_test.user.username
+        json.role           subject_test.user.role
+    }
     
 end
