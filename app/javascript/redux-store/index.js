@@ -71,5 +71,8 @@ export {
     updateReservation,
     editReservation,
     removeReservation,
-    reservationInfo
+    reservationInfo,
+    toggleReservationSMS,
+    toggleReservationIsCalled,
+    toggleReservationIsRegistered
 } from './reservations/reservationActions'

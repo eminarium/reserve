@@ -18,6 +18,10 @@ import {
     EDIT_RESERVATION,
     RESERVATION_INFO,
 
+    TOGGLE_IS_SMS_SENT,
+    TOGGLE_IS_CALLED,
+    TOGGLE_IS_REGISTERED,
+
     REMOVE_RESERVATION_REQUEST,
     REMOVE_RESERVATION_SUCCESS,
     REMOVE_RESERVATION_FAILURE
@@ -96,6 +100,27 @@ export const reservationInfo = (id) => {
     }
 }
 
+export const toggleIsSmsSent = (id) => {
+    return {
+        type: TOGGLE_IS_SMS_SENT,
+        payload: id
+    }
+}
+
+export const toggleIsCalled = (id) => {
+    return {
+        type: TOGGLE_IS_CALLED,
+        payload: id
+    }
+}
+
+export const toggleIsRegistered = (id) => {
+    return {
+        type: TOGGLE_IS_REGISTERED,
+        payload: id
+    }
+}
+
 export const removeReservationRequest = () => {
     return {
         type: REMOVE_RESERVATION_REQUEST,
@@ -169,10 +194,8 @@ export const postReservation = (reservation) => {
                 var res = response.data
                 dispatch(postReservationSuccess(response.data))
                 //dispatch(applicantInfo(reservation.applicant_id))
-                //dispatch(push('/applicants/' + reservation.applicant_id))
                 dispatch(reservationInfo(res.id))
                 dispatch(push('/reservations/' + res.id))
-
 
             })
             .catch(error => {
@@ -217,6 +240,97 @@ export const updateReservation = (reservation) => {
                 dispatch(push('/reservations/' + response.data.id))
                 dispatch(reservationInfo(response.data.id))
 
+            })
+            .catch(error => {
+                /*
+                if (error.response.status === 401) {
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('Token');
+                }
+    
+                console.log(error.error)
+                const errorMsg = error.response.message
+                dispatch(updateReservationFailure(errorMsg))
+                */
+            })
+    }
+}
+
+
+export const toggleReservationSMS = (reservation) => {
+    return (dispatch) => {
+
+        axios.put(settings.rootUrl + 'api/v1/applicants/' + reservation.applicant.id + '/reservations/' + reservation.id, JSON.stringify({
+            is_sms_sent: !reservation.is_sms_sent,
+        }), {
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": localStorage.getItem('Token')
+            }
+        })
+            .then(response => {
+                console.log(response.data)
+                dispatch(toggleIsSmsSent(response.data.id))
+            })
+            .catch(error => {
+                /*
+                if (error.response.status === 401) {
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('Token');
+                }
+    
+                console.log(error.error)
+                const errorMsg = error.response.message
+                dispatch(updateReservationFailure(errorMsg))
+                */
+            })
+    }
+}
+
+export const toggleReservationIsCalled = (reservation) => {
+    return (dispatch) => {
+
+        axios.put(settings.rootUrl + 'api/v1/applicants/' + reservation.applicant.id + '/reservations/' + reservation.id, JSON.stringify({
+            is_called: !reservation.is_called,
+        }), {
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": localStorage.getItem('Token')
+            }
+        })
+            .then(response => {
+                console.log(response.data)
+                dispatch(toggleIsCalled(response.data.id))
+            })
+            .catch(error => {
+                /*
+                if (error.response.status === 401) {
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('Token');
+                }
+    
+                console.log(error.error)
+                const errorMsg = error.response.message
+                dispatch(updateReservationFailure(errorMsg))
+                */
+            })
+    }
+}
+
+export const toggleReservationIsRegistered = (reservation) => {
+    return (dispatch) => {
+
+        axios.put(settings.rootUrl + 'api/v1/applicants/' + reservation.applicant.id + '/reservations/' + reservation.id, JSON.stringify({
+            is_registered: !reservation.is_registered,
+        }), {
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": localStorage.getItem('Token')
+            }
+        })
+            .then(response => {
+                console.log(response.data)
+                dispatch(toggleIsRegistered(response.data.id))
             })
             .catch(error => {
                 /*

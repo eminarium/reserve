@@ -4,7 +4,10 @@ import {
     fetchReservations,
     editReservation,
     reservationInfo,
-    removeReservation
+    removeReservation,
+    toggleReservationSMS,
+    toggleReservationIsCalled,
+    toggleReservationIsRegistered
 } from '../../redux-store'
 import LoaderImage from 'images/loader.gif'
 
@@ -113,22 +116,22 @@ class ApplicantReservations extends React.Component {
                                             <td>
                                                 {
                                                     reservation.is_sms_sent ?
-                                                        <i className="fa fa-check" style={{ color: 'green', fontSize: 20 }}></i> :
-                                                        <i className="fa fa-times" style={{ color: 'red', fontSize: 20 }}></i>
+                                                        <i className="fa fa-check" onClick={() => this.props.toggleReservationSMS(reservation)} style={{ color: 'green', fontSize: 20 }}></i> :
+                                                        <i className="fa fa-times" onClick={() => this.props.toggleReservationSMS(reservation)} style={{ color: 'red', fontSize: 20 }}></i>
                                                 }
                                             </td>
                                             <td>
                                                 {
                                                     reservation.is_called ?
-                                                        <i className="fa fa-check" style={{ color: 'green', fontSize: 20 }}></i> :
-                                                        <i className="fa fa-times" style={{ color: 'red', fontSize: 20 }}></i>
+                                                        <i className="fa fa-check" onClick={() => this.props.toggleReservationIsCalled(reservation)} style={{ color: 'green', fontSize: 20 }}></i> :
+                                                        <i className="fa fa-times" onClick={() => this.props.toggleReservationIsCalled(reservation)} style={{ color: 'red', fontSize: 20 }}></i>
                                                 }
                                             </td>
                                             <td>
                                                 {
                                                     reservation.is_registered ?
-                                                        <i className="fa fa-check" style={{ color: 'green', fontSize: 20 }}></i> :
-                                                        <i className="fa fa-times" style={{ color: 'red', fontSize: 20 }}></i>
+                                                        <i className="fa fa-check" onClick={() => this.props.toggleReservationIsRegistered(reservation)} style={{ color: 'green', fontSize: 20 }}></i> :
+                                                        <i className="fa fa-times" onClick={() => this.props.toggleReservationIsRegistered(reservation)} style={{ color: 'red', fontSize: 20 }}></i>
                                                 }
                                             </td>
                                             <td>{reservation.user.username}</td>
@@ -183,7 +186,10 @@ const mapDispatchToProps = dispatch => {
         fetchReservations: () => dispatch(fetchReservations()),
         editReservation: (id) => dispatch(editReservation(id)),
         removeReservation: (id) => dispatch(removeReservation(id)),
-        reservationInfo: (id) => dispatch(reservationInfo(id))
+        reservationInfo: (id) => dispatch(reservationInfo(id)),
+        toggleReservationSMS: (reservation) => dispatch(toggleReservationSMS(reservation)),
+        toggleReservationIsCalled: (reservation) => dispatch(toggleReservationIsCalled(reservation)),
+        toggleReservationIsRegistered: (reservation) => dispatch(toggleReservationIsRegistered(reservation))
     }
 }
 

@@ -14,6 +14,10 @@ import {
     EDIT_RESERVATION,
     RESERVATION_INFO,
 
+    TOGGLE_IS_SMS_SENT,
+    TOGGLE_IS_CALLED,
+    TOGGLE_IS_REGISTERED,
+
     REMOVE_RESERVATION_REQUEST,
     REMOVE_RESERVATION_SUCCESS,
     REMOVE_RESERVATION_FAILURE
@@ -121,6 +125,33 @@ const reservationReducer = (state = initialState, action) => {
                 error: '',
                 editingReservationId: '',
                 currentReservation: state.reservations.find(reservation => reservation.id === action.payload)
+            }
+
+        case TOGGLE_IS_SMS_SENT:
+            return {
+                loading: false,
+                reservations: state.reservations.map(reservation => reservation.id === action.payload ? { ...reservation, is_sms_sent: !reservation.is_sms_sent } : reservation),
+                error: '',
+                editingReservationId: state.editingReservationId,
+                currentReservation: state.currentReservation
+            }
+
+        case TOGGLE_IS_CALLED:
+            return {
+                loading: false,
+                reservations: state.reservations.map(reservation => reservation.id === action.payload ? { ...reservation, is_called: !reservation.is_called } : reservation),
+                error: '',
+                editingReservationId: state.editingReservationId,
+                currentReservation: state.currentReservation
+            }
+
+        case TOGGLE_IS_REGISTERED:
+            return {
+                loading: false,
+                reservations: state.reservations.map(reservation => reservation.id === action.payload ? { ...reservation, is_registered: !reservation.is_registered } : reservation),
+                error: '',
+                editingReservationId: state.editingReservationId,
+                currentReservation: state.currentReservation
             }
 
         case REMOVE_RESERVATION_REQUEST:
