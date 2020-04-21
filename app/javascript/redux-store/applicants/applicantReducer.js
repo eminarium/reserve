@@ -28,6 +28,7 @@ import {
 const initialState = {
     loading: false,
     applicants: [],
+    pages: 0,
     error: '',
     editingApplicantId: '',
     currentApplicant: ''
@@ -46,7 +47,8 @@ const applicantReducer = (state = initialState, action) => {
         case FETCH_APPLICANTS_SUCCESS:
             return {
                 loading: false,
-                applicants: action.payload,
+                applicants: action.payload.applicants,
+                pages: action.payload.pages,
                 error: '',
                 editingApplicantId: '',
                 currentApplicant: ''

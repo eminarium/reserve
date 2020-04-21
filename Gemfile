@@ -3,6 +3,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.4.5'
 
+# Pagination
+gem 'will_paginate'
+
 # Webpacker gem
 gem 'webpacker', '~> 4.x'
 

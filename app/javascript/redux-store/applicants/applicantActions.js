@@ -149,12 +149,12 @@ export const removeApplicantFailure = (error) => {
     }
 }
 
-export const fetchApplicants = () => {
+export const fetchApplicants = (page = 1) => {
     return (dispatch) => {
 
         dispatch(fetchApplicantsRequest)
 
-        axios.get(settings.rootUrl + 'api/v1/applicants', {
+        axios.get(settings.rootUrl + 'api/v1/applicants/?page=' + page, {
             headers: {
                 "Content-type": "application/json",
                 "Authorization": localStorage.getItem('Token')
@@ -162,8 +162,8 @@ export const fetchApplicants = () => {
         })
             //.then(response => response.json())
             .then(response => {
-                const applicants = response.data
-                dispatch(fetchApplicantsSuccess(applicants))
+                const res = response.data
+                dispatch(fetchApplicantsSuccess(res))
             })
             .catch(error => {
                 if (error.response.status === 401) {
@@ -312,18 +312,18 @@ export const removeApplicant = (id) => {
                 "Authorization": localStorage.getItem('Token')
             }
         })
-            .then(response => {
-                dispatch(removeApplicantSuccess(id))
-            })
-            .catch(error => {
-                if (error.response.status === 401) {
-                    localStorage.removeItem('currentUser');
-                    localStorage.removeItem('Token');
-                }
+        .then(response => {
+            dispatch(removeApplicantSuccess(id))
+        })
+        .catch(error => {
+            if (error.response.status === 401) {
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('Token');
+            }
 
-                console.log(error.error)
-                const errorMsg = error.response.message
-                dispatch(removeApplicantFailure(errorMsg))
-            })
+            console.log(error.error)
+            const errorMsg = error.response.message
+            dispatch(removeApplicantFailure(errorMsg))
+        })
     }
 }

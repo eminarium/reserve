@@ -208,6 +208,7 @@ GEM
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
+    will_paginate (3.3.0)
 
 PLATFORMS
   x64-mingw32
@@ -230,6 +231,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   tzinfo-data
   webpacker (~> 4.x)
+  will_paginate
 
 RUBY VERSION
    ruby 2.4.5p335

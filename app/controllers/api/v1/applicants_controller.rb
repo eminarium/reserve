@@ -4,15 +4,20 @@ class Api::V1::ApplicantsController < ApplicationController
   respond_to :json
 
   def index
+
     @applicants = Applicant.includes(:user).order('created_at DESC')
 
-    if (params[:first_name] || params[:last_name] || params[:patronymic])
-      @applicants = @applicants.where("lower(first_name) LIKE ?", "%" + params[:first_name].downcase + "%") if params[:first_name] != ""
-      @applicants = @applicants.where("lower(last_name) LIKE ?", "%" + params[:last_name].downcase + "%") if params[:last_name] != ""
-      @applicants = @applicants.where("lower(patronymic) LIKE ?", "%" + params[:patronymic].downcase + "%") if params[:patronymic] != ""
+    if (!params[:first_name].blank? || !params[:last_name].blank? || !params[:patronymic].blank?)
+      @applicants = @applicants.where("lower(first_name) LIKE ?", "%" + params[:first_name].downcase + "%") if !params[:first_name].blank?
+      @applicants = @applicants.where("lower(last_name) LIKE ?", "%" + params[:last_name].downcase + "%") if !params[:last_name].blank?
+      @applicants = @applicants.where("lower(patronymic) LIKE ?", "%" + params[:patronymic].downcase + "%") if !params[:patronymic].blank?
+    else
+      @applicants = Applicant.includes(:user).order('created_at DESC')
     end
 
-    respond_with @applicants, status: :ok    
+    @applicants = @applicants.paginate(page: params[:page]) if params[:page]
+
+    respond_with @applicants, status: :ok   
   end
 
   def show

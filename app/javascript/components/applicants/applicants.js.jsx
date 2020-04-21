@@ -1,4 +1,6 @@
 import React from 'react'
+//import { Pagination } from 'semantic-ui-react'
+import Pagination from 'react-bootstrap/Pagination'
 import { connect } from 'react-redux'
 import {
     fetchApplicants,
@@ -15,13 +17,113 @@ import {
 class Applicants extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            page: 1,
+        }
+
+        this.handlePageChange = this.handlePageChange.bind(this)
+        this.loadFirstPage = this.loadFirstPage.bind(this)
+        this.loadLastPage = this.loadLastPage.bind(this)
+        this.loadNextPage = this.loadNextPage.bind(this)
+        this.loadPrevPage = this.loadPrevPage.bind(this)
+
     }
 
     componentDidMount() {
         this.props.fetchApplicants()
+        this.setState({
+            page: 1,
+        })
+    }
+
+    handlePageChange(page) {
+        this.setState({ page: page })
+        this.props.fetchApplicants(page)
+    }
+
+    loadPrevPage() {
+        var currentPage = this.state.page
+        var prevPage = (currentPage > 1) ? (currentPage - 1) : currentPage
+        this.setState({ page: prevPage })
+        this.props.fetchApplicants(prevPage)
+    }
+
+    loadNextPage() {
+        var currentPage = this.state.page
+        var nextPage = (currentPage < this.props.pages) ? (currentPage + 1) : currentPage
+        this.setState({ page: nextPage })
+        this.props.fetchApplicants(nextPage)
+    }
+
+    loadLastPage() {
+        this.setState({ page: this.props.pages })
+        this.props.fetchApplicants(this.props.pages)
+    }
+
+    loadFirstPage() {
+        this.setState({ page: 1 })
+        this.props.fetchApplicants(1)
     }
 
     render() {
+
+        let items = []
+        let activePage = this.state.page
+        let totalPages = this.props.pages
+
+
+        if (totalPages <= 10) {
+            for (let number = 1; number <= totalPages; number++) {
+                items.push(
+                    <Pagination.Item key={number} active={number === activePage} onClick={() => this.handlePageChange(number)}>
+                        {number}
+                    </Pagination.Item>
+                )
+            }
+        } else {
+
+            if (activePage <= 3 || activePage >= totalPages - 2) {
+
+                for (let number = 1; number <= 3; number++) {
+                    items.push(
+                        <Pagination.Item key={number} active={number === activePage} onClick={() => this.handlePageChange(number)}>
+                            {number}
+                        </Pagination.Item>
+                    )
+                }
+                items.push(
+                    <Pagination.Ellipsis key="middle" disabled />
+                )
+                for (let number = totalPages-3; number <= totalPages; number++) {
+                    items.push(
+                        <Pagination.Item key={number} active={number === activePage} onClick={() => this.handlePageChange(number)}>
+                            {number}
+                        </Pagination.Item>
+                    )
+                }
+            }
+            else {
+
+                items.push(
+                    <Pagination.Ellipsis key="start" disabled />
+                )
+
+                for (let number = activePage - 2; number <= activePage + 2; number++) {
+                    items.push(
+                        <Pagination.Item key={number} active={number === activePage} onClick={() => this.handlePageChange(number)}>
+                            {number}
+                        </Pagination.Item>
+                    )
+                }
+
+                items.push(
+                    <Pagination.Ellipsis key="end" disabled />
+                )
+            }
+
+        }
+
 
         return (
             <div>
@@ -85,7 +187,7 @@ class Applicants extends React.Component {
 
                                     return (
                                         <tr key={applicant.id}>
-                                            <th scope="row">{index + 1}</th>
+                                            <th scope="row">{(this.state.page-1)*10 + (index + 1)}</th>
                                             <td>{applicant.first_name}</td>
                                             <td>{applicant.last_name}</td>
                                             <td>{applicant.patronymic}</td>
@@ -95,8 +197,8 @@ class Applicants extends React.Component {
                                             <td>{applicant.mobile_phone}</td>
                                             <td>
                                                 {reg_date.getDate() < 9 ? "0" : ""}{reg_date.getDate()}-
-                                                {reg_date.getMonth() < 9 ? "0" : ""}{reg_date.getMonth() + 1}-
-                                                {reg_date.getFullYear()}                                         
+                                            {reg_date.getMonth() < 9 ? "0" : ""}{reg_date.getMonth() + 1}-
+                                            {reg_date.getFullYear()}
                                             </td>
                                             <td>{applicant.user.username}</td>
                                             <td>{applicant.notes}</td>
@@ -132,6 +234,14 @@ class Applicants extends React.Component {
 
                     </tbody>
                 </table>
+
+                <Pagination>
+                    <Pagination.First onClick={() => this.loadFirstPage()} />
+                    <Pagination.Prev onClick={() => this.loadPrevPage()} />
+                    {items}
+                    <Pagination.Next onClick={() => this.loadNextPage()} />
+                    <Pagination.Last onClick={() => this.loadLastPage()} />
+                </Pagination>
             </div>
         )
     }
@@ -140,6 +250,7 @@ class Applicants extends React.Component {
 const mapStateToProps = state => {
     return {
         applicants: state.applicants.applicants,
+        pages: state.applicants.pages,
         loading: state.applicants.loading,
         error: state.applicants.error
     }
@@ -147,7 +258,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchApplicants: () => dispatch(fetchApplicants()),
+        fetchApplicants: (pg) => dispatch(fetchApplicants(pg)),
         editApplicant: (id) => dispatch(editApplicant(id)),
         removeApplicant: (id) => dispatch(removeApplicant(id)),
         applicantInfo: (id) => dispatch(applicantInfo(id))

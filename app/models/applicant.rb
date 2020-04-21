@@ -33,4 +33,7 @@ class Applicant < ApplicationRecord
     has_many    :reservations
     has_many    :subject_tests
 
+    # Pagination params
+
+    self.per_page = 10
 end
