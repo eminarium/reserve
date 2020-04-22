@@ -1,4 +1,5 @@
 import React from 'react'
+import Pagination from 'react-bootstrap/Pagination'
 import { connect } from 'react-redux'
 import {
     fetchSubjectTests,
@@ -16,13 +17,113 @@ import {
 class SubjectTests extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            page: 1,
+        }
+
+        this.handlePageChange = this.handlePageChange.bind(this)
+        this.loadFirstPage = this.loadFirstPage.bind(this)
+        this.loadLastPage = this.loadLastPage.bind(this)
+        this.loadNextPage = this.loadNextPage.bind(this)
+        this.loadPrevPage = this.loadPrevPage.bind(this)
     }
 
     componentDidMount() {
         this.props.fetchSubjectTests()
+        this.setState({
+            page: 1,
+        })
+    }
+
+
+    handlePageChange(page) {
+        this.setState({ page: page })
+        this.props.fetchSubjectTests(page)
+    }
+
+    loadPrevPage() {
+        var currentPage = this.state.page
+        var prevPage = (currentPage > 1) ? (currentPage - 1) : currentPage
+        this.setState({ page: prevPage })
+        this.props.fetchSubjectTests(prevPage)
+    }
+
+    loadNextPage() {
+        var currentPage = this.state.page
+        var nextPage = (currentPage < this.props.pages) ? (currentPage + 1) : currentPage
+        this.setState({ page: nextPage })
+        this.props.fetchSubjectTests(nextPage)
+    }
+
+    loadLastPage() {
+        this.setState({ page: this.props.pages })
+        this.props.fetchSubjectTests(this.props.pages)
+    }
+
+    loadFirstPage() {
+        this.setState({ page: 1 })
+        this.props.fetchSubjectTests(1)
     }
 
     render() {
+
+
+        let items = []
+        let activePage = this.state.page
+        let totalPages = this.props.pages
+
+
+        if (totalPages <= 10) {
+            for (let number = 1; number <= totalPages; number++) {
+                items.push(
+                    <Pagination.Item key={number} active={number === activePage} onClick={() => this.handlePageChange(number)}>
+                        {number}
+                    </Pagination.Item>
+                )
+            }
+        } else {
+
+            if (activePage <= 3 || activePage >= totalPages - 2) {
+
+                for (let number = 1; number <= 3; number++) {
+                    items.push(
+                        <Pagination.Item key={number} active={number === activePage} onClick={() => this.handlePageChange(number)}>
+                            {number}
+                        </Pagination.Item>
+                    )
+                }
+                items.push(
+                    <Pagination.Ellipsis key="middle" disabled />
+                )
+                for (let number = totalPages - 3; number <= totalPages; number++) {
+                    items.push(
+                        <Pagination.Item key={number} active={number === activePage} onClick={() => this.handlePageChange(number)}>
+                            {number}
+                        </Pagination.Item>
+                    )
+                }
+            }
+            else {
+
+                items.push(
+                    <Pagination.Ellipsis key="start" disabled />
+                )
+
+                for (let number = activePage - 2; number <= activePage + 2; number++) {
+                    items.push(
+                        <Pagination.Item key={number} active={number === activePage} onClick={() => this.handlePageChange(number)}>
+                            {number}
+                        </Pagination.Item>
+                    )
+                }
+
+                items.push(
+                    <Pagination.Ellipsis key="end" disabled />
+                )
+            }
+
+        }
 
         return (
             <div>
@@ -74,7 +175,7 @@ class SubjectTests extends React.Component {
 
                                     return (
                                         <tr key={subject_test.id}>
-                                            <th scope="row">{index + 1}</th>
+                                            <th scope="row">{(this.state.page - 1) * 10 + (index + 1)}</th>
                                             <td>
                                                 <Link onClick={() => this.props.applicantInfo(subject_test.applicant.id)} to={"/applicants/" + subject_test.applicant.id} >
                                                     {subject_test.applicant.first_name} &nbsp;
@@ -126,6 +227,15 @@ class SubjectTests extends React.Component {
 
                     </tbody>
                 </table>
+
+                <Pagination>
+                    <Pagination.First onClick={() => this.loadFirstPage()} />
+                    <Pagination.Prev onClick={() => this.loadPrevPage()} />
+                    {items}
+                    <Pagination.Next onClick={() => this.loadNextPage()} />
+                    <Pagination.Last onClick={() => this.loadLastPage()} />
+                </Pagination>
+
             </div>
         )
     }
@@ -134,6 +244,7 @@ class SubjectTests extends React.Component {
 const mapStateToProps = state => {
     return {
         subject_tests: state.subject_tests.subject_tests,
+        pages: state.subject_tests.pages,
         loading: state.subject_tests.loading,
         error: state.subject_tests.error,
     }
@@ -141,7 +252,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchSubjectTests: () => dispatch(fetchSubjectTests()),
+        fetchSubjectTests: (pg) => dispatch(fetchSubjectTests(pg)),
         editSubjectTest: (id) => dispatch(editSubjectTest(id)),
         removeSubjectTest: (id) => dispatch(removeSubjectTest(id)),
         subjectTestInfo: (id) => dispatch(subjectTestInfo(id)),

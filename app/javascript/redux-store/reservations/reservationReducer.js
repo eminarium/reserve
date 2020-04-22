@@ -45,7 +45,8 @@ const reservationReducer = (state = initialState, action) => {
         case FETCH_RESERVATIONS_SUCCESS:
             return {
                 loading: false,
-                reservations: action.payload,
+                reservations: action.payload.reservations,
+                pages: action.payload.pages,
                 error: '',
                 editingReservationId: '',
                 currentReservation: ''

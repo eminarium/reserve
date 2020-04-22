@@ -10,6 +10,8 @@ class Api::V1::SubjectTestsController < ApplicationController
       @subject_tests = SubjectTest.order('created_at DESC').includes(:applicant, :subject, :season, :user)
     end
 
+    @subject_tests = @subject_tests.paginate(page: params[:page]) if params[:page]
+
     respond_with @subject_tests, status: :ok        
   end
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
-    fetchReservations,
+    fetchApplicantReservations,
     editReservation,
     reservationInfo,
     removeReservation,
@@ -21,7 +21,7 @@ class ApplicantReservations extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchReservations()
+        this.props.fetchApplicantReservations(this.props.applicant.id)
     }
 
     render() {
@@ -175,7 +175,7 @@ class ApplicantReservations extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        reservations: state.reservations.reservations.filter(reservation => reservation.applicant.id === state.applicants.currentApplicant.id),
+        reservations: state.reservations.reservations,
         loading: state.reservations.loading,
         error: state.reservations.error,
     }
@@ -183,7 +183,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchReservations: () => dispatch(fetchReservations()),
+        fetchApplicantReservations: (applicant_id) => dispatch(fetchApplicantReservations(applicant_id)),
         editReservation: (id) => dispatch(editReservation(id)),
         removeReservation: (id) => dispatch(removeReservation(id)),
         reservationInfo: (id) => dispatch(reservationInfo(id)),

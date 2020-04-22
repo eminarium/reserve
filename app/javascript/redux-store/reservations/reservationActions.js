@@ -141,12 +141,42 @@ export const removeReservationFailure = (error) => {
     }
 }
 
-export const fetchReservations = () => {
+export const fetchReservations = (page = 1) => {
     return (dispatch) => {
 
         dispatch(fetchReservationsRequest)
 
-        axios.get(settings.rootUrl + 'api/v1/reservations', {
+        axios.get(settings.rootUrl + 'api/v1/reservations/?page=' + page, {
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": localStorage.getItem('Token')
+            }
+        })
+            //.then(response => response.json())
+            .then(response => {
+                const reservations = response.data
+                dispatch(fetchReservationsSuccess(reservations))
+            })
+            .catch(error => {
+                if (error.response.status === 401) {
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('Token');
+                }
+
+                console.log(error.error)
+                const errorMsg = error.message
+                dispatch(fetchReservationsFailure(errorMsg))
+            })
+    }
+}
+
+
+export const fetchApplicantReservations = (applicant_id) => {
+    return (dispatch) => {
+
+        dispatch(fetchReservationsRequest)
+
+        axios.get(settings.rootUrl + 'api/v1/applicants/' + applicant_id + '/reservations/', {
             headers: {
                 "Content-type": "application/json",
                 "Authorization": localStorage.getItem('Token')

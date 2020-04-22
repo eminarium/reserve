@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
-    fetchSubjectTests,
+    fetchApplicantSubjectTests,
     editSubjectTest,
     subjectTestInfo,
     removeSubjectTest
@@ -18,7 +18,7 @@ class ApplicantSubjectTests extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchSubjectTests()
+        this.props.fetchApplicantSubjectTests(this.props.applicant.id)
     }
 
     render() {
@@ -152,7 +152,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchSubjectTests: () => dispatch(fetchSubjectTests()),
+        fetchApplicantSubjectTests: (applicant_id) => dispatch(fetchApplicantSubjectTests(applicant_id)),
         editSubjectTest: (id) => dispatch(editSubjectTest(id)),
         removeSubjectTest: (id) => dispatch(removeSubjectTest(id)),
         subjectTestInfo: (id) => dispatch(subjectTestInfo(id))

@@ -116,12 +116,12 @@ export const removeSubjectTestFailure = (error) => {
     }
 }
 
-export const fetchSubjectTests = () => {
+export const fetchSubjectTests = (page = 1) => {
     return (dispatch) => {
 
         dispatch(fetchSubjectTestsRequest)
 
-        axios.get(settings.rootUrl + 'api/v1/subject_tests', {
+        axios.get(settings.rootUrl + 'api/v1/subject_tests/?page=' + page, {
             headers: {
                 "Content-type": "application/json",
                 "Authorization": localStorage.getItem('Token')
@@ -142,6 +142,35 @@ export const fetchSubjectTests = () => {
                 const errorMsg = error.message
                 dispatch(fetchSubjectTestsFailure(errorMsg))
             })
+    }
+}
+
+export const fetchApplicantSubjectTests = (applicant_id) => {
+    return (dispatch) => {
+
+        dispatch(fetchSubjectTestsRequest)
+
+        axios.get(settings.rootUrl + 'api/v1/applicants/' + applicant_id + '/subject_tests/', {
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": localStorage.getItem('Token')
+            }
+        })
+        //.then(response => response.json())
+        .then(response => {
+            const subject_tests = response.data
+            dispatch(fetchSubjectTestsSuccess(subject_tests))
+        })
+        .catch(error => {
+            if (error.response.status === 401) {
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('Token');
+            }
+
+            console.log(error.error)
+            const errorMsg = error.message
+            dispatch(fetchSubjectTestsFailure(errorMsg))
+        })
     }
 }
 

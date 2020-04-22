@@ -10,6 +10,8 @@ class Api::V1::ReservationsController < ApplicationController
       @reservations = Reservation.order('created_at DESC').includes(:applicant, :season, :shift, :subject, :user)
     end
 
+    @reservations = @reservations.paginate(page: params[:page]) if params[:page]
+
     respond_with @reservations, status: :ok    
   end
 

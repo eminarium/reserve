@@ -73,7 +73,7 @@ const applicantReducer = (state = initialState, action) => {
         case FETCH_SEARCH_APPLICANTS_SUCCESS:
             return {
                 loading: false,
-                applicants: action.payload,
+                applicants: action.payload.applicants,
                 error: '',
                 editingApplicantId: '',
                 currentApplicant: ''

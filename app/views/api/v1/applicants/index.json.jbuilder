@@ -23,5 +23,7 @@ json.applicants {
     end
 }
 
-json.page          @applicants.current_page
-json.pages         @applicants.total_pages
+if (defined?(@applicants.current_page) || defined?(@applicants.total_pages))
+    json.page          @applicants.current_page
+    json.pages         @applicants.total_pages
+end

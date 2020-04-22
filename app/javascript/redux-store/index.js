@@ -58,6 +58,7 @@ export {
 
 export {
     fetchSubjectTests,
+    fetchApplicantSubjectTests,
     postSubjectTest,
     updateSubjectTest,
     editSubjectTest,
@@ -67,6 +68,7 @@ export {
 
 export {
     fetchReservations,
+    fetchApplicantReservations,
     postReservation,
     updateReservation,
     editReservation,

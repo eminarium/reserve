@@ -31,4 +31,9 @@ class Reservation < ApplicationRecord
   belongs_to :season
   belongs_to :shift
   belongs_to :subject
+
+
+  # Pagination params
+
+  self.per_page = 10
 end

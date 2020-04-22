@@ -1,4 +1,5 @@
 import React from 'react'
+import Pagination from 'react-bootstrap/Pagination'
 import { connect } from 'react-redux'
 import {
     fetchReservations,
@@ -19,13 +20,113 @@ import {
 class Reservations extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            page: 1,
+        }
+
+        this.handlePageChange = this.handlePageChange.bind(this)
+        this.loadFirstPage = this.loadFirstPage.bind(this)
+        this.loadLastPage = this.loadLastPage.bind(this)
+        this.loadNextPage = this.loadNextPage.bind(this)
+        this.loadPrevPage = this.loadPrevPage.bind(this)
     }
 
     componentDidMount() {
         this.props.fetchReservations()
+        this.setState({
+            page: 1,
+        })
+    }
+
+
+    handlePageChange(page) {
+        this.setState({ page: page })
+        this.props.fetchReservations(page)
+    }
+
+    loadPrevPage() {
+        var currentPage = this.state.page
+        var prevPage = (currentPage > 1) ? (currentPage - 1) : currentPage
+        this.setState({ page: prevPage })
+        this.props.fetchReservations(prevPage)
+    }
+
+    loadNextPage() {
+        var currentPage = this.state.page
+        var nextPage = (currentPage < this.props.pages) ? (currentPage + 1) : currentPage
+        this.setState({ page: nextPage })
+        this.props.fetchReservations(nextPage)
+    }
+
+    loadLastPage() {
+        this.setState({ page: this.props.pages })
+        this.props.fetchReservations(this.props.pages)
+    }
+
+    loadFirstPage() {
+        this.setState({ page: 1 })
+        this.props.fetchReservations(1)
     }
 
     render() {
+
+
+        let items = []
+        let activePage = this.state.page
+        let totalPages = this.props.pages
+
+
+        if (totalPages <= 10) {
+            for (let number = 1; number <= totalPages; number++) {
+                items.push(
+                    <Pagination.Item key={number} active={number === activePage} onClick={() => this.handlePageChange(number)}>
+                        {number}
+                    </Pagination.Item>
+                )
+            }
+        } else {
+
+            if (activePage <= 3 || activePage >= totalPages - 2) {
+
+                for (let number = 1; number <= 3; number++) {
+                    items.push(
+                        <Pagination.Item key={number} active={number === activePage} onClick={() => this.handlePageChange(number)}>
+                            {number}
+                        </Pagination.Item>
+                    )
+                }
+                items.push(
+                    <Pagination.Ellipsis key="middle" disabled />
+                )
+                for (let number = totalPages - 3; number <= totalPages; number++) {
+                    items.push(
+                        <Pagination.Item key={number} active={number === activePage} onClick={() => this.handlePageChange(number)}>
+                            {number}
+                        </Pagination.Item>
+                    )
+                }
+            }
+            else {
+
+                items.push(
+                    <Pagination.Ellipsis key="start" disabled />
+                )
+
+                for (let number = activePage - 2; number <= activePage + 2; number++) {
+                    items.push(
+                        <Pagination.Item key={number} active={number === activePage} onClick={() => this.handlePageChange(number)}>
+                            {number}
+                        </Pagination.Item>
+                    )
+                }
+
+                items.push(
+                    <Pagination.Ellipsis key="end" disabled />
+                )
+            }
+
+        }
 
         return (
             <div>
@@ -81,7 +182,7 @@ class Reservations extends React.Component {
 
                                     return (
                                         <tr key={reservation.id}>
-                                            <th scope="row">{index + 1}</th>
+                                            <th scope="row">{(this.state.page - 1) * 10 + (index + 1)}</th>
                                             <td>
                                                 <Link onClick={() => this.props.applicantInfo(reservation.applicant.id)} to={"/applicants/" + reservation.applicant.id} >
                                                     {reservation.applicant.first_name} &nbsp;
@@ -154,6 +255,15 @@ class Reservations extends React.Component {
 
                     </tbody>
                 </table>
+
+                <Pagination>
+                    <Pagination.First onClick={() => this.loadFirstPage()} />
+                    <Pagination.Prev onClick={() => this.loadPrevPage()} />
+                    {items}
+                    <Pagination.Next onClick={() => this.loadNextPage()} />
+                    <Pagination.Last onClick={() => this.loadLastPage()} />
+                </Pagination>
+
             </div>
         )
     }
@@ -162,6 +272,7 @@ class Reservations extends React.Component {
 const mapStateToProps = state => {
     return {
         reservations: state.reservations.reservations,
+        pages: state.reservations.pages,
         loading: state.reservations.loading,
         error: state.reservations.error,
     }
@@ -169,7 +280,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchReservations: () => dispatch(fetchReservations()),
+        fetchReservations: (pg) => dispatch(fetchReservations(pg)),
         editReservation: (id) => dispatch(editReservation(id)),
         removeReservation: (id) => dispatch(removeReservation(id)),
         reservationInfo: (id) => dispatch(reservationInfo(id)),

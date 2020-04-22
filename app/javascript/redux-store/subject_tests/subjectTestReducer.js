@@ -41,7 +41,8 @@ const subjectTestReducer = (state = initialState, action) => {
         case FETCH_SUBJECT_TESTS_SUCCESS:
             return {
                 loading: false,
-                subject_tests: action.payload,
+                subject_tests: action.payload.subject_tests,
+                pages: action.payload.pages,
                 error: '',
                 editingSubjectTestId: '',
                 currentSubjectTest: ''
