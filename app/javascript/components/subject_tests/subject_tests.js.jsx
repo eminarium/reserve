@@ -30,10 +30,7 @@ class SubjectTests extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchSubjectTests()
-        this.setState({
-            page: 1,
-        })
+        this.props.fetchSubjectTests(this.state.page)
     }
 
 

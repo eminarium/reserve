@@ -149,12 +149,14 @@ export const removeApplicantFailure = (error) => {
     }
 }
 
-export const fetchApplicants = (page = 1) => {
+export const fetchApplicants = (page = 0) => {
     return (dispatch) => {
 
         dispatch(fetchApplicantsRequest)
 
-        axios.get(settings.rootUrl + 'api/v1/applicants/?page=' + page, {
+        var pageString = (page != 0) ? ("/?page=" + page) : ""
+
+        axios.get(settings.rootUrl + 'api/v1/applicants' + pageString, {
             headers: {
                 "Content-type": "application/json",
                 "Authorization": localStorage.getItem('Token')
@@ -312,18 +314,18 @@ export const removeApplicant = (id) => {
                 "Authorization": localStorage.getItem('Token')
             }
         })
-        .then(response => {
-            dispatch(removeApplicantSuccess(id))
-        })
-        .catch(error => {
-            if (error.response.status === 401) {
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('Token');
-            }
+            .then(response => {
+                dispatch(removeApplicantSuccess(id))
+            })
+            .catch(error => {
+                if (error.response.status === 401) {
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('Token');
+                }
 
-            console.log(error.error)
-            const errorMsg = error.response.message
-            dispatch(removeApplicantFailure(errorMsg))
-        })
+                console.log(error.error)
+                const errorMsg = error.response.message
+                dispatch(removeApplicantFailure(errorMsg))
+            })
     }
 }

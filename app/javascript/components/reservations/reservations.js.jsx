@@ -33,10 +33,7 @@ class Reservations extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchReservations()
-        this.setState({
-            page: 1,
-        })
+        this.props.fetchReservations(this.state.page)
     }
 
 

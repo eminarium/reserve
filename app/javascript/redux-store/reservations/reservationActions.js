@@ -141,12 +141,14 @@ export const removeReservationFailure = (error) => {
     }
 }
 
-export const fetchReservations = (page = 1) => {
+export const fetchReservations = (page = 0) => {
     return (dispatch) => {
 
         dispatch(fetchReservationsRequest)
 
-        axios.get(settings.rootUrl + 'api/v1/reservations/?page=' + page, {
+        var pageString = (page != 0) ? ("/?page=" + page) : ""
+
+        axios.get(settings.rootUrl + 'api/v1/reservations' + pageString, {
             headers: {
                 "Content-type": "application/json",
                 "Authorization": localStorage.getItem('Token')

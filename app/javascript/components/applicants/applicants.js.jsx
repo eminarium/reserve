@@ -1,5 +1,4 @@
 import React from 'react'
-//import { Pagination } from 'semantic-ui-react'
 import Pagination from 'react-bootstrap/Pagination'
 import { connect } from 'react-redux'
 import {
@@ -31,10 +30,7 @@ class Applicants extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchApplicants()
-        this.setState({
-            page: 1,
-        })
+        this.props.fetchApplicants(this.state.page)
     }
 
     handlePageChange(page) {
@@ -95,7 +91,7 @@ class Applicants extends React.Component {
                 items.push(
                     <Pagination.Ellipsis key="middle" disabled />
                 )
-                for (let number = totalPages-3; number <= totalPages; number++) {
+                for (let number = totalPages - 3; number <= totalPages; number++) {
                     items.push(
                         <Pagination.Item key={number} active={number === activePage} onClick={() => this.handlePageChange(number)}>
                             {number}
@@ -187,7 +183,7 @@ class Applicants extends React.Component {
 
                                     return (
                                         <tr key={applicant.id}>
-                                            <th scope="row">{(this.state.page-1)*10 + (index + 1)}</th>
+                                            <th scope="row">{(this.state.page - 1) * 10 + (index + 1)}</th>
                                             <td>{applicant.first_name}</td>
                                             <td>{applicant.last_name}</td>
                                             <td>{applicant.patronymic}</td>
