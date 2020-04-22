@@ -21,7 +21,7 @@ class ApplicantReservations extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchApplicantReservations(this.props.applicant.id)
+        //this.props.fetchApplicantReservations(this.props.applicant.id)
     }
 
     render() {
@@ -41,7 +41,7 @@ class ApplicantReservations extends React.Component {
                                     </button>
                                 </Link>
                                 &nbsp;
-                                <button className="btn btn-warning" onClick={() => this.props.fetchReservations()}>
+                                <button className="btn btn-warning" onClick={() => this.props.fetchApplicantReservations(this.props.applicant.id)}>
                                     <i className="fa fa-refresh"></i>
                                 </button>
                             </th>

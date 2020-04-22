@@ -6,7 +6,8 @@ import {
     editSubjectTest,
     subjectTestInfo,
     removeSubjectTest,
-    applicantInfo
+    applicantInfo,
+    fetchApplicantInfo
 } from '../../redux-store'
 import LoaderImage from 'images/loader.gif'
 
@@ -174,7 +175,7 @@ class SubjectTests extends React.Component {
                                         <tr key={subject_test.id}>
                                             <th scope="row">{(this.state.page - 1) * 10 + (index + 1)}</th>
                                             <td>
-                                                <Link onClick={() => this.props.applicantInfo(subject_test.applicant.id)} to={"/applicants/" + subject_test.applicant.id} >
+                                                <Link onClick={() => this.props.fetchApplicantInfo(subject_test.applicant.id)} to={"/applicants/" + subject_test.applicant.id} >
                                                     {subject_test.applicant.first_name} &nbsp;
                                                 {subject_test.applicant.last_name} &nbsp;
                                                 {subject_test.applicant.patronymic}
@@ -253,7 +254,8 @@ const mapDispatchToProps = dispatch => {
         editSubjectTest: (id) => dispatch(editSubjectTest(id)),
         removeSubjectTest: (id) => dispatch(removeSubjectTest(id)),
         subjectTestInfo: (id) => dispatch(subjectTestInfo(id)),
-        applicantInfo: (id) => dispatch(applicantInfo(id))
+        applicantInfo: (id) => dispatch(applicantInfo(id)),
+        fetchApplicantInfo: (id) => dispatch(fetchApplicantInfo(id)),
     }
 }
 

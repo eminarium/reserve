@@ -22,6 +22,7 @@ import {
     EDIT_APPLICANT,
     APPLICANT_INFO,
     EMPTY_APPLICANTS,
+    FETCH_APPLICANT_INFO,
 
     REMOVE_APPLICANT_REQUEST,
     REMOVE_APPLICANT_SUCCESS,
@@ -123,6 +124,13 @@ export const applicantInfo = (id) => {
     }
 }
 
+export const getApplicantInfo = (applicant) => {
+    return {
+        type: FETCH_APPLICANT_INFO,
+        payload: applicant
+    }
+}
+
 export const emptyApplicants = () => {
     return {
         type: EMPTY_APPLICANTS
@@ -176,6 +184,32 @@ export const fetchApplicants = (page = 0) => {
                 console.log(error.error)
                 const errorMsg = error.message
                 dispatch(fetchApplicantsFailure(errorMsg))
+            })
+    }
+}
+
+
+export const fetchApplicantInfo = (id) => {
+    return (dispatch) => {
+
+        axios.get(settings.rootUrl + 'api/v1/applicants/' + id, {
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": localStorage.getItem('Token')
+            }
+        })
+            .then(response => {
+                const res = response.data
+                dispatch(getApplicantInfo(res))
+            })
+            .catch(error => {
+                if (error.response.status === 401) {
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('Token');
+                }
+
+                console.log(error.error)
+                const errorMsg = error.message
             })
     }
 }

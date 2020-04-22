@@ -7,6 +7,7 @@ import {
     reservationInfo,
     removeReservation,
     applicantInfo,
+    fetchApplicantInfo,
     toggleReservationSMS,
     toggleReservationIsCalled,
     toggleReservationIsRegistered
@@ -181,7 +182,7 @@ class Reservations extends React.Component {
                                         <tr key={reservation.id}>
                                             <th scope="row">{(this.state.page - 1) * 10 + (index + 1)}</th>
                                             <td>
-                                                <Link onClick={() => this.props.applicantInfo(reservation.applicant.id)} to={"/applicants/" + reservation.applicant.id} >
+                                                <Link onClick={() => this.props.fetchApplicantInfo(reservation.applicant.id)} to={"/applicants/" + reservation.applicant.id} >
                                                     {reservation.applicant.first_name} &nbsp;
                                                 {reservation.applicant.last_name} &nbsp;
                                                 {reservation.applicant.patronymic}
@@ -282,6 +283,7 @@ const mapDispatchToProps = dispatch => {
         removeReservation: (id) => dispatch(removeReservation(id)),
         reservationInfo: (id) => dispatch(reservationInfo(id)),
         applicantInfo: (id) => dispatch(applicantInfo(id)),
+        fetchApplicantInfo: (id) => dispatch(fetchApplicantInfo(id)),
         toggleReservationSMS: (reservation) => dispatch(toggleReservationSMS(reservation)),
         toggleReservationIsCalled: (reservation) => dispatch(toggleReservationIsCalled(reservation)),
         toggleReservationIsRegistered: (reservation) => dispatch(toggleReservationIsRegistered(reservation))

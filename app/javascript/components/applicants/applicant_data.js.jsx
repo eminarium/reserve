@@ -57,7 +57,13 @@ class ApplicantData extends React.Component {
                                 </tr>
                                 <tr>
                                     <th scope="row"><i className="fa fa-user" style={{ fontSize: 24 }}></i></th>
-                                    <td>{this.props.applicant.user.username}</td>
+                                    <td>
+                                        {
+                                            this.props.applicant.user ?
+                                                this.props.applicant.user.username :
+                                                ""
+                                        }
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Bellikler</th>

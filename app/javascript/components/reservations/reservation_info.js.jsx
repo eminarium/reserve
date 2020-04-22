@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 
 import {
     editReservation,
-    applicantInfo
+    applicantInfo,
+    fetchApplicantInfo
 } from '../../redux-store'
 
 import {
@@ -29,7 +30,7 @@ class ReservationInfo extends React.Component {
                                 <tr>
                                     <th scope="row">Diňleýji</th>
                                     <td>
-                                        <Link onClick={() => this.props.applicantInfo(this.props.reservation.applicant.id)} to={"/applicants/" + this.props.reservation.applicant.id} >
+                                        <Link onClick={() => this.props.fetchApplicantInfo(this.props.reservation.applicant.id)} to={"/applicants/" + this.props.reservation.applicant.id} >
                                             {this.props.reservation.applicant.first_name} &nbsp;
                                             {this.props.reservation.applicant.last_name} &nbsp;
                                             {this.props.reservation.applicant.patronymic}
@@ -125,7 +126,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         editReservation: (id) => dispatch(editReservation(id)),
-        applicantInfo: (id) => dispatch(applicantInfo(id))
+        applicantInfo: (id) => dispatch(applicantInfo(id)),
+        fetchApplicantInfo: (id) => dispatch(fetchApplicantInfo(id))
     }
 }
 

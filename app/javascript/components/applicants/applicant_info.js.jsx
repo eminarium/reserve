@@ -3,6 +3,9 @@ import { connect } from 'react-redux'
 import { Tabs, Tab } from 'react-bootstrap'
 import {
     editApplicant,
+    fetchApplicantInfo,
+    fetchApplicantReservations,
+    fetchApplicantSubjectTests
 } from '../../redux-store'
 
 import ApplicantData from './applicant_data.js'
@@ -15,15 +18,21 @@ class ApplicantInfo extends React.Component {
         super(props);
     }
 
+    componentDidMount() {
+        this.props.fetchApplicantInfo(this.props.match.params.applicantId)
+        this.props.fetchApplicantReservations(this.props.match.params.applicantId)
+        this.props.fetchApplicantSubjectTests(this.props.match.params.applicantId)
+    }
+
     render() {
 
         return (
             <div>
                 <Tabs defaultActiveKey="info" id="uncontrolled-tab-example">
                     <Tab eventKey="info" title="Umumy Maglumatlar">
-                        <ApplicantData   
-                            applicant  = {this.props.applicant} 
-                            editApplicant = {this.props.editApplicant}
+                        <ApplicantData
+                            applicant={this.props.applicant}
+                            editApplicant={this.props.editApplicant}
                         />
                     </Tab>
                     <Tab eventKey="reservations" title="Rezerwler">
@@ -31,17 +40,17 @@ class ApplicantInfo extends React.Component {
                         <ApplicantReservations
                             applicant={this.props.applicant}
                             editApplicant={this.props.editApplicant}
-                        />                        
+                        />
                     </Tab>
                     <Tab eventKey="subject_tests" title="Synaglar">
                         <br />
                         <ApplicantSubjectTests
                             applicant={this.props.applicant}
                             editApplicant={this.props.editApplicant}
-                        />                        
+                        />
                     </Tab>
-                </Tabs>           
-            </div>            
+                </Tabs>
+            </div>
         )
     }
 }
@@ -55,6 +64,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         editApplicant: (id) => dispatch(editApplicant(id)),
+        fetchApplicantInfo: (id) => dispatch(fetchApplicantInfo(id)),
+        fetchApplicantReservations: (id) => dispatch(fetchApplicantReservations(id)),
+        fetchApplicantSubjectTests: (id) => dispatch(fetchApplicantSubjectTests(id))
     }
 }
 

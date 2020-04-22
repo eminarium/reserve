@@ -193,8 +193,8 @@ class Applicants extends React.Component {
                                             <td>{applicant.mobile_phone}</td>
                                             <td>
                                                 {reg_date.getDate() < 9 ? "0" : ""}{reg_date.getDate()}-
-                                            {reg_date.getMonth() < 9 ? "0" : ""}{reg_date.getMonth() + 1}-
-                                            {reg_date.getFullYear()}
+                                                {reg_date.getMonth() < 9 ? "0" : ""}{reg_date.getMonth() + 1}-
+                                                {reg_date.getFullYear()}
                                             </td>
                                             <td>{applicant.user.username}</td>
                                             <td>{applicant.notes}</td>

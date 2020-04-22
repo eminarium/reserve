@@ -18,6 +18,7 @@ import {
     EDIT_APPLICANT,
     APPLICANT_INFO,
     EMPTY_APPLICANTS,
+    FETCH_APPLICANT_INFO,
 
     REMOVE_APPLICANT_REQUEST,
     REMOVE_APPLICANT_SUCCESS,
@@ -153,6 +154,15 @@ const applicantReducer = (state = initialState, action) => {
                 error: '',
                 editingApplicantId: '',
                 currentApplicant: state.applicants.find(applicant => applicant.id === action.payload)
+            }
+
+        case FETCH_APPLICANT_INFO:
+            return {
+                loading: false,
+                applicants: state.applicants,
+                error: '',
+                editingApplicantId: '',
+                currentApplicant: action.payload
             }
 
         case EMPTY_APPLICANTS:

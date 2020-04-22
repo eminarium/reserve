@@ -53,6 +53,7 @@ export {
     editApplicant,
     removeApplicant,
     applicantInfo,
+    fetchApplicantInfo,
     emptyApplicants
 } from './applicants/applicantActions'
 

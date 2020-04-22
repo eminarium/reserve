@@ -18,7 +18,7 @@ class ApplicantSubjectTests extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchApplicantSubjectTests(this.props.applicant.id)
+        //this.props.fetchApplicantSubjectTests(this.props.applicant.id)
     }
 
     render() {
@@ -38,7 +38,7 @@ class ApplicantSubjectTests extends React.Component {
                                     </button>
                                 </Link>
                                 &nbsp;
-                                <button className="btn btn-warning" onClick={() => this.props.fetchSubjectTests()}>
+                                <button className="btn btn-warning" onClick={() => this.props.fetchApplicantSubjectTests(this.props.applicant.id)}>
                                     <i className="fa fa-refresh"></i>
                                 </button>
                             </th>
@@ -144,7 +144,7 @@ class ApplicantSubjectTests extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        subject_tests: state.subject_tests.subject_tests.filter(subject_test => subject_test.applicant.id === state.applicants.currentApplicant.id),
+        subject_tests: state.subject_tests.subject_tests,
         loading: state.subject_tests.loading,
         error: state.subject_tests.error,
     }

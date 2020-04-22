@@ -17,9 +17,9 @@ class Dashboard extends React.Component {
 
     componentDidMount() {
         this.props.fetchApplicants()
+        this.props.fetchReservations()
         this.props.fetchSubjectCategories()
         this.props.fetchSubjects()
-        this.props.fetchReservations()
         this.props.fetchShifts()
         this.props.fetchLanguages()
     }
@@ -143,8 +143,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchApplicants: () => dispatch(fetchApplicants()),
-        fetchReservations: () => dispatch(fetchReservations()),
+        fetchApplicants: (pg) => dispatch(fetchApplicants(pg)),
+        fetchReservations: (pg) => dispatch(fetchReservations(pg)),
         fetchSubjectCategories: () => dispatch(fetchSubjectCategories()),
         fetchSubjects: () => dispatch(fetchSubjects()),
         fetchShifts: () => dispatch(fetchShifts()),

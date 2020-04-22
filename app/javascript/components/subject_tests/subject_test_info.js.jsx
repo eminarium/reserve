@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 
 import {
     editSubjectTest,
-    applicantInfo
+    applicantInfo,
+    fetchApplicantInfo
 } from '../../redux-store'
 
 import {
@@ -29,7 +30,7 @@ class SubjectTestInfo extends React.Component {
                                 <tr>
                                     <th scope="row">Diňleýji</th>
                                     <td>
-                                        <Link onClick={() => this.props.applicantInfo(this.props.subject_test.applicant.id)} to={"/applicants/" + this.props.subject_test.applicant.id} >
+                                        <Link onClick={() => this.props.fetchApplicantInfo(this.props.subject_test.applicant.id)} to={"/applicants/" + this.props.subject_test.applicant.id} >
                                             {this.props.subject_test.applicant.first_name} &nbsp;
                                             {this.props.subject_test.applicant.last_name} &nbsp;
                                             {this.props.subject_test.applicant.patronymic}
@@ -95,7 +96,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         editSubjectTest: (id) => dispatch(editSubjectTest(id)),
-        applicantInfo: (id) => dispatch(applicantInfo(id))
+        applicantInfo: (id) => dispatch(applicantInfo(id)),
+        fetchApplicantInfo: (id) => dispatch(fetchApplicantInfo(id))
     }
 }
 
