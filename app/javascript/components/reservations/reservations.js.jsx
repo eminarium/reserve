@@ -282,12 +282,13 @@ class Reservations extends React.Component {
                             <th scope="col">#</th>
                             <th scope="col">Diňleýji</th>
                             <th scope="col">Dersi</th>
-                            <th scope="col">Wagty (Smena)</th>
-                            <th scope="col">Bellenilen Senesi</th>
+                            <th scope="col"><i className="fa fa-clock-o" style={{ fontSize: 24 }}></i></th>
+                            <th scope="col"><i className="fa fa-calendar" style={{ fontSize: 24 }}></i></th>
                             <th scope="col">Tapgyry</th>
                             <th scope="col">SMS ?</th>
                             <th scope="col">JAŇ ?</th>
                             <th scope="col">Ýazyldymy ?</th>
+                            <th scope="col"><i className="fa fa-user" style={{ fontSize: 24 }}></i></th>
                             <th scope="col">Teswiri</th>
                             <th scope="col">Amallar</th>
                         </tr>
@@ -363,6 +364,7 @@ class Reservations extends React.Component {
                                                         <i className="fa fa-times" onClick={() => this.props.toggleReservationIsRegistered(reservation)} style={{ color: 'red', fontSize: 20 }}></i>
                                                 }
                                             </td>
+                                            <td>{reservation.user.username}</td>
                                             <td>{reservation.notes}</td>
                                             <td>
                                                 <Link to={"/reservations/" + reservation.id}>

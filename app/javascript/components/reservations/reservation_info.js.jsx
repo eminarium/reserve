@@ -47,7 +47,7 @@ class ReservationInfo extends React.Component {
                                     <td>{this.props.reservation.subject.title}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Wagty (Smenasy)</th>
+                                    <th scope="row"><i className="fa fa-clock-o" style={{ fontSize: 24 }}></i></th>
                                     <td>{this.props.reservation.shift.title}</td>
                                 </tr>
                                 <tr>
@@ -85,7 +85,7 @@ class ReservationInfo extends React.Component {
                                     <td>{this.props.reservation.notes}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Ýazga alan ulanyjy</th>
+                                    <th scope="row"><i className="fa fa-user" style={{ fontSize: 24 }}></i></th>
                                     <td>{this.props.reservation.user.username}</td>
                                 </tr>
                                 <tr>
