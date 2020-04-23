@@ -18,6 +18,8 @@ class ReservationInfo extends React.Component {
 
     render() {
 
+        var reg_date = new Date(this.props.reservation.created_at)
+
         return (
             <div>
                 <br />
@@ -39,12 +41,15 @@ class ReservationInfo extends React.Component {
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Rezerw Tapgyry</th>
+                                    <th scope="row">Tapgyry</th>
                                     <td>{this.props.reservation.season.order_no}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Rezerwirlenen Dersi</th>
-                                    <td>{this.props.reservation.subject.title}</td>
+                                    <th scope="row">Dersi</th>
+                                    <td>
+                                        {this.props.reservation.subject.title} &nbsp;
+                                        ({this.props.reservation.subject.language.title})
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><i className="fa fa-clock-o" style={{ fontSize: 24 }}></i></th>
@@ -81,12 +86,20 @@ class ReservationInfo extends React.Component {
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Bellikler</th>
-                                    <td>{this.props.reservation.notes}</td>
+                                    <th scope="row"><i className="fa fa-calendar" style={{ fontSize: 24 }}></i></th>
+                                    <td>
+                                        {reg_date.getDate() < 9 ? "0" : ""}{reg_date.getDate()}-
+                                        {reg_date.getMonth() < 9 ? "0" : ""}{reg_date.getMonth() + 1}-
+                                        {reg_date.getFullYear()}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><i className="fa fa-user" style={{ fontSize: 24 }}></i></th>
                                     <td>{this.props.reservation.user.username}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Bellikler</th>
+                                    <td>{this.props.reservation.notes}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Amallar</th>

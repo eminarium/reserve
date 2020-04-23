@@ -18,6 +18,8 @@ class SubjectTestInfo extends React.Component {
 
     render() {
 
+        var reg_date = new Date(this.props.subject_test.created_at)
+
         return (
             <div>
                 <br />
@@ -43,8 +45,19 @@ class SubjectTestInfo extends React.Component {
                                     <td>{this.props.subject_test.season.order_no}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Synag Dersi</th>
-                                    <td>{this.props.subject_test.subject.title}</td>
+                                    <th scope="row">Dersi</th>
+                                    <td>
+                                        {this.props.subject_test.subject.title} &nbsp;
+                                        ({this.props.subject_test.subject.language.title})
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><i className="fa fa-calendar" style={{ fontSize: 24 }}></i></th>
+                                    <td>
+                                        {reg_date.getDate() < 9 ? "0" : ""}{reg_date.getDate()}-
+                                        {reg_date.getMonth() < 9 ? "0" : ""}{reg_date.getMonth() + 1}-
+                                        {reg_date.getFullYear()}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Netijesi</th>
@@ -55,7 +68,7 @@ class SubjectTestInfo extends React.Component {
                                     <td>{this.props.subject_test.notes}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Ýazga alan ulanyjy</th>
+                                    <th scope="row"><i className="fa fa-user" style={{ fontSize: 24 }}></i></th>
                                     <td>{this.props.subject_test.user.username}</td>
                                 </tr>
                                 <tr>

@@ -136,9 +136,10 @@ class SubjectTests extends React.Component {
                             <th scope="col">#</th>
                             <th scope="col">Diňleýji</th>
                             <th scope="col">Dersi</th>
-                            <th scope="col">Synag Senesi</th>
+                            <th scope="col"><i className="fa fa-calendar" style={{ fontSize: 24 }}></i></th>
                             <th scope="col">Netijesi</th>
                             <th scope="col">Tapgyry</th>
+                            <th scope="col"><i className="fa fa-user" style={{ fontSize: 24 }}></i></th>
                             <th scope="col">Teswiri</th>
                             <th scope="col">Amallar</th>
                         </tr>
@@ -182,7 +183,7 @@ class SubjectTests extends React.Component {
                                                 </Link>
                                             </td>
                                             <td>
-                                                {subject_test.subject.title}
+                                                {subject_test.subject.title} &nbsp;
                                             ({subject_test.subject.language.title})
                                         </td>
                                             <td>
@@ -192,6 +193,7 @@ class SubjectTests extends React.Component {
                                             </td>
                                             <td>{subject_test.result}</td>
                                             <td>{subject_test.season.order_no}</td>
+                                            <td>{subject_test.user.username}</td>
                                             <td>{subject_test.notes}</td>
                                             <td>
                                                 <Link to={"/subject_tests/" + subject_test.id}>
