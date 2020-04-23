@@ -24,8 +24,13 @@ class Reservations extends React.Component {
 
         this.state = {
             page: 1,
+            no_params_error: '',
+            shift_id: -1,
+            subject_id: -1
         }
 
+        this.getFilteredReservations = this.getFilteredReservations.bind(this)
+        this.clearFilterParams = this.clearFilterParams.bind(this)
         this.handlePageChange = this.handlePageChange.bind(this)
         this.loadFirstPage = this.loadFirstPage.bind(this)
         this.loadLastPage = this.loadLastPage.bind(this)
@@ -39,33 +44,106 @@ class Reservations extends React.Component {
 
 
     handlePageChange(page) {
-        this.setState({ page: page })
-        this.props.fetchReservations(page)
+        var shift_id = document.getElementById('filter-form').elements['shift_id'].value
+        var subject_id = document.getElementById('filter-form').elements['subject_id'].value
+
+        this.setState({
+            page: page,
+            shift_id: shift_id,
+            subject_id: subject_id,
+        })
+        this.props.fetchReservations(page, this.state.shift_id, this.state.subject_id)
     }
 
     loadPrevPage() {
         var currentPage = this.state.page
         var prevPage = (currentPage > 1) ? (currentPage - 1) : currentPage
-        this.setState({ page: prevPage })
-        this.props.fetchReservations(prevPage)
+
+        var shift_id = document.getElementById('filter-form').elements['shift_id'].value
+        var subject_id = document.getElementById('filter-form').elements['subject_id'].value
+
+        this.setState({
+            page: prevPage,
+            shift_id: shift_id,
+            subject_id: subject_id,
+        })
+        this.props.fetchReservations(prevPage, this.state.shift_id, this.state.subject_id)
     }
 
     loadNextPage() {
         var currentPage = this.state.page
         var nextPage = (currentPage < this.props.pages) ? (currentPage + 1) : currentPage
-        this.setState({ page: nextPage })
-        this.props.fetchReservations(nextPage)
+
+        var shift_id = document.getElementById('filter-form').elements['shift_id'].value
+        var subject_id = document.getElementById('filter-form').elements['subject_id'].value
+
+        this.setState({
+            page: nextPage,
+            shift_id: shift_id,
+            subject_id: subject_id,
+        })
+        this.props.fetchReservations(nextPage, this.state.shift_id, this.state.subject_id)
     }
 
     loadLastPage() {
-        this.setState({ page: this.props.pages })
-        this.props.fetchReservations(this.props.pages)
+
+        var shift_id = document.getElementById('filter-form').elements['shift_id'].value
+        var subject_id = document.getElementById('filter-form').elements['subject_id'].value
+
+        this.setState({
+            page: this.props.pages,
+            shift_id: shift_id,
+            subject_id: subject_id,
+        })
+        this.props.fetchReservations(this.props.pages, this.state.shift_id, this.state.subject_id)
     }
 
     loadFirstPage() {
-        this.setState({ page: 1 })
-        this.props.fetchReservations(1)
+
+        var shift_id = document.getElementById('filter-form').elements['shift_id'].value
+        var subject_id = document.getElementById('filter-form').elements['subject_id'].value
+
+        this.setState({
+            page: 1,
+            shift_id: shift_id,
+            subject_id: subject_id,
+        })
+        this.props.fetchReservations(1, this.state.shift_id, this.state.subject_id)
     }
+
+    getFilteredReservations(event) {
+
+        event.preventDefault()
+
+        this.setState({
+            page: 1,
+            shift_id: event.target.shift_id.value,
+            subject_id: event.target.subject_id.value,
+        })
+
+        if (event.target.shift_id.selectedIndex === 0 && event.target.subject_id.selectedIndex === 0) {
+            //this.props.emptyApplicants()
+            this.setState({ no_params_error: "Gözleg maglumatlary girizilmedi ..." })
+            this.props.fetchReservations()
+            return false;
+        }
+        else {
+            this.setState({ no_params_error: '' })
+
+            this.props.fetchReservations(
+                1,
+                event.target.shift_id.options[event.target.shift_id.selectedIndex].value,
+                event.target.subject_id.options[event.target.subject_id.selectedIndex].value,
+            )
+        }
+
+    }
+
+    clearFilterParams() {
+        document.getElementById('filter-form').elements['shift_id'].selectedIndex = 0
+        document.getElementById('filter-form').elements['subject_id'].selectedIndex = 0
+    }
+
 
     render() {
 
@@ -132,9 +210,74 @@ class Reservations extends React.Component {
                     <thead>
                         <tr>
                             <th scope="col" colSpan="11">
-                                Rezerwler
+                                Rezerwler &nbsp; &nbsp; &nbsp;
+                                {
+                                    this.state.no_params_error != '' ?
+                                        <span style={{ color: 'red', fontStyle: 'italic' }}>
+                                            {" : " + this.state.no_params_error}
+                                        </span>
+                                        : ""
+                                }
                             </th>
                         </tr>
+
+                        <tr>
+                            <th scope="col" colSpan="9">
+                                <form noValidate onSubmit={this.getFilteredReservations} id="filter-form">
+                                    <div className="row">
+
+                                        <div className="col">
+                                            <select className="custom-select" id="shift_id" name="shift_id">
+                                                <option value={-1} key="no-shift">
+                                                    Wagt (Seans) Saýlaň
+                                                </option>
+                                                {
+                                                    this.props.shifts.map(shift => {
+                                                        return (
+                                                            <option value={shift.id} key={shift.title}>
+                                                                {shift.title}
+                                                            </option>
+                                                        )
+                                                    })
+                                                }
+                                            </select>
+                                        </div>
+
+                                        <div className="col">
+                                            <select className="custom-select" id="subject_id" name="subject_id">
+                                                <option value={-1} key="no-subject">
+                                                    Ders Saýlaň
+                                                </option>
+                                                {
+                                                    this.props.subjects.map(subject => {
+                                                        return (
+                                                            <option value={subject.id} key={subject.title}>
+                                                                {subject.title}
+                                                            </option>
+                                                        )
+                                                    })
+                                                }
+                                            </select>
+                                        </div>
+
+                                        <div className="col">
+                                            <button className="btn btn-info">
+                                                <i className="fa fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </th>
+                            <th scope="col">
+                                <button className="btn btn-warning"
+                                    onClick={this.clearFilterParams}
+                                >
+                                    <i className="fa fa-times"></i>
+                                </button>
+                            </th>
+                        </tr>
+
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Diňleýji</th>
@@ -270,6 +413,8 @@ class Reservations extends React.Component {
 const mapStateToProps = state => {
     return {
         reservations: state.reservations.reservations,
+        shifts: state.shifts.shifts,
+        subjects: state.subjects.subjects,
         pages: state.reservations.pages,
         loading: state.reservations.loading,
         error: state.reservations.error,
@@ -278,7 +423,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchReservations: (pg) => dispatch(fetchReservations(pg)),
+        fetchReservations: (pg, shift_id, subject_id) => dispatch(fetchReservations(pg, shift_id, subject_id)),
         editReservation: (id) => dispatch(editReservation(id)),
         removeReservation: (id) => dispatch(removeReservation(id)),
         reservationInfo: (id) => dispatch(reservationInfo(id)),

@@ -8,6 +8,9 @@ class Api::V1::ReservationsController < ApplicationController
       @reservations = Reservation.where(applicant_id: params[:applicant_id]).order('created_at DESC').includes(:applicant, :season, :shift, :subject, :user)
     else
       @reservations = Reservation.order('created_at DESC').includes(:applicant, :season, :shift, :subject, :user)
+
+      @reservations = @reservations.where(subject_id: params[:subject_id]) if !params[:subject_id].blank?
+      @reservations = @reservations.where(shift_id: params[:shift_id]) if !params[:shift_id].blank?
     end
 
     @reservations = @reservations.paginate(page: params[:page]) if params[:page]

@@ -141,20 +141,22 @@ export const removeReservationFailure = (error) => {
     }
 }
 
-export const fetchReservations = (page = 0) => {
+export const fetchReservations = (page = 0, shift_id = -1, subject_id = -1) => {
     return (dispatch) => {
 
         dispatch(fetchReservationsRequest)
 
-        var pageString = (page != 0) ? ("/?page=" + page) : ""
+        var extraString = ""
+        extraString = (page != 0) ? ("?page=" + page) : ("?page=1")
+        extraString += ((shift_id == -1) ? "" : ("&shift_id=" + shift_id))
+        extraString += ((subject_id == -1) ? "" : ("&subject_id=" + subject_id))
 
-        axios.get(settings.rootUrl + 'api/v1/reservations' + pageString, {
+        axios.get(settings.rootUrl + 'api/v1/reservations/' + extraString, {
             headers: {
                 "Content-type": "application/json",
                 "Authorization": localStorage.getItem('Token')
             }
         })
-            //.then(response => response.json())
             .then(response => {
                 const reservations = response.data
                 dispatch(fetchReservationsSuccess(reservations))
