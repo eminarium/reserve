@@ -10,7 +10,7 @@ import {
     fetchApplicantInfo,
     toggleReservationSMS,
     toggleReservationIsCalled,
-    toggleReservationIsRegistered
+    toggleReservationIsRegistered,
 } from '../../redux-store'
 import LoaderImage from 'images/loader.gif'
 
@@ -25,6 +25,8 @@ class Reservations extends React.Component {
         this.state = {
             page: 1,
             no_params_error: '',
+            shift_id: -1,
+            subject_id: -1
         }
 
 
@@ -89,7 +91,7 @@ class Reservations extends React.Component {
 
         if (this.getShiftId.value == -1 && this.getSubjectId.value == -1) {
             this.setState({ no_params_error: "Gözleg maglumatlary girizilmedi ..." })
-            this.props.fetchReservations()
+            this.props.fetchReservations(1)
         }
         else {
             this.setState({ no_params_error: '' })
@@ -100,6 +102,19 @@ class Reservations extends React.Component {
                 this.getSubjectId.value,
             )
         }
+
+        console.log("BEFORE (REF) => SHIFT ID : " + this.getShiftId.value + " / SUBJECT ID : " + this.getSubjectId.value)
+        console.log("BEFORE (STATE) => SHIFT ID : " + this.state.shift_id + " / SUBJECT ID : " + this.state.subject_id)
+
+        this.setState({
+            shift_id: this.getShiftId.value,
+            subject_id: this.getSubjectId.value
+        })
+
+        console.log("AFTER (REF) => SHIFT ID : " + this.getShiftId.value + " / SUBJECT ID : " + this.getSubjectId.value)
+        console.log("AFTER (STATE) => SHIFT ID : " + this.state.shift_id + " / SUBJECT ID : " + this.state.subject_id)
+
+
     }
 
     clearFilterParams() {
@@ -170,7 +185,7 @@ class Reservations extends React.Component {
                 <table className="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col" colSpan="11">
+                            <th scope="col" colSpan="12">
                                 Rezerwler &nbsp; &nbsp; &nbsp;
                                 {
                                     this.state.no_params_error != '' ?
@@ -183,7 +198,7 @@ class Reservations extends React.Component {
                         </tr>
 
                         <tr>
-                            <th scope="col" colSpan="9">
+                            <th scope="col" colSpan="10">
                                 <form noValidate id="filter-form">
                                     <div className="row">
 
@@ -237,6 +252,13 @@ class Reservations extends React.Component {
                                 >
                                     <i className="fa fa-times"></i>
                                 </button>
+                            </th>
+                            <th scope="col">
+                                <Link to={{ pathname: "/reservations/report", state: { shift_id: this.state.shift_id, subject_id: this.state.subject_id } }}>
+                                    <button className="btn btn-info">
+                                        <i className="fa fa-file-excel-o"></i>
+                                    </button>
+                                </Link>
                             </th>
                         </tr>
 
@@ -395,7 +417,7 @@ const mapDispatchToProps = dispatch => {
         fetchApplicantInfo: (id) => dispatch(fetchApplicantInfo(id)),
         toggleReservationSMS: (reservation) => dispatch(toggleReservationSMS(reservation)),
         toggleReservationIsCalled: (reservation) => dispatch(toggleReservationIsCalled(reservation)),
-        toggleReservationIsRegistered: (reservation) => dispatch(toggleReservationIsRegistered(reservation))
+        toggleReservationIsRegistered: (reservation) => dispatch(toggleReservationIsRegistered(reservation)),
     }
 }
 

@@ -13,7 +13,18 @@ class Api::V1::ReservationsController < ApplicationController
       @reservations = @reservations.where(shift_id: params[:shift_id]) if !params[:shift_id].blank?
     end
 
-    @reservations = @reservations.paginate(page: params[:page]) if params[:page]
+    @reservations = @reservations.paginate(page: params[:page]) if !params[:page].blank?
+
+    respond_with @reservations, status: :ok    
+  end
+
+  def report_list
+    @reservations = Reservation.order('created_at DESC').includes(:applicant, :season, :shift, :subject, :user)
+
+    @reservations = @reservations.where(subject_id: params[:subject_id]) if !params[:subject_id].blank?
+    @reservations = @reservations.where(shift_id: params[:shift_id]) if !params[:shift_id].blank?
+
+    @reservations = @reservations.paginate(page: params[:page]) if !params[:page].blank?
 
     respond_with @reservations, status: :ok    
   end

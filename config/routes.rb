@@ -23,7 +23,7 @@ Rails.application.routes.draw do
       resources :subjects,            only: [:index, :show, :create, :update, :destroy]
       resources :subject_categories,  only: [:index, :show, :create, :update, :destroy]
       resources :subject_tests,       only: [:index, :show, :update, :destroy]
-      resources :reservations,        only: [:index, :show, :update, :destroy]
+      resources :reservations,        only: [:index, :show, :update, :destroy, :report_list]
       resources :applicants,          only: [:index, :show, :create, :update, :destroy]
       resources :users,               only: [:index, :create, :update]
 
@@ -36,6 +36,6 @@ Rails.application.routes.draw do
   end
 
   get '*path', to: 'site#index'
-  
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

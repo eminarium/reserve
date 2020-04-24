@@ -47,6 +47,7 @@ import Reservations from './reservations/reservations.js'
 import ReservationNewForm from './reservations/reservation_new_form.js'
 import ReservationEditForm from './reservations/reservation_edit_form.js'
 import ReservationInfo from './reservations/reservation_info.js'
+import ReservationsReportList from './reservations/reservations_report_list.js'
 
 import NotFoundPage from './not_found_page.js'
 
@@ -99,6 +100,7 @@ class Content extends React.Component {
 
                     <Route exact path="/reservations" component={Reservations} />
                     <Route exact path="/reservations/new" component={ReservationNewForm} />
+                    <Route exact path="/reservations/report" component={ReservationsReportList} />
                     <Route exact path="/reservations/:reservationId" component={ReservationInfo} />
                     <Route exact path="/reservations/:reservationId/edit" component={ReservationEditForm} />
 
