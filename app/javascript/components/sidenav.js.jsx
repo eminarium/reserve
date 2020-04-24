@@ -8,7 +8,7 @@ class SideNav extends React.Component {
     render() {
         return (
 
-            <nav className="col-md-2 d-none d-md-block bg-light sidebar">
+            <nav className="col-md-3 d-none d-md-block bg-light sidebar">
                 <div className="sidebar-sticky">
 
                     <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -35,7 +35,7 @@ class SideNav extends React.Component {
                             </Link>
                         </li>
                     </ul>
-                    <hr/>
+                    <hr />
                     <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                         <span><h6><i className="fa fa-trophy"></i>  &nbsp; <u>SYNAGLAR</u> </h6></span>
                         <a className="d-flex align-items-center text-muted" href="#">
@@ -73,6 +73,11 @@ class SideNav extends React.Component {
                         <li className="nav-item">
                             <Link to="/reservations" className="nav-link">
                                 <i className="fa fa-list-ul"></i> &nbsp; Rezerw Sanawy
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/reservations/report-detailed" className="nav-link">
+                                <i className="fa fa-bar-chart"></i> &nbsp; Rezerw Hasabaty
                             </Link>
                         </li>
                     </ul>

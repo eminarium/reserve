@@ -48,13 +48,14 @@ import ReservationNewForm from './reservations/reservation_new_form.js'
 import ReservationEditForm from './reservations/reservation_edit_form.js'
 import ReservationInfo from './reservations/reservation_info.js'
 import ReservationsReportList from './reservations/reservations_report_list.js'
+import ReservationsReportDetailed from './reservations/reservations_report_detailed.js'
 
 import NotFoundPage from './not_found_page.js'
 
 class Content extends React.Component {
     render() {
         return (
-            <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <main role="main" className="col-md-9 ml-sm-auto col-lg-9 px-4">
                 <Switch>
                     <Route exact path="/"
                         render={({ location }) => {
@@ -100,7 +101,8 @@ class Content extends React.Component {
 
                     <Route exact path="/reservations" component={Reservations} />
                     <Route exact path="/reservations/new" component={ReservationNewForm} />
-                    <Route exact path="/reservations/report" component={ReservationsReportList} />
+                    <Route exact path="/reservations/report-list" component={ReservationsReportList} />
+                    <Route exact path="/reservations/report-detailed" component={ReservationsReportDetailed} />
                     <Route exact path="/reservations/:reservationId" component={ReservationInfo} />
                     <Route exact path="/reservations/:reservationId/edit" component={ReservationEditForm} />
 

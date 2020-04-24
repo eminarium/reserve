@@ -254,7 +254,7 @@ class Reservations extends React.Component {
                                 </button>
                             </th>
                             <th scope="col">
-                                <Link to={{ pathname: "/reservations/report", state: { shift_id: this.state.shift_id, subject_id: this.state.subject_id } }}>
+                                <Link to={{ pathname: "/reservations/report-list", state: { shift_id: this.state.shift_id, subject_id: this.state.subject_id } }}>
                                     <button className="btn btn-info">
                                         <i className="fa fa-file-excel-o"></i>
                                     </button>
