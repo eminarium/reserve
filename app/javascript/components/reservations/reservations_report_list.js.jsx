@@ -22,10 +22,57 @@ class ReservationsReportList extends React.Component {
             0,
             this.props.location.state.shift_id,
             this.props.location.state.subject_id,
+            this.props.location.state.is_sms_sent,
+            this.props.location.state.is_called,
+            this.props.location.state.is_registered,
         )
     }
 
     render() {
+
+        var shift, subject, is_sms_sent, is_called, is_registered, total;
+
+        var shift = this.props.location.state.shift_id != -1 ?
+            (" / " + this.props.shift) : " / Ähli Wagtlar (Smenalar)"
+
+        var subject = this.props.location.state.subject_id != -1 ?
+            (" / " + this.props.subject) : " / Ähli Dersler"
+
+        switch (this.props.location.state.is_sms_sent) {
+            case "true":
+                is_sms_sent = " / SMS (YES)"
+                break
+            case "false":
+                is_sms_sent = " / SMS (NO)"
+                break
+            default:
+                is_sms_sent = ""
+        }
+
+        switch (this.props.location.state.is_called) {
+            case "true":
+                is_called = " / JAŇ (YES)"
+                break
+            case "false":
+                is_called = " / JAŇ (NO)"
+                break
+            default:
+                is_called = ""
+        }
+
+        switch (this.props.location.state.is_registered) {
+            case "true":
+                is_registered = " / ÝAZYLAN (YES)"
+                break
+            case "false":
+                is_registered = " / ÝAZYLAN (NO)"
+                break
+            default:
+                is_registered = ""
+        }
+
+        total = " / JEMI : " + this.props.reservations.length + " rezerw..."
+
         return (
             <div>
                 <Link to={"/reservations"}>
@@ -47,15 +94,12 @@ class ReservationsReportList extends React.Component {
                         <tr>
                             <th scope="col" colSpan="13">
                                 REZERWLER
-                                {
-                                    this.props.location.state.shift_id != -1 ?
-                                        (" / " + this.props.shift) : " / Ähli Wagtlar (Smenalar)"
-                                }
-                                {
-                                    this.props.location.state.subject_id != -1 ?
-                                        (" / " + this.props.subject) : " / Ähli Dersler"
-                                }
-                                {" / JEMI : " + this.props.reservations.length + " rezerw..."}
+                                {shift}
+                                {subject}
+                                {is_sms_sent}
+                                {is_called}
+                                {is_registered}
+                                {total}
                             </th>
                         </tr>
 
@@ -162,7 +206,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchReservations: (pg, shift_id, subject_id) => dispatch(fetchReservations(pg, shift_id, subject_id)),
+        fetchReservations: (pg, shift_id, subject_id, is_sms_sent, is_called, is_registered) => dispatch(fetchReservations(pg, shift_id, subject_id, is_sms_sent, is_called, is_registered)),
     }
 }
 

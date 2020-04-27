@@ -141,15 +141,29 @@ export const removeReservationFailure = (error) => {
     }
 }
 
-export const fetchReservations = (page = 0, shift_id = -1, subject_id = -1) => {
+export const fetchReservations = (page = 0, shift_id = -1, subject_id = -1, is_sms_sent = -1, is_called = -1, is_registered = -1) => {
     return (dispatch) => {
 
         dispatch(fetchReservationsRequest)
 
         var extraString = ""
+
+
+        /*
         extraString = (page != 0) ? ("?page=" + page) : ("")
+        extraString += (shift_id != -1) ? ("&shift_id=" + shift_id) : ""
+        extraString += (subject_id != -1) ? ("&subject_id=" + subject_id) : ""
+        extraString += (is_sms_sent != -1) ? ("&is_sms_sent=" + is_sms_sent) : ""
+        extraString += (is_called != -1) ? ("&is_called=" + is_called) : ""
+        extraString += (is_registered != -1) ? ("&is_registered=" + is_registered) : ""
+        */
+
+        extraString += (extraString == "") ? ((page == 0) ? "" : ("?page=" + page)) : ((page == 0) ? "" : ("&page=" + page))
         extraString += (extraString == "") ? ((shift_id == -1) ? "" : ("?shift_id=" + shift_id)) : ((shift_id == -1) ? "" : ("&shift_id=" + shift_id))
         extraString += (extraString == "") ? ((subject_id == -1) ? "" : ("?subject_id=" + subject_id)) : ((subject_id == -1) ? "" : ("&subject_id=" + subject_id))
+        extraString += (extraString == "") ? ((is_sms_sent == -1) ? "" : ("?is_sms_sent=" + is_sms_sent)) : ((is_sms_sent == -1) ? "" : ("&is_sms_sent=" + is_sms_sent))
+        extraString += (extraString == "") ? ((is_called == -1) ? "" : ("?is_called=" + is_called)) : ((is_called == -1) ? "" : ("&is_called=" + is_called))
+        extraString += (extraString == "") ? ((is_registered == -1) ? "" : ("?is_registered=" + is_registered)) : ((is_registered == -1) ? "" : ("&is_registered=" + is_registered))
 
         axios.get(settings.rootUrl + 'api/v1/reservations/' + extraString, {
             headers: {

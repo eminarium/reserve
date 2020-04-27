@@ -34,7 +34,7 @@ class ReservationsReportDetailed extends React.Component {
                     <thead>
                         <tr>
                             <th scope="col" colSpan="13">
-                                REZERWLER
+                                REZERWLER | Jemi (SMS Ugradylan / Jaň Edilen / Ýazylan)
                             </th>
                         </tr>
 
@@ -79,24 +79,30 @@ class ReservationsReportDetailed extends React.Component {
                                             <tr><th colSpan="8">{sc.title}</th></tr>
                                             {
                                                 this.props.subjects.filter(subject => subject.subject_category.id == sc.id).map((subject, index) => {
+                                                    var total = this.props.reservations.filter(reservation => reservation.subject.id == subject.id)
+                                                    var is_sms_sent = total.filter(reservation => reservation.is_sms_sent == true)
+                                                    var is_called = total.filter(reservation => reservation.is_called == true)
+                                                    var is_registered = total.filter(reservation => reservation.is_registered == true)
                                                     return (
                                                         <tr>
                                                             <td>{index + 1}</td>
                                                             <td>{subject.title}</td>
                                                             <td>
                                                                 <span class="badge badge-primary">
-                                                                    {
-                                                                        this.props.reservations.filter(reservation => reservation.subject.id == subject.id).length
-                                                                    }
+                                                                    {total.length} &nbsp;
+                                                                    ({is_sms_sent.length} / {is_called.length} / {is_registered.length})
                                                                 </span>
                                                             </td>
                                                             {
                                                                 this.props.shifts.map(shift => {
+                                                                    var shift_total = this.props.reservations.filter(reservation => (reservation.subject.id == subject.id && reservation.shift.id == shift.id))
+                                                                    var is_sms_sent = shift_total.filter(reservation => reservation.is_sms_sent == true)
+                                                                    var is_called = shift_total.filter(reservation => reservation.is_called == true)
+                                                                    var is_registered = shift_total.filter(reservation => reservation.is_registered == true)
                                                                     return (
                                                                         <td>
-                                                                            {
-                                                                                this.props.reservations.filter(reservation => (reservation.subject.id == subject.id && reservation.shift.id == shift.id)).length
-                                                                            }
+                                                                            {shift_total.length} &nbsp;
+                                                                            ({is_sms_sent.length} / {is_called.length} / {is_registered.length})
                                                                         </td>
                                                                     )
                                                                 })

@@ -11,6 +11,9 @@ class Api::V1::ReservationsController < ApplicationController
 
       @reservations = @reservations.where(subject_id: params[:subject_id]) if !params[:subject_id].blank?
       @reservations = @reservations.where(shift_id: params[:shift_id]) if !params[:shift_id].blank?
+      @reservations = @reservations.where(is_sms_sent: params[:is_sms_sent]) if !params[:is_sms_sent].blank?
+      @reservations = @reservations.where(is_called: params[:is_called]) if !params[:is_called].blank?
+      @reservations = @reservations.where(is_registered: params[:is_registered]) if !params[:is_registered].blank?
     end
 
     @reservations = @reservations.paginate(page: params[:page]) if !params[:page].blank?
@@ -23,6 +26,9 @@ class Api::V1::ReservationsController < ApplicationController
 
     @reservations = @reservations.where(subject_id: params[:subject_id]) if !params[:subject_id].blank?
     @reservations = @reservations.where(shift_id: params[:shift_id]) if !params[:shift_id].blank?
+    @reservations = @reservations.where(is_sms_sent: params[:is_sms_sent]) if !params[:is_sms_sent].blank?
+    @reservations = @reservations.where(is_called: params[:is_called]) if !params[:is_called].blank?
+    @reservations = @reservations.where(is_registered: params[:is_registered]) if !params[:is_registered].blank?
 
     @reservations = @reservations.paginate(page: params[:page]) if !params[:page].blank?
 

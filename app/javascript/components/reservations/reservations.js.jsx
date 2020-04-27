@@ -26,7 +26,10 @@ class Reservations extends React.Component {
             page: 1,
             no_params_error: '',
             shift_id: -1,
-            subject_id: -1
+            subject_id: -1,
+            is_sms_sent: -1,
+            is_called: -1,
+            is_registered: -1
         }
 
 
@@ -48,7 +51,7 @@ class Reservations extends React.Component {
         this.setState({
             page: page,
         })
-        this.props.fetchReservations(page, this.getShiftId.value, this.getSubjectId.value)
+        this.props.fetchReservations(page, this.getShiftId.value, this.getSubjectId.value, this.getIsSMSSent.value, this.getIsCalled.value, this.getIsRegistered.value)
     }
 
     loadPrevPage() {
@@ -58,7 +61,7 @@ class Reservations extends React.Component {
         this.setState({
             page: prevPage,
         })
-        this.props.fetchReservations(prevPage, this.getShiftId.value, this.getSubjectId.value)
+        this.props.fetchReservations(prevPage, this.getShiftId.value, this.getSubjectId.value, this.getIsSMSSent.value, this.getIsCalled.value, this.getIsRegistered.value)
     }
 
     loadNextPage() {
@@ -68,7 +71,7 @@ class Reservations extends React.Component {
         this.setState({
             page: nextPage,
         })
-        this.props.fetchReservations(nextPage, this.getShiftId.value, this.getSubjectId.value)
+        this.props.fetchReservations(nextPage, this.getShiftId.value, this.getSubjectId.value, this.getIsSMSSent.value, this.getIsCalled.value, this.getIsRegistered.value)
     }
 
     loadLastPage() {
@@ -76,7 +79,7 @@ class Reservations extends React.Component {
         this.setState({
             page: this.props.pages,
         })
-        this.props.fetchReservations(this.props.pages, this.getShiftId.value, this.getSubjectId.value)
+        this.props.fetchReservations(this.props.pages, this.getShiftId.value, this.getSubjectId.value, this.getIsSMSSent.value, this.getIsCalled.value, this.getIsRegistered.value)
     }
 
     loadFirstPage() {
@@ -84,12 +87,12 @@ class Reservations extends React.Component {
         this.setState({
             page: 1,
         })
-        this.props.fetchReservations(1, this.getShiftId.value, this.getSubjectId.value)
+        this.props.fetchReservations(1, this.getShiftId.value, this.getSubjectId.value, this.getIsSMSSent.value, this.getIsCalled.value, this.getIsRegistered.value)
     }
 
     getFilteredReservations() {
 
-        if (this.getShiftId.value == -1 && this.getSubjectId.value == -1) {
+        if (this.getShiftId.value == -1 && this.getSubjectId.value == -1 && this.getIsSMSSent.value == -1 && this.getIsCalled.value == -1 && this.getIsRegistered.value == -1) {
             this.setState({ no_params_error: "Gözleg maglumatlary girizilmedi ..." })
             this.props.fetchReservations(1)
         }
@@ -100,26 +103,28 @@ class Reservations extends React.Component {
                 1,
                 this.getShiftId.value,
                 this.getSubjectId.value,
+                this.getIsSMSSent.value,
+                this.getIsCalled.value,
+                this.getIsRegistered.value
             )
         }
 
-        console.log("BEFORE (REF) => SHIFT ID : " + this.getShiftId.value + " / SUBJECT ID : " + this.getSubjectId.value)
-        console.log("BEFORE (STATE) => SHIFT ID : " + this.state.shift_id + " / SUBJECT ID : " + this.state.subject_id)
-
         this.setState({
             shift_id: this.getShiftId.value,
-            subject_id: this.getSubjectId.value
+            subject_id: this.getSubjectId.value,
+            is_sms_sent: this.getIsSMSSent.value,
+            is_called: this.getIsCalled.value,
+            is_registered: this.getIsRegistered.value
         })
-
-        console.log("AFTER (REF) => SHIFT ID : " + this.getShiftId.value + " / SUBJECT ID : " + this.getSubjectId.value)
-        console.log("AFTER (STATE) => SHIFT ID : " + this.state.shift_id + " / SUBJECT ID : " + this.state.subject_id)
-
-
     }
 
     clearFilterParams() {
         this.getShiftId.value = -1
         this.getSubjectId.value = -1
+        this.getIsSMSSent.value = -1
+        this.getIsCalled.value = -1
+        this.getIsRegistered.value = -1
+
         this.getFilteredReservations()
     }
 
@@ -242,6 +247,57 @@ class Reservations extends React.Component {
                                             </select>
                                         </div>
 
+                                        <div className="col">
+                                            <select className="custom-select" id="is_sms_sent" name="is_sms_sent"
+                                                onChange={this.getFilteredReservations}
+                                                ref={value => this.getIsSMSSent = value}
+                                            >
+                                                <option value={-1} key="sms-1">
+                                                    SMS Ugradyldymy
+                                                </option>
+                                                <option value="true" key="sms-2">
+                                                    Hawa
+                                                </option>
+                                                <option value="false" key="sms-3">
+                                                    Ýok
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <div className="col">
+                                            <select className="custom-select" id="is_called" name="is_called"
+                                                onChange={this.getFilteredReservations}
+                                                ref={value => this.getIsCalled = value}
+                                            >
+                                                <option value={-1} key="jan-1">
+                                                    Jaň Edildimi
+                                                </option>
+                                                <option value="true" key="jan-2">
+                                                    Hawa
+                                                </option>
+                                                <option value="false" key="jan-3">
+                                                    Ýok
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <div className="col">
+                                            <select className="custom-select" id="is_registered" name="is_registered"
+                                                onChange={this.getFilteredReservations}
+                                                ref={value => this.getIsRegistered = value}
+                                            >
+                                                <option value={-1} key="reg-1">
+                                                    Ýazyldymy
+                                                </option>
+                                                <option value="true" key="reg-2">
+                                                    Hawa
+                                                </option>
+                                                <option value="false" key="reg-3">
+                                                    Ýok
+                                                </option>
+                                            </select>
+                                        </div>
+
                                     </div>
                                 </form>
 
@@ -254,7 +310,17 @@ class Reservations extends React.Component {
                                 </button>
                             </th>
                             <th scope="col">
-                                <Link to={{ pathname: "/reservations/report-list", state: { shift_id: this.state.shift_id, subject_id: this.state.subject_id } }}>
+                                <Link
+                                    to={{
+                                        pathname: "/reservations/report-list",
+                                        state: {
+                                            shift_id: this.state.shift_id,
+                                            subject_id: this.state.subject_id,
+                                            is_sms_sent: this.state.is_sms_sent,
+                                            is_called: this.state.is_called,
+                                            is_registered: this.state.is_registered
+                                        }
+                                    }}>
                                     <button className="btn btn-info">
                                         <i className="fa fa-file-excel-o"></i>
                                     </button>
@@ -409,7 +475,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchReservations: (pg, shift_id, subject_id) => dispatch(fetchReservations(pg, shift_id, subject_id)),
+        fetchReservations: (pg, shift_id, subject_id, is_sms_sent, is_called, is_registered) => dispatch(fetchReservations(pg, shift_id, subject_id, is_sms_sent, is_called, is_registered)),
         editReservation: (id) => dispatch(editReservation(id)),
         removeReservation: (id) => dispatch(removeReservation(id)),
         reservationInfo: (id) => dispatch(reservationInfo(id)),
