@@ -419,7 +419,11 @@ class Reservations extends React.Component {
                                             <td>
                                                 <Link to={"/reservations/" + reservation.id}>
                                                     <button className="btn btn-primary"
-                                                        onClick={() => this.props.reservationInfo(reservation.id)}
+                                                        onClick={() => {
+                                                                this.props.fetchApplicantInfo(reservation.applicatn)
+                                                                this.props.reservationInfo(reservation.id)
+                                                            }
+                                                        }
                                                     >
                                                         <i className="fa fa-info"></i>
                                                     </button>

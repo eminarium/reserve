@@ -16,6 +16,10 @@ class ReservationInfo extends React.Component {
         super(props);
     }
 
+    componentDidMount() {
+        this.props.fetchApplicantInfo(this.props.reservation.applicant.id)
+    }
+
     render() {
 
         var reg_date = new Date(this.props.reservation.created_at)
